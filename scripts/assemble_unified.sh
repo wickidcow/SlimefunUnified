@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PIN="$(tr -d '\r\n[:space:]' < "$ROOT/upstream/legacy-core.sha")"
+if [[ ! "$PIN" =~ ^[[:xdigit:]]{40}$ ]]; then
+  echo "Refusing an invalid Slimefun Legacy source SHA: $PIN" >&2
+  exit 1
+fi
+if ! java -version 2>&1 | grep -qE 'version "25[.]|openjdk 25'; then
+  echo "A Java 25 runtime is required to compile the pinned Paper 26.3 core." >&2
+  exit 1
+fi
+
+WORK="$ROOT/build/upstream/Slimefun-Legacy"
+mkdir -p "$ROOT/build/upstream" "$ROOT/build/output"
+if [[ ! -d "$WORK/.git" ]]; then
+  git clone --filter=blob:none --no-checkout https://github.com/wickidcow/Slimefun-Legacy.git "$WORK"
+fi
+git -C "$WORK" fetch --no-tags --depth=1 origin "$PIN"
+git -C "$WORK" checkout --force --detach "$PIN"
+if [[ "$(git -C "$WORK" rev-parse HEAD)" != "$PIN" ]]; then
+  echo "Pinned source verification failed" >&2
+  exit 1
+fi
+python3 "$ROOT/scripts/apply_overlay.py" --source "$WORK" --unified "$ROOT"
+# Preserve source attribution and the pinned SHA in an internal build receipt.
+mkdir -p "$WORK/src/main/resources/unified"
+printf '%s\n' "$PIN" > "$WORK/src/main/resources/unified/legacy-source.sha"
+cp "$ROOT/LICENSE" "$WORK/src/main/resources/unified/COPYING"
+COMMIT_DATE="$(git -C "$WORK" show -s --format=%ct HEAD)"
+(
+  cd "$WORK"
+  SOURCE_COMMIT="$PIN" SOURCE_DATE_EPOCH="$COMMIT_DATE" \
+    ./gradlew --no-daemon -PprojectVersion=Unified-0.1.0-prototype spotlessApply shadowJar
+)
+JAR="$(find "$WORK/build/libs" -maxdepth 1 -name 'Slimefun-Unified-0.1.0-prototype.jar' -type f -print -quit)"
+if [[ -z "$JAR" ]]; then
+  echo "Expected pinned-source build output not found" >&2
+  ls -lh "$WORK/build/libs" >&2 || true
+  exit 1
+fi
+cp "$JAR" "$ROOT/build/output/SlimefunUnified-0.1.0-prototype.jar"
+python3 "$ROOT/scripts/verify_unified_jar.py" "$ROOT/build/output/SlimefunUnified-0.1.0-prototype.jar" "$PIN"
+echo "PROTOTYPE assembled: $ROOT/build/output/SlimefunUnified-0.1.0-prototype.jar"
