@@ -1,0 +1,459 @@
+{
+  "schema_version": 1,
+  "goal": "44 Slimefun Legacy bundle addons in one SlimefunUnified JAR; independent maintainers and module policy",
+  "source": {
+    "repository": "wickidcow/Slimefun-Legacy",
+    "matrix_path": "compatibility/sfl-addon-release-matrix.json",
+    "matrix_revision": 153,
+    "matrix_observed_sha": "726d7449c38a9829872b7585439b9a1c4cd6518e"
+  },
+  "scope": {
+    "standalone_repos_read_only": true,
+    "addons_target_count": 44,
+    "bundled_loaded_and_functional": true,
+    "player_access_controls_only": true,
+    "stable_release_without_runtime_tests": false
+  },
+  "addons": [
+    {
+      "slug": "alchimiavitae",
+      "repository": "wickidcow/SF_AlchimiaVitae",
+      "baseline_source_sha": "5b1f9b2d5191243a18ff29f7601587bd01f31c70",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "betterchests",
+      "repository": "wickidcow/SF_BetterChests",
+      "baseline_source_sha": "e80e395ca331bad234fd5733eb106da3b5656545",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "betterfarming",
+      "repository": "wickidcow/SF_BetterFarming",
+      "baseline_source_sha": "ba363e64d6401c89e3bd9c765bac273e0fa8b40a",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "cultivationlegacy",
+      "repository": "wickidcow/SF_CultivationLegacy",
+      "baseline_source_sha": "4d2ad689ec70c04bfc1dfbe37c8dfd9c59a4fec0",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "crystamaehistoria",
+      "repository": "wickidcow/SF_CrystamaeHistoria",
+      "baseline_source_sha": "584db74db1dd9d108cf658bdaf2a09c9132b0d47",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "danktech2",
+      "repository": "wickidcow/SF_DankTech2",
+      "baseline_source_sha": "d718633ab28c312360e90dd43aeb3a9f25dc3c2e",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "dracfunreborn",
+      "repository": "wickidcow/SF_DracFun2",
+      "baseline_source_sha": "080aad927cb0f24d3c3a294a2683c35528ddb032",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "dynatech",
+      "repository": "wickidcow/SF_DynaTech",
+      "baseline_source_sha": "f4289dbbd61fcc93ae8c6bcfde5b9e3892d371bc",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "electricspawners",
+      "repository": "wickidcow/SF_ElectricSpawners",
+      "baseline_source_sha": "d28daba4fa77d7c927fc2716207c837602edd9cc",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "exoticgarden",
+      "repository": "wickidcow/SF_ExoticGarden",
+      "baseline_source_sha": "3bd282d2a951d883d1dc222e53e35e7fc4e0a6f2",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "extraheads",
+      "repository": "wickidcow/SF_ExtraHeads",
+      "baseline_source_sha": "b1e8a1f11692b44d359eec863f3be5be0f061516",
+      "status": "integrated-compile-verified",
+      "integrated_source_sha": "b1e8a1f11692b44d359eec863f3be5be0f061516",
+      "license_review": "MIT notice verified",
+      "runtime_validation": "pending",
+      "notes": "One-JAR compile/packaging verified; runtime gameplay not yet verified"
+    },
+    {
+      "slug": "fastmachines",
+      "repository": "wickidcow/SF_FastMachines",
+      "baseline_source_sha": "695ac4e5a8a0b3dcfc114c97b6a4f43c6254d1b6",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "finaltech",
+      "repository": "wickidcow/SF_FinalTECH",
+      "baseline_source_sha": "cd967e62b5042e850599a8d723431dc9d4c2f063",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "flowerpower",
+      "repository": "wickidcow/SF_FlowerPower",
+      "baseline_source_sha": "d8c3f2c8ec66b7c08e0ceb8b23f710f020b5c36f",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "fluffymachines",
+      "repository": "wickidcow/SF_FluffyMachines",
+      "baseline_source_sha": "9ce05a228a0ce14e69254115b90ec46e54eac6d9",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "fnamplifications",
+      "repository": "wickidcow/SF_FNAmplifications",
+      "baseline_source_sha": "017ee6a2008e618201ccb1a114b42aa9a7296be9",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "foxymachines",
+      "repository": "wickidcow/SF_FoxyMachines",
+      "baseline_source_sha": "4222cd4a6aaaface032bd5f7fc20cbb5b927092f",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "galactifun",
+      "repository": "wickidcow/SF_Galactifun",
+      "baseline_source_sha": "82bdf5254b42a14f38c98590a8b6ebf708c5be22",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "gastronomicon",
+      "repository": "wickidcow/SF_Gastronomicon",
+      "baseline_source_sha": "31df51f791cccdad03a21df6186d327e58b6a468",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "geneticchickengineering",
+      "repository": "wickidcow/SF_GeneticChickEngineering",
+      "baseline_source_sha": "5ce3c185c343d128f2b0ba033e908c56cebd5bb0",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "hotbarpets",
+      "repository": "wickidcow/SF_HotbarPets",
+      "baseline_source_sha": "e50c64641f961bf5da14ca839b435fdefa39b4db",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "idreamofeasy",
+      "repository": "wickidcow/SF_IDreamOfEasy",
+      "baseline_source_sha": "91090c398ece30dbf90ddde6124a7f1faf0f05bb",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "infinityexpansion2",
+      "repository": "wickidcow/SF_InfinityExpansion2",
+      "baseline_source_sha": "fdadfa67bc68fb18e34ccfed773a23ba2efbd4ef",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "litexpansion",
+      "repository": "wickidcow/SF_LiteXpansion",
+      "baseline_source_sha": "4dc69e1ba835b897e2fa38b9eb54bcbcee644abf",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "luckyblocks",
+      "repository": "wickidcow/SF_LuckyBlocks",
+      "baseline_source_sha": "9038919c7f8c9c143fec373230ca5847c326729f",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "justenoughguide",
+      "repository": "wickidcow/SF_JustEnoughGuide",
+      "baseline_source_sha": "a05fda6c5ce3310fa339ebe0f2f00801197e6d9b",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "magicexpansion",
+      "repository": "wickidcow/SF_MagicExpansion",
+      "baseline_source_sha": "b28c304f2909f15b43da53910ce7650886cc0e6f",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "militaryarsenal",
+      "repository": "wickidcow/SF_MilitaryArsenal",
+      "baseline_source_sha": "4f9d366e65be68b106c124f7dade2e78a5569490",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "mobcapturer",
+      "repository": "wickidcow/SF_MobCapturer",
+      "baseline_source_sha": "34e7f85233007f7d93036aa92f0fd53ff463f1c4",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "mobdrops",
+      "repository": "wickidcow/SF_MobDrops",
+      "baseline_source_sha": "8943594f006a443ce8a77113f76709c871d03697",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "networksexp",
+      "repository": "wickidcow/SF_NetworksExp",
+      "baseline_source_sha": "ea5777ce58c45c3c3cd4789bd155164ccbb5336b",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "relicsofcthonia",
+      "repository": "wickidcow/SF_RelicsOfCthonia",
+      "baseline_source_sha": "8fabd949d68ba0385a9de7050ce3a82ddf3b4425",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "rykenslimecustomizer",
+      "repository": "wickidcow/SF_RykenSlimeCustomizer",
+      "baseline_source_sha": "e62b10423a64d1940ee4bc87947e2ff42b0ee3df",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimeeasy",
+      "repository": "wickidcow/SF_SlimeEasy",
+      "baseline_source_sha": "40e052a98a484bddd107d9a8564a7fbaf0da0b62",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimefunadvancements",
+      "repository": "wickidcow/SF_SlimefunAdvancements",
+      "baseline_source_sha": "0dc1c98dda87803b9be65d2a97d6c328079473f0",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimefunwarfare",
+      "repository": "wickidcow/SF_SlimefunWarfare",
+      "baseline_source_sha": "2a6ef2801e212720b623d8db3b668be9b9f3f450",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimeglue",
+      "repository": "wickidcow/SF_SlimeGlue",
+      "baseline_source_sha": "c3b024944c6520ef1f4ba51c21f02606fffd39a6",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimehud",
+      "repository": "wickidcow/SF_SlimeHUD",
+      "baseline_source_sha": "cb3479646fe8be343cbb55f122cf0e45b1cbc201",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimetinkerie2",
+      "repository": "wickidcow/SF_SlimeTinkerIE2",
+      "baseline_source_sha": "bfb072fedb9f9135a27a93483d69da2bcdfb927a",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "slimytreetaps",
+      "repository": "wickidcow/SF_SlimyTreeTaps",
+      "baseline_source_sha": "ac1680260503ae7ba8070797069923f983d080c6",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "smg",
+      "repository": "wickidcow/SF_SMG",
+      "baseline_source_sha": "014a7e55a832255e6dd7fc4677b05480624a0fd7",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "souljars",
+      "repository": "wickidcow/SF_SoulJars",
+      "baseline_source_sha": "8fbd6befc477bbbf9970afc79e538c6b1f028cd3",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "supreme",
+      "repository": "wickidcow/SF_Supreme",
+      "baseline_source_sha": "17693b1eec0ef15f198c86a5803f6e5dbd085074",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    },
+    {
+      "slug": "worldeditslimefun",
+      "repository": "wickidcow/WorldEditSlimefun",
+      "baseline_source_sha": "c1d4d98d4a2796debb9d01055a5011d793f69aea",
+      "status": "pending",
+      "integrated_source_sha": null,
+      "license_review": "pending",
+      "runtime_validation": "pending",
+      "notes": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+name: Unified addon integration ledger
+on:
+  push:
+    paths:
+      - 'integration/**'
+      - 'scripts/validate_addon_ledger.py'
+      - '.github/workflows/addon-ledger.yml'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-ledger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/validate_addon_ledger.py
