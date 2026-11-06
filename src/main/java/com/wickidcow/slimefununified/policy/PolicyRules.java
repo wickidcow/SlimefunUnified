@@ -86,11 +86,12 @@ public final class PolicyRules {
 
     public Decision guideVisible(String moduleId, String itemId, Actor actor) {
         Objects.requireNonNull(actor, "actor");
+        Flags parent = getModuleFlags(moduleId);
+        Flags item = getItemFlags(moduleId, itemId);
         if (actor == Actor.OP) return new Decision(true, "OP guide access");
         if (actor == Actor.AUTOMATION) throw new IllegalArgumentException("Automated machines do not open a Guide");
-        Flags parent = getModuleFlags(moduleId);
         if (!parent.guideVisible()) return new Decision(false, "Addon hidden from players");
-        if (!getItemFlags(moduleId, itemId).guideVisible()) {
+        if (!item.guideVisible()) {
             return new Decision(false, "Item hidden from players");
         }
         return new Decision(true, "Visible to players");
@@ -98,11 +99,12 @@ public final class PolicyRules {
 
     public Decision manualCraftingAllowed(String moduleId, String itemId, Actor actor) {
         Objects.requireNonNull(actor, "actor");
+        Flags parent = getModuleFlags(moduleId);
+        Flags item = getItemFlags(moduleId, itemId);
         if (actor == Actor.OP) return new Decision(true, "OP crafting access");
         if (actor == Actor.AUTOMATION) return new Decision(true, "Automation is not player crafting");
-        Flags parent = getModuleFlags(moduleId);
         if (!parent.playerCrafting()) return new Decision(false, "Player crafting disabled for addon");
-        if (!getItemFlags(moduleId, itemId).playerCrafting()) {
+        if (!item.playerCrafting()) {
             return new Decision(false, "Player crafting disabled for item");
         }
         return new Decision(true, "Player crafting permitted");
