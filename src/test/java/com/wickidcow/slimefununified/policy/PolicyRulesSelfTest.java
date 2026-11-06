@@ -21,6 +21,8 @@ public final class PolicyRulesSelfTest {
 
     public static void main(String[] args) throws Exception {
         var modules = ModuleCatalog.candidates();
+        check(modules.stream().anyMatch(m -> "souljars".equals(m.id())
+                && m.originalCreators().contains("TheBusyBiscuit")), "SoulJars original author credited");
         check(modules.stream().anyMatch(m -> "extraheads".equals(m.id())
                 && m.originalCreators().contains("TheBusyBiscuit")), "ExtraHeads original creator is credited");
         PolicyRules open = PolicyRules.fromProperties(new StringReader(""), modules);

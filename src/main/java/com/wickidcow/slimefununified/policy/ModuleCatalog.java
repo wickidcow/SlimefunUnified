@@ -13,6 +13,8 @@ public final class ModuleCatalog {
                 new AddonModule("extraheads", "ExtraHeads",
                         "TheBusyBiscuit; ybw0014 / Slimefun Addon Community",
                         "https://github.com/wickidcow/SF_ExtraHeads"),
+                new AddonModule("souljars", "SoulJars", "TheBusyBiscuit and SoulJars community contributors",
+                        "https://github.com/wickidcow/SF_SoulJars"),
                 new AddonModule("fluffymachines", "FluffyMachines", "NCBPFluffyBear and FluffyMachines contributors",
                         "https://github.com/wickidcow/SF_FluffyMachines"),
                 new AddonModule("infinityexpansion2", "InfinityExpansion2",

@@ -20,6 +20,7 @@
 - [x] Verify exact-source core+ExtraHeads compilation, JAR contents, original MIT notice and Java policy tests (CI only).
 - [ ] Test old ExtraHeads config, item namespace, head drops and existing world upgrade/rollback.
 - [ ] Verify external standalone plugin collision handling and multi-world/region safety.
+- [x] Compile second addon SoulJars from exact source while retaining historical jar IDs and separate creator/license records (prototype only).
 - [ ] Integrate additional maintainable modules one by one with license and data audits.
 - [ ] Finish JEG integration and shared runtime/performance services before publishing stable binaries.
 
@@ -29,4 +30,4 @@
 - [ ] Same-factory TPS A/B comparison vs independent addons.
 - [ ] Folia/Leaf region safety and verified one-JAR reproducibility.
 
-**Prototype only. No production-ready release.**
+**2/44 addon modules compiled in the experimental JAR (ExtraHeads and SoulJars); 42 still pending. No runtime validation or production-ready release.**
