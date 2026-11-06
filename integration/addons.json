@@ -429,11 +429,11 @@
       "slug": "souljars",
       "repository": "wickidcow/SF_SoulJars",
       "baseline_source_sha": "8fbd6befc477bbbf9970afc79e538c6b1f028cd3",
-      "status": "integration-in-progress",
-      "integrated_source_sha": null,
-      "license_review": "pending",
+      "status": "integrated-compile-verified",
+      "integrated_source_sha": "8fbd6befc477bbbf9970afc79e538c6b1f028cd3",
+      "license_review": "GPLv3 original notice included; attribution retained",
       "runtime_validation": "pending",
-      "notes": "Unverified prototype source integration in Unified branch feat/bundle-souljars; no production validation"
+      "notes": "Source-pinned single-JAR compilation only; no Paper gameplay/world restart tests yet"
     },
     {
       "slug": "supreme",

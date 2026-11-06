@@ -7,6 +7,7 @@ This repository is licensed under **GNU GPLv3** (see `LICENSE`), aligned with th
 | Module | Original creators / project lineage | Current maintained repository | Source license | Current bundling |
 | --- | --- | --- | --- | --- |
 | Slimefun core | TheBusyBiscuit and original Slimefun contributors | https://github.com/wickidcow/Slimefun-Legacy | GPLv3 | Prototype core |
+| SoulJars | **TheBusyBiscuit**, original SoulJars community contributors | https://github.com/wickidcow/SF_SoulJars | GPLv3 | Second prototype module |
 | ExtraHeads | **TheBusyBiscuit**, ybw0014 and Slimefun Addon Community contributors | https://github.com/wickidcow/SF_ExtraHeads | **MIT**; original © 2019 notice preserved | First pilot addon |
 | FluffyMachines | NCBPFluffyBear; FluffyMachines and Gugu contributors | https://github.com/wickidcow/SF_FluffyMachines | GPLv3 | Not bundled |
 | InfinityExpansion2 | Mooy1; GuizhanCraft/IE2 contributors | https://github.com/wickidcow/SF_InfinityExpansion2 | GPLv3 | Not bundled |
@@ -16,4 +17,4 @@ This repository is licensed under **GNU GPLv3** (see `LICENSE`), aligned with th
 
 Credits above are not exhaustive. Each subsequent addon requires its own review of source headers, source/asset licenses, fork history, modified-file notices, bundled dependency compatibility and source distribution obligations.
 
-The first pilot includes the **verbatim original ExtraHeads MIT license** as `unified/addons/extraheads/COPYING-MIT` in the prototype JAR and retains the original addon repository unchanged. The new facade is clearly labeled as a Unified modification. For any distributed GPL-covered combined binary, corresponding build scripts and source must remain available under the applicable licenses.
+The ExtraHeads prototype includes the **verbatim original ExtraHeads MIT license** as `unified/addons/extraheads/COPYING-MIT` in the prototype JAR and retains the original addon repository unchanged. The new facade is clearly labeled as a Unified modification. For any distributed GPL-covered combined binary, corresponding build scripts and source must remain available under the applicable licenses.
