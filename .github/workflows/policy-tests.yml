@@ -1,0 +1,17 @@
+name: Unified policy prototype
+on:
+  push:
+    branches: [main, feat/unified-module-policy-foundation]
+  pull_request:
+  workflow_dispatch:
+jobs:
+  java-policy-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile and run policy regression tests
+        run: bash scripts/test.sh
