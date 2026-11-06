@@ -1,35 +1,43 @@
 # SlimefunUnified
 
-**An experimental single-JAR edition of Slimefun Legacy, with independently configurable addon modules.**
+**Experimental single-JAR Slimefun edition built independently from [Slimefun Legacy](https://github.com/wickidcow/Slimefun-Legacy).**
 
-This project is separate from [Slimefun Legacy](https://github.com/wickidcow/Slimefun-Legacy). Existing Slimefun Legacy and SF_* addon repositories remain available and continue their established development and release workflows.
+Slimefun Legacy remains actively developed in its own repository. This project **reads a pinned Legacy source commit** and applies Unified-specific overlays in a disposable build workspace. It never pushes to or changes the Legacy repository. Standalone addon repositories remain separately maintained.
 
-## Intended design
+## Target design
 
-One future SlimefunUnified.jar contains the Slimefun core and integrated addon code as *distinct modules*. **All integrated modules remain loaded and preserve their items, machines and data.** An addon set to "off for players" is *not* unloaded: only its discoverability in the Guide and/or ordinary-player crafting are restricted.
+One `SlimefunUnified.jar` will eventually include the Slimefun core and multiple separately credited, individually configurable addon modules. **All bundled addon code stays loaded and operational.** An owner can separately hide addon content from regular players in the Guide and deny ordinary players manual crafting. OPs retain Guide and crafting privileges; automatic machines and existing items/storage continue working.
 
-The former **Coming Soon** button in the Slimefun Guide should become an **OP-only Server Management** entry, with equivalent integration in the maintained JustEnoughGuide implementation.
+The OP-only **Server Management** menu replaces a previously unused Guide Settings & Info slot. It includes independent Guide and player-crafting flags, project credits and source links. The maintained JustEnoughGuide UI will receive equivalent integration when JEG is bundled.
 
-Within it, owners can configure each addon independently:
+This is a player UI and manual crafting policy; hiding an item does *not* prevent someone from finding an old item, seeing it in an inventory or learning about it through external plugins.
 
-- **Show in player Guide:** yes/no (all registered items remain visible to OPs)
-- **Allow player crafting:** yes/no (OP crafting remains allowed)
-- **Item-specific exceptions:** hide individual items from the player Guide or block their player-initiated crafting
-- **Creators and licenses:** original authorship, original and maintained repository links, licensing notices
-- **Optional presets:** one click to hide from ordinary players *and* block player crafting, without modifying machine operation
+## What has actually been implemented
 
-Owner changes are intended to be persistent. Future production code must ensure filter coverage of Guide categories, search, recipe usages, bookmarks and other discovery paths; *existing items in the world are never removed*. This is a **player access and visibility policy**, not a guarantee that players can never learn an item's ID or acquire an existing item.
+- Pure Java policy engine with module and item flags and executable regression self-tests.
+- Source-pinned experimental build lane which fetches Legacy at `upstream/legacy-core.sha`, overlays Unified sources and attempts one **core-only** Paper plugin JAR.
+- OP-only Server Management entry in the **classic** Guide's Settings & Info screen; candidate modules are listed with credits but cannot be toggled before being integrated.
+- Initial filter hooks for classic Guide item pages, search and direct item details; initial manual-crafting denial for native multiblock, altar and workbench event paths.
+- Persistent `plugins/Slimefun/UnifiedModules.yml` with atomic saves; owner bypass and fail-closed behavior on malformed policy files.
 
-Automatic machine crafting, inventory transactions, storage, item drops and existing machines are **not disabled** by these player crafting controls.
+**Important: No addon code has been integrated yet. JEG, flexible guide categories and custom addon crafting pathways are NOT covered. No real server smoke tests or world migration tests have been completed. The experimental artifact must NOT be installed on a production server.** The plugin keeps the internal name `Slimefun` to preserve historical identity; do not install it beside Slimefun Legacy.
 
-## Current state
+## Building and testing
 
-**Foundation only. NOT an installable Minecraft plugin.** This repository does not yet embed the Slimefun core, contain migrated addon code, render a Guide button or produce a Paper/Purpur server JAR.
+Java 21+ is sufficient for the standalone access-policy self-test:
 
-The initial pure-Java prototype includes a strict module/item policy parser, an evaluation engine, a candidate addon catalog and executable self-tests. It intentionally has no Bukkit dependencies until we implement integration safely.
+```bash
+bash scripts/test.sh
+```
 
-To test on Java 21 or later:
+The experimental pinned-core build requires Java 25, network access and the original Gradle wrapper:
 
-    bash scripts/test.sh
+```bash
+bash scripts/assemble_unified.sh
+```
 
-See [architecture](docs/architecture.md), [roadmap](docs/roadmap.md), and [credits & license review](docs/credits-and-licenses.md).
+The GitHub Actions experimental JAR is uploaded as a *prototype* artifact **only if compilation and artifact checks pass**. See [source integration](docs/core-source-integration.md), [roadmap](docs/roadmap.md), and [credits and licenses](docs/credits-and-licenses.md).
+
+## Attribution and licensing
+
+All original creator names and project lineage are preserved. SlimefunUnified is licensed under GPLv3 (see [LICENSE](LICENSE)), and individual source/asset licenses must be reviewed before each addon is imported. Not charging money does not waive obligations to preserve notices and make corresponding source available upon distribution.

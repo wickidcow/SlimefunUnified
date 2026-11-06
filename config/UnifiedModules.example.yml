@@ -1,0 +1,14 @@
+# Demonstration of the eventual plugins/Slimefun/UnifiedModules.yml file.
+# This is NOT an addon loader. All bundled modules remain loaded.
+# Only the Slimefun core is bundled in the first experiment.
+modules:
+  slimefun:
+    guide-visible: true
+    player-crafting: true
+# Items can be hidden or denied individually (owner menu browser is future work).
+# The module key must match the originating bundled module, and item ID the actual registered ID.
+items:
+  slimefun:
+    EXAMPLE_REGISTERED_ITEM_ID:
+      guide-visible: false
+      player-crafting: false
