@@ -2,16 +2,22 @@
 import sys
 import zipfile
 from pathlib import Path
-if len(sys.argv) != 3:
-    raise SystemExit("Usage: verify_unified_jar.py <jar> <source-sha>")
+if len(sys.argv) != 4:
+    raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha>")
 jar = Path(sys.argv[1])
 sha = sys.argv[2]
+extra_sha = sys.argv[3]
 with zipfile.ZipFile(jar) as z:
     names = set(z.namelist())
     must = [
         "plugin.yml",
         "unified/legacy-source.sha",
         "unified/COPYING",
+        "unified/addons/extraheads/COPYING-MIT",
+        "unified/addons/extraheads/source.sha",
+        "unified/addons/extraheads/config.yml",
+        "io/github/thebusybiscuit/extraheads/ExtraHeads.class",
+        "io/github/thebusybiscuit/extraheads/items/MobHead.class",
         "com/wickidcow/slimefununified/runtime/UnifiedRuntime.class",
         "com/wickidcow/slimefununified/runtime/UnifiedOwnerMenu.class",
         "com/wickidcow/slimefununified/runtime/UnifiedCraftingListener.class",
@@ -26,4 +32,8 @@ with zipfile.ZipFile(jar) as z:
         raise SystemExit("Plugin metadata incorrect")
     if z.read("unified/legacy-source.sha").decode().strip() != sha:
         raise SystemExit("Pinned source receipt mismatch")
+    if z.read("unified/addons/extraheads/source.sha").decode().strip() != extra_sha:
+        raise SystemExit("ExtraHeads source receipt mismatch")
+    if "Copyright (c) 2019 TheBusyBiscuit" not in z.read("unified/addons/extraheads/COPYING-MIT").decode():
+        raise SystemExit("Missing original ExtraHeads MIT copyright")
 print(f"Validated experimental core JAR ({jar.stat().st_size:,} bytes), exact upstream {sha}")
