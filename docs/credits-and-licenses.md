@@ -1,22 +1,20 @@
 # Creator credits and license review
 
-This project is intended to benefit players, not generate revenue. **Not charging money does not remove software license obligations.** Every integrated addon will retain independent in-game credit, historical authorship, source links, copyright notices and any distribution attribution required by its license.
+SlimefunUnified is intended for players, not for profit. However, **noncommercial use does not waive free software license obligations**. All integrated modules must preserve their original creators, source lineage, modifications, copyright notices, and the applicable Corresponding Source distribution requirements.
 
-| Intended module | Original credits / lineage identified in maintained README | Maintained source | Initial license identified |
+The repository `LICENSE` has been changed from GPLv2 to **GNU GPLv3** before attempting a core-source-based build. This aligns this project's top-level license with the inspected Slimefun Legacy core license. It does not prove that every dependency or asset is automatically redistributable: separate audit is required before imports and releases.
+
+| Intended module | Original credits / lineage from maintained project docs | Maintained source | License identified |
 | --- | --- | --- | --- |
 | Slimefun core | TheBusyBiscuit and original Slimefun contributors | https://github.com/wickidcow/Slimefun-Legacy | GPL-3.0 |
-| FluffyMachines | NCBPFluffyBear; later FluffyMachines and Gugu contributors | https://github.com/wickidcow/SF_FluffyMachines | GPL-3.0 |
-| InfinityExpansion2 | Mooy1's InfinityExpansion lineage; GuizhanCraft/InfinityExpansion2 rewrite contributors | https://github.com/wickidcow/SF_InfinityExpansion2 | GPL-3.0 |
-| Networks | Sefiraat original project; ytdd9527, balugaq, yitoudaidai, tinalness and NetworksExpansion contributors | https://github.com/wickidcow/SF_NetworksExp | GPL-3.0 |
-| Supreme | RelativoBR, Especttra, WilianSantosBR, Mynothauro and Supreme contributors | https://github.com/wickidcow/SF_Supreme | GPL-3.0 |
+| FluffyMachines | NCBPFluffyBear, FluffyMachines/Gugu contributors | https://github.com/wickidcow/SF_FluffyMachines | GPL-3.0 |
+| InfinityExpansion2 | Mooy1's InfinityExpansion lineage, GuizhanCraft/IE2 contributors | https://github.com/wickidcow/SF_InfinityExpansion2 | GPL-3.0 |
+| Networks | Sefiraat, ytdd9527, balugaq, yitoudaidai, tinalness and later Networks contributors | https://github.com/wickidcow/SF_NetworksExp | GPL-3.0 |
+| Supreme | RelativoBR, Especttra, WilianSantosBR, Mynothauro and later Supreme contributors | https://github.com/wickidcow/SF_Supreme | GPL-3.0 |
 | JustEnoughGuide | balugaq and JEG contributors | https://github.com/wickidcow/SF_JustEnoughGuide | GPL-3.0 |
 
-These credits are **not exhaustive**; read source headers and history before integration. Additional addon candidates require the same diligence.
+Credits are **non-exhaustive** and may evolve after source-header and Git history audits. The current experiment includes *only the Slimefun core*. Listing an addon above does not assert it has been integrated.
 
-## License blocker to resolve
+Before each addon import, audit headers, fork histories, source license, assets, bundled libraries, attribution requirements, modification notices, and source distribution terms.
 
-This new repository currently has a **GNU GPL version 2** LICENSE file, while the *current inspected* core and first addon candidates have GPLv3 license files. This is not by itself proof that every source file is GPLv3-only, but a GPLv2-only combined distribution cannot simply absorb GPLv3-only sources. Before migrating source, explicitly review applicable source licenses and select a compatible license (likely GPLv3, subject to all existing rights/versions). Do **not** silently assume free/nonprofit use resolves incompatibilities.
-
-Before code import, inventory source headers, author copyright, license grants, upstream fork lineage, assets (textures/sounds), third-party libraries, modified-source notice, source distribution and corresponding source offer obligations.
-
-Every player-facing creator screen should name the original author and link original and maintained project sources, not imply SlimefunUnified originated their work.
+The in-game creator screen must identify original authors and maintained projects, without implying that SlimefunUnified originally authored the addon.
