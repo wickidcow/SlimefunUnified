@@ -56,6 +56,9 @@ public final class PolicyRulesSelfTest {
                 "No core breakage");
 
         expectIllegal("unknown module", () -> hidden.guideVisible("missing", "ITEM", PolicyRules.Actor.PLAYER));
+        expectIllegal("unknown module for OP", () -> hidden.guideVisible("missing", "ITEM", PolicyRules.Actor.OP));
+        expectIllegal("invalid item for OP", () -> hidden.manualCraftingAllowed("slimefun", "?",
+                PolicyRules.Actor.OP));
         expectIllegal("bad item ID", () -> hidden.guideVisible("slimefun", "?", PolicyRules.Actor.PLAYER));
         expectIllegal("machine Guide", () -> hidden.guideVisible("slimefun", "BATTERY",
                 PolicyRules.Actor.AUTOMATION));
@@ -81,6 +84,6 @@ public final class PolicyRulesSelfTest {
                 }
             });
         }
-        System.out.println("SlimefunUnified policy: all 18 scenarios passed.");
+        System.out.println("SlimefunUnified policy: all self-tests passed.");
     }
 }
