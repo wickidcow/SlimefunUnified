@@ -38,19 +38,22 @@ patch(
 )
 patch(
     "src/main/java/io/github/thebusybiscuit/slimefun4/core/guide/options/SlimefunGuideSettings.java",
-    "        addPlayerResources(p, menu, guide);\n        addAdminTools(p, menu, guide);",
-    "        addPlayerResources(p, menu, guide);\n        addAdminTools(p, menu, guide);\n"
-    "        // Unified-only owner tools occupy the former unused Settings & Info slot.\n"
-    "        if (p.hasPermission(\\"slimefununified.admin\\")) {\n"
-    "            menu.addItem(49, new CustomItemStack(Material.COMMAND_BLOCK, \\"&6&lServer Management\\",\n"
-    "                    \\"&7Control addon Guide visibility and player crafting.\\",\n"
-    "                    \\"&7OP-only. Existing machines and data remain intact.\\",\n"
-    "                    \\"&eClick to configure Slimefun Unified\\") ,\n"
-    "                    (pl, slot, stack, action) -> {\n"
-    "                        com.wickidcow.slimefununified.runtime.UnifiedOwnerMenu.open(pl, guide);\n"
-    "                        return false;\n"
-    "                    });\n"
-    "        }",
+    """        addPlayerResources(p, menu, guide);
+        addAdminTools(p, menu, guide);""",
+    """        addPlayerResources(p, menu, guide);
+        addAdminTools(p, menu, guide);
+        // Unified owner controls occupy the formerly unused Settings & Info position.
+        if (p.hasPermission("slimefununified.admin")) {
+            menu.addItem(49, new CustomItemStack(Material.COMMAND_BLOCK,
+                    "&6&lServer Management",
+                    "&7Control addon Guide visibility and player crafting.",
+                    "&7OP-only. Existing machines and data remain intact.",
+                    "&eClick to configure Slimefun Unified"),
+                    (pl, slot, stack, action) -> {
+                        com.wickidcow.slimefununified.runtime.UnifiedOwnerMenu.open(pl, guide);
+                        return false;
+                    });
+        }""",
 )
 patch(
     "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/guide/SurvivalSlimefunGuide.java",
