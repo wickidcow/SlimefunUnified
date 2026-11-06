@@ -2,42 +2,45 @@
 
 **Experimental single-JAR Slimefun edition built independently from [Slimefun Legacy](https://github.com/wickidcow/Slimefun-Legacy).**
 
-Slimefun Legacy remains actively developed in its own repository. This project **reads a pinned Legacy source commit** and applies Unified-specific overlays in a disposable build workspace. It never pushes to or changes the Legacy repository. Standalone addon repositories remain separately maintained.
+Slimefun Legacy remains actively developed in its own repository. This project **reads pinned source commits** and applies Unified-specific overlays in disposable build workspaces. It never pushes to or changes Legacy or the standalone addon repositories.
 
-## Target design
+## Goal: one JAR, individually credited modules
 
-One `SlimefunUnified.jar` will eventually include the Slimefun core and multiple separately credited, individually configurable addon modules. **All bundled addon code stays loaded and operational.** An owner can separately hide addon content from regular players in the Guide and deny ordinary players manual crafting. OPs retain Guide and crafting privileges; automatic machines and existing items/storage continue working.
+One `SlimefunUnified.jar` will eventually contain Slimefun and the maintained addon modules. **All bundled code stays loaded and functional.** Server owners can separately hide an addon's items from regular players in the Guide and deny non-OPs manual crafting. OPs retain access; existing machines, inventories, storage, drops and automation are unaffected.
 
-The OP-only **Server Management** menu replaces a previously unused Guide Settings & Info slot. It includes independent Guide and player-crafting flags, project credits and source links. The maintained JustEnoughGuide UI will receive equivalent integration when JEG is bundled.
+The OP-only **Server Management** screen appears in the classic Slimefun Guide's Settings & Info menu. Each addon retains its name, credits and separate original/maintained source links. The maintained JustEnoughGuide UI requires later integration.
 
-This is a player UI and manual crafting policy; hiding an item does *not* prevent someone from finding an old item, seeing it in an inventory or learning about it through external plugins.
+## Current experimental content
 
-## What has actually been implemented
+| Component | Status |
+| --- | --- |
+| Slimefun Legacy core | Source-pinned, bundled into one JAR |
+| ExtraHeads | **First source-pinned integrated addon pilot** (MIT, original credits retained) |
+| FluffyMachines, InfinityExpansion2, Networks, Supreme, JEG and other addons | Not yet integrated; listed as unavailable candidates |
 
-- Pure Java policy engine with module and item flags and executable regression self-tests.
-- Source-pinned experimental build lane which fetches Legacy at `upstream/legacy-core.sha`, overlays Unified sources and attempts one **core-only** Paper plugin JAR.
-- OP-only Server Management entry in the **classic** Guide's Settings & Info screen; candidate modules are listed with credits but cannot be toggled before being integrated.
-- Initial filter hooks for classic Guide item pages, search and direct item details; initial manual-crafting denial for native multiblock, altar and workbench event paths.
-- Persistent `plugins/Slimefun/UnifiedModules.yml` with atomic saves; owner bypass and fail-closed behavior on malformed policy files.
+- Java access policy engine with module and individual-item flags and executable self-tests.
+- Slimefun classic Guide OP Settings entry and source-pinned source overlays.
+- Atomic `plugins/Slimefun/UnifiedModules.yml` with independent Guide-visible / player-crafting toggles and OP bypass.
+- Initial classic Guide item list, search, detail filtering and manual crafting interceptors for multiblock, altar and workbench event paths.
+- ExtraHeads historical item IDs, mob textures, `extraheads` namespace and prior `plugins/ExtraHeads/config.yml` preserved through a single-plugin facade; separate standalone ExtraHeads JAR detection.
+- GPLv3 for Unified source and original MIT copyright/license notice carried inside the JAR for ExtraHeads.
 
-**Important: No addon code has been integrated yet. JEG, flexible guide categories and custom addon crafting pathways are NOT covered. No real server smoke tests or world migration tests have been completed. The experimental artifact must NOT be installed on a production server.** The plugin keeps the internal name `Slimefun` to preserve historical identity; do not install it beside Slimefun Legacy.
+## Major limitations
 
-## Building and testing
+**This is a prototype, NOT production-ready.** Live Minecraft server start, saved-world migration/rollback, drops/crafting permissions and anti-duplication still need validation. ExtraHeads is the only addon integrated, and JEG, custom Flex item categories and other addon-specific crafting/guide pathways have not been audited. Hidden item discovery through alternative plugins and existing inventories remains possible; this toggle is not an item security boundary.
 
-Java 21+ is sufficient for the standalone access-policy self-test:
+The plugin retains the internal Bukkit name `Slimefun` for legacy compatibility. Never install it next to the original Slimefun Legacy plugin. Only test it on a **backed-up, disposable server copy**.
+
+## Building / testing
 
 ```bash
+# Pure Java policy tests: Java 21+
 bash scripts/test.sh
-```
 
-The experimental pinned-core build requires Java 25, network access and the original Gradle wrapper:
-
-```bash
+# Single JAR from pinned core and addon source: Java 25 / Gradle / network required
 bash scripts/assemble_unified.sh
 ```
 
-The GitHub Actions experimental JAR is uploaded as a *prototype* artifact **only if compilation and artifact checks pass**. See [source integration](docs/core-source-integration.md), [roadmap](docs/roadmap.md), and [credits and licenses](docs/credits-and-licenses.md).
+CI uploads a time-limited **experimental artifact only after compilation and validation**; no stable release is authorized without live safety evidence. See [pinned source integration](docs/core-source-integration.md), [first addon](docs/first-addon-extraheads.md), [roadmap](docs/roadmap.md), [creator credits](docs/credits-and-licenses.md).
 
-## Attribution and licensing
-
-All original creator names and project lineage are preserved. SlimefunUnified is licensed under GPLv3 (see [LICENSE](LICENSE)), and individual source/asset licenses must be reviewed before each addon is imported. Not charging money does not waive obligations to preserve notices and make corresponding source available upon distribution.
+This community project is not an official Minecraft/Slimefun release and is not approved or affiliated with Mojang or Microsoft.

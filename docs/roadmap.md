@@ -1,33 +1,32 @@
 # Roadmap
 
-## Phase 0: isolated policy foundation — completed
-- [x] Independent SlimefunUnified repository; no changes to Slimefun Legacy or maintained addons.
-- [x] Single future JAR, independent creator credits and guide/crafting player-access controls specified.
-- [x] Strict pure-Java module/item policy engine with regression self-tests.
-- [x] Initial CI policy tests passing.
-- [x] Align the new repository license to GPLv3 before core import.
+## Phase 0 — completed
+- [x] Separate SlimefunUnified GitHub repository and independent development policy.
+- [x] Two independent owner-facing rules: hide in player Guide; deny ordinary-player manual crafting.
+- [x] Pure Java module/item policy engine, tests and GPLv3 license alignment.
 
-## Phase 1: pinned upstream source and first server hooks — experimental
-- [x] Pin Slimefun Legacy source SHA and create deterministic, fail-closed overlay assembly.
-- [x] Add an OP-only classic Guide Server Management button and owner menu source.
-- [x] Add initial YAML persistence, policy and player-only crafting/Guide source hooks.
-- [ ] Confirm pinned-core build CI passes and inspect experimental JAR contents.
-- [ ] Complete OP item-specific rule browser and safe confirmation/audit log.
-- [ ] Cover all native guide discovery routes and all manual player crafting, including non-event custom workflows.
-- [ ] JEG and FlexItemGroup discovery and alternate Guide implementations.
-- [ ] Real test server launch and Paper/Purpur persistence/crafting integration tests.
+## Phase 1 — source-pinned core & classic Guide prototype
+- [x] Exact-source Slimefun Legacy core build, reproducible provenance.
+- [x] First OP-only classic Guide Server Management menu.
+- [x] Persistent YAML flags, atomic save, owner bypass, initial Guide and crafting hooks.
+- [x] Core-only prototype compiled and JAR entries verified.
+- [ ] Comprehensive Guide/JEG, Flex groups, bookmarks, usages, crafting-path controls.
+- [ ] Item-by-item owner menu, confirmations and audit logs.
+- [ ] Live server smoke tests, old data round-trips and anti-duplication.
 
-## Phase 2: addon source integration (not yet started)
-- [ ] Comprehensive per-addon licensing and creator credit verification.
-- [ ] First real addon merged as an internal module without renaming its item IDs or dropping gameplay.
-- [ ] Explicit module-to-item ownership registration (one JavaPlugin bootstrap for all).
-- [ ] Duplicate standalone JAR detection and safe refusal/warning.
-- [ ] Repeat integration and tests across maintained modules, preserving standalone repositories.
+## Phase 2 — individually credited embedded addons
+- [x] Identify compact MIT-licensed ExtraHeads as first proof-of-concept.
+- [x] Source-pin ExtraHeads; implement shared JavaPlugin / distinct SlimefunAddon adapter.
+- [ ] Verify exact-source core+ExtraHeads compile, JAR metadata, license and tests.
+- [ ] Test old ExtraHeads config, item namespace, head drops and existing world upgrade/rollback.
+- [ ] Verify external standalone plugin collision handling and multi-world/region safety.
+- [ ] Integrate additional maintainable modules one by one with license and data audits.
+- [ ] Finish JEG integration and shared runtime/performance services before publishing stable binaries.
 
-## Phase 3: release quality
-- [ ] Old-world storage, inventory, BlockStorage, ItemStack and API tests on Paper/Purpur 1.21.11 and 26.3+.
-- [ ] Anti-duplication and storage conservation across machine, cargo, Networks and addons.
-- [ ] Repeatable same-factory performance A/B comparison.
-- [ ] Folia/Leaf region safety and official source-pinned single-JAR release.
+## Phase 3 — release quality
+- [ ] Real Paper/Purpur 1.21.11 and 26.3+ server startup/restart tests with existing data.
+- [ ] Storage conservation, duplication prevention, old-item compatibility.
+- [ ] Same-factory TPS A/B comparison vs independent addons.
+- [ ] Folia/Leaf region safety and verified one-JAR reproducibility.
 
-**Experimental core prototype is NOT production ready.**
+**Prototype only. No production-ready release.**
