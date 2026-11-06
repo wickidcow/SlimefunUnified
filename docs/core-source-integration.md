@@ -6,8 +6,11 @@ SlimefunUnified **never alters** `wickidcow/Slimefun-Legacy` or any maintained a
 
 - `upstream/legacy-core.sha`: original maintained Slimefun Legacy Java sources, Gradle wrapper and game assets.
 - `upstream/extraheads.sha`: original maintained ExtraHeads addon code and MIT license, imported as the first module.
+- `upstream/souljars.sha`: original maintained SoulJars addon code and GPLv3 license, imported as the second module.
 
 `scripts/assemble_unified.sh` verifies both exact SHAs, copies the addon sources into the same Java compilation as the core and uses the original Gradle wrapper under Java 25. The result is **one server plugin JAR**, not a JAR containing separate plugin JARs.
+
+SoulJars uses an analogous separate `SlimefunAddon` facade, while its soul jar IDs, mob capture behavior, YAML path and historical namespace are preserved. The original GPLv3 notice and source revision are also packaged.
 
 The original main plugin descriptor/name remains `Slimefun` for compatibility. ExtraHeads' original JavaPlugin entrypoint is replaced **only inside Unified** by a SlimefunAddon facade using the shared Slimefun bootstrap, with a retained separate addon identity. Standalone ExtraHeads remains unchanged and is detected to avoid duplicate item registration.
 

@@ -15,7 +15,8 @@ The OP-only **Server Management** screen appears in the classic Slimefun Guide's
 | Component | Status |
 | --- | --- |
 | Slimefun Legacy core | Source-pinned, bundled into one JAR |
-| ExtraHeads | **First source-pinned integrated addon pilot** (MIT, original credits retained) |
+| ExtraHeads | Source-pinned integrated addon prototype (MIT, original credits retained) |
+| SoulJars | **Second source-pinned integrated addon prototype** (GPLv3, original credits retained) |
 | FluffyMachines, InfinityExpansion2, Networks, Supreme, JEG and other addons | Not yet integrated; listed as unavailable candidates |
 
 - Java access policy engine with module and individual-item flags and executable self-tests.
@@ -23,11 +24,12 @@ The OP-only **Server Management** screen appears in the classic Slimefun Guide's
 - Atomic `plugins/Slimefun/UnifiedModules.yml` with independent Guide-visible / player-crafting toggles and OP bypass.
 - Initial classic Guide item list, search, detail filtering and manual crafting interceptors for multiblock, altar and workbench event paths.
 - ExtraHeads historical item IDs, mob textures, `extraheads` namespace and prior `plugins/ExtraHeads/config.yml` preserved through a single-plugin facade; separate standalone ExtraHeads JAR detection.
+- SoulJars original soul-collection and spawner recipes, `souljars` recipe/category namespaces, historical config path and preexisting entity item-ID aliases preserved by a separate addon facade.
 - GPLv3 for Unified source and original MIT copyright/license notice carried inside the JAR for ExtraHeads.
 
 ## Major limitations
 
-**This is a prototype, NOT production-ready.** Live Minecraft server start, saved-world migration/rollback, drops/crafting permissions and anti-duplication still need validation. ExtraHeads is the only addon integrated, and JEG, custom Flex item categories and other addon-specific crafting/guide pathways have not been audited. Hidden item discovery through alternative plugins and existing inventories remains possible; this toggle is not an item security boundary.
+**This is a prototype, NOT production-ready.** Live Minecraft server start, saved-world migration/rollback, drops/crafting permissions and anti-duplication still need validation. ExtraHeads and SoulJars are the first addon sources integrated, and JEG, custom Flex item categories and other addon-specific crafting/guide pathways have not been audited. Hidden item discovery through alternative plugins and existing inventories remains possible; this toggle is not an item security boundary.
 
 The plugin retains the internal Bukkit name `Slimefun` for legacy compatibility. Never install it next to the original Slimefun Legacy plugin. Only test it on a **backed-up, disposable server copy**.
 

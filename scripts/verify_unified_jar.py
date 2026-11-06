@@ -2,11 +2,12 @@
 import sys
 import zipfile
 from pathlib import Path
-if len(sys.argv) != 4:
-    raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha>")
+if len(sys.argv) != 5:
+    raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha> <souljars-sha>")
 jar = Path(sys.argv[1])
 sha = sys.argv[2]
 extra_sha = sys.argv[3]
+soul_sha = sys.argv[4]
 with zipfile.ZipFile(jar) as z:
     names = set(z.namelist())
     must = [
@@ -17,6 +18,11 @@ with zipfile.ZipFile(jar) as z:
         "unified/addons/extraheads/source.sha",
         "unified/addons/extraheads/config.yml",
         "io/github/thebusybiscuit/extraheads/ExtraHeads.class",
+        "io/github/thebusybiscuit/souljars/SoulJars.class",
+        "io/github/thebusybiscuit/souljars/JarsListener.class",
+        "unified/addons/souljars/config.yml",
+        "unified/addons/souljars/source.sha",
+        "unified/addons/souljars/COPYING-GPLv3",
         "io/github/thebusybiscuit/extraheads/items/MobHead.class",
         "com/wickidcow/slimefununified/runtime/UnifiedRuntime.class",
         "com/wickidcow/slimefununified/runtime/UnifiedOwnerMenu.class",
@@ -44,4 +50,10 @@ with zipfile.ZipFile(jar) as z:
         raise SystemExit("ExtraHeads source receipt mismatch")
     if "Copyright (c) 2019 TheBusyBiscuit" not in z.read("unified/addons/extraheads/COPYING-MIT").decode():
         raise SystemExit("Missing original ExtraHeads MIT copyright")
+    if z.read("unified/addons/souljars/source.sha").decode().strip() != soul_sha:
+        raise SystemExit("SoulJars exact-source receipt mismatch")
+    if "GNU GENERAL PUBLIC LICENSE" not in z.read("unified/addons/souljars/COPYING-GPLv3").decode():
+        raise SystemExit("SoulJars GPLv3 notice missing")
+    if b"souljars:soul_jars" not in z.read("io/github/thebusybiscuit/souljars/SoulJars.class"):
+        raise SystemExit("SoulJars historical Guide namespace missing")
 print(f"Validated experimental core JAR ({jar.stat().st_size:,} bytes), exact upstream {sha}")

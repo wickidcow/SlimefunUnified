@@ -44,6 +44,27 @@ mkdir -p "$WORK/src/main/resources/unified/addons/extraheads"
 cp "$EXTRA_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/extraheads/config.yml"
 cp "$EXTRA_WORK/LICENSE" "$WORK/src/main/resources/unified/addons/extraheads/COPYING-MIT"
 printf '%s\n' "$EXTRA_PIN" > "$WORK/src/main/resources/unified/addons/extraheads/source.sha"
+# Bring SoulJars into the SAME plugin JAR from its exact baseline source commit.
+SOUL_PIN="$(tr -d '\r\n[:space:]' < "$ROOT/upstream/souljars.sha")"
+if [[ ! "$SOUL_PIN" =~ ^[[:xdigit:]]{40}$ ]]; then
+  echo "Invalid SoulJars source SHA" >&2
+  exit 1
+fi
+SOUL_WORK="$ROOT/build/upstream/SF_SoulJars"
+if [[ ! -d "$SOUL_WORK/.git" ]]; then
+  git clone --filter=blob:none --no-checkout https://github.com/wickidcow/SF_SoulJars.git "$SOUL_WORK"
+fi
+git -C "$SOUL_WORK" fetch --no-tags --depth=1 origin "$SOUL_PIN"
+git -C "$SOUL_WORK" checkout --force --detach "$SOUL_PIN"
+if [[ "$(git -C "$SOUL_WORK" rev-parse HEAD)" != "$SOUL_PIN" ]]; then
+  echo "SoulJars exact source verification failed" >&2
+  exit 1
+fi
+cp -R "$SOUL_WORK/src/main/java/." "$WORK/src/main/java/"
+mkdir -p "$WORK/src/main/resources/unified/addons/souljars"
+cp "$SOUL_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/souljars/config.yml"
+cp "$SOUL_WORK/LICENSE" "$WORK/src/main/resources/unified/addons/souljars/COPYING-GPLv3"
+printf '%s\n' "$SOUL_PIN" > "$WORK/src/main/resources/unified/addons/souljars/source.sha"
 python3 "$ROOT/scripts/apply_overlay.py" --source "$WORK" --unified "$ROOT"
 # Preserve source attribution and the pinned SHA in an internal build receipt.
 mkdir -p "$WORK/src/main/resources/unified"
@@ -53,14 +74,14 @@ COMMIT_DATE="$(git -C "$WORK" show -s --format=%ct HEAD)"
 (
   cd "$WORK"
   SOURCE_COMMIT="$PIN" SOURCE_DATE_EPOCH="$COMMIT_DATE" \
-    ./gradlew --no-daemon -PprojectVersion=Unified-0.2.0-prototype spotlessApply shadowJar
+    ./gradlew --no-daemon -PprojectVersion=Unified-0.3.0-prototype spotlessApply shadowJar
 )
-JAR="$(find "$WORK/build/libs" -maxdepth 1 -name 'Slimefun-Unified-0.2.0-prototype.jar' -type f -print -quit)"
+JAR="$(find "$WORK/build/libs" -maxdepth 1 -name 'Slimefun-Unified-0.3.0-prototype.jar' -type f -print -quit)"
 if [[ -z "$JAR" ]]; then
   echo "Expected pinned-source build output not found" >&2
   ls -lh "$WORK/build/libs" >&2 || true
   exit 1
 fi
-cp "$JAR" "$ROOT/build/output/SlimefunUnified-0.2.0-prototype.jar"
-python3 "$ROOT/scripts/verify_unified_jar.py" "$ROOT/build/output/SlimefunUnified-0.2.0-prototype.jar" "$PIN" "$EXTRA_PIN"
-echo "PROTOTYPE assembled: $ROOT/build/output/SlimefunUnified-0.2.0-prototype.jar"
+cp "$JAR" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
+python3 "$ROOT/scripts/verify_unified_jar.py" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
+echo "PROTOTYPE assembled: $ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
