@@ -10,6 +10,9 @@ public final class ModuleCatalog {
         return List.of(
                 new AddonModule("slimefun", "Slimefun Core", "TheBusyBiscuit and Slimefun contributors",
                         "https://github.com/wickidcow/Slimefun-Legacy"),
+                new AddonModule("extraheads", "ExtraHeads",
+                        "TheBusyBiscuit; ybw0014 / Slimefun Addon Community",
+                        "https://github.com/wickidcow/SF_ExtraHeads"),
                 new AddonModule("fluffymachines", "FluffyMachines", "NCBPFluffyBear and FluffyMachines contributors",
                         "https://github.com/wickidcow/SF_FluffyMachines"),
                 new AddonModule("infinityexpansion2", "InfinityExpansion2",

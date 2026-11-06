@@ -29,6 +29,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: SlimefunUnified-CORE-PROTOTYPE-NOT-PRODUCTION
-          path: build/output/SlimefunUnified-0.1.0-prototype.jar
+          path: build/output/SlimefunUnified-0.2.0-prototype.jar
           if-no-files-found: error
           retention-days: 7
