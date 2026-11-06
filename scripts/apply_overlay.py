@@ -139,4 +139,21 @@ patch(
             }""",
 )
 
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/Slimefun.java",
+    "io.github.thebusybiscuit.extraheads.ExtraHeads.start(this);",
+    "io.github.thebusybiscuit.extraheads.ExtraHeads.start(this);\n"
+    "        io.github.thebusybiscuit.souljars.SoulJars.start(this);",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/souljars/JarsListener.java",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin);",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin.getJavaPlugin());",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/souljars/JarsListener.java",
+    "event.getEntityType().name()",
+    "event.getEntityType().getKey().getKey().toUpperCase(java.util.Locale.ROOT)",
+)
+
 print("Applied verified source overlay without changing any source repository.")
