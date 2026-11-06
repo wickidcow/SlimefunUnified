@@ -27,6 +27,14 @@ with zipfile.ZipFile(jar) as z:
     missing = [n for n in must if n not in names]
     if missing:
         raise SystemExit("Missing required JAR entries: " + repr(missing))
+    if z.namelist().count("plugin.yml") != 1:
+        raise SystemExit("Unified must expose exactly one root Bukkit plugin descriptor")
+    if b"extraheads:extra_heads" not in z.read(
+            "io/github/thebusybiscuit/extraheads/setup/ItemGroups.class"):
+        raise SystemExit("Historical ExtraHeads category namespace not retained")
+    if b"extraheads:decapitation" not in z.read(
+            "io/github/thebusybiscuit/extraheads/setup/RecipeTypes.class"):
+        raise SystemExit("Historical ExtraHeads recipe namespace not retained")
     meta = z.read("plugin.yml").decode()
     if "name: Slimefun" not in meta or "slimefununified.admin:" not in meta or "default: op" not in meta:
         raise SystemExit("Plugin metadata incorrect")

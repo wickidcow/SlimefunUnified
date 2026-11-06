@@ -17,7 +17,7 @@
 ## Phase 2 — individually credited embedded addons
 - [x] Identify compact MIT-licensed ExtraHeads as first proof-of-concept.
 - [x] Source-pin ExtraHeads; implement shared JavaPlugin / distinct SlimefunAddon adapter.
-- [ ] Verify exact-source core+ExtraHeads compile, JAR metadata, license and tests.
+- [x] Verify exact-source core+ExtraHeads compilation, JAR contents, original MIT notice and Java policy tests (CI only).
 - [ ] Test old ExtraHeads config, item namespace, head drops and existing world upgrade/rollback.
 - [ ] Verify external standalone plugin collision handling and multi-world/region safety.
 - [ ] Integrate additional maintainable modules one by one with license and data audits.
