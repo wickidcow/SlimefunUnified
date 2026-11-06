@@ -1,0 +1,23 @@
+# SlimefunUnified — 44-addon integration ledger
+
+This ledger tracks all **44 addons** in the canonical Slimefun Legacy r153 release matrix. Snapshot source: `wickidcow/Slimefun-Legacy/compatibility/sfl-addon-release-matrix.json` at `726d7449c38a9829872b7585439b9a1c4cd6518e`. The source matrix and original addon repos are **read-only inputs** to this project.
+
+**Status now:** 1/44 addon sources included in a compiled Unified JAR (**ExtraHeads**). The Slimefun core is also bundled. The other 43 addon sources are not included, irrespective of their appearance as menu candidates. Nothing in this ledger claims live gameplay validation.
+
+The machine-readable [integration manifest](../integration/addons.json) records exact baseline upstream commits, implementation status, source pin and review gates for every addon. When importing another addon, update its `status`, source SHA, license review and safety tests. Don't silently mark a module integrated until the class files and single-JAR build have been verified. Distinguish `integrated-compile-verified` from `runtime-verified`.
+
+## Per-module acceptance requirements
+
+1. Verify the repository/commit/headers, all license grants and any non-code assets. Preserve original author credit and required notices.
+2. Integrate source into the **Unified repository build only**, never push modifications to Slimefun Legacy or the standalone addon project. Do not embed nested plugin JARs.
+3. Preserve Bukkit/Slimefun item IDs, recipes, persistent namespaces, world/config paths, resource keys, gameplay behavior and item output. Implement one core JavaPlugin plus distinct per-addon `SlimefunAddon` identity.
+4. Duplicate-addon protection should avoid registering the same historical items twice; owners must be informed of conflicts.
+5. Complete OP-only Guide visibility and manual crafting toggle coverage while keeping all module runtime behavior loaded for both players and OPs.
+6. Compile/build, assert provenance and license packaging, and test actual Paper/Purpur startup, Guide visibility, manual crafting, items, machines, storage persistence, restart, downgrade safety, anti-duplication and cross-addon dependencies as applicable.
+7. Only mark `runtime-verified` with explicit saved-world/gameplay receipts. Keep stable releases gated until full-system validation.
+
+### Progress reporting
+
+The ledger counts exact included addon source, **not** every recognized candidate. Check branch PRs and CI for actual verification. Source pins are historical baseline values from r153 and may be deliberately updated after compatibility review; never silently substitute an unreviewed HEAD.
+
+Pylon, Rebar, BuildingStaff and archived addons are not implicitly in the 44-addon target. Existing standalone repos and the hourly Slimefun Legacy development cycle continue independently.
