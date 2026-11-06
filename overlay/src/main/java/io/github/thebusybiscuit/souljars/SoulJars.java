@@ -181,6 +181,12 @@ public class SoulJars implements Listener, SlimefunAddon {
         }
     }
 
+    /** Retains historical item IDs where modern Paper changes EntityType field names. */
+    public static String legacyEntityId(EntityType type) {
+        String name = type.getKey().getKey().toUpperCase(Locale.ROOT);
+        return "MOOSHROOM".equals(name) ? "MUSHROOM_COW" : name;
+    }
+
     private EntityType resolveEntityType(String configuredName) {
         if (configuredName == null || configuredName.isBlank()) {
             return null;
@@ -192,6 +198,7 @@ public class SoulJars implements Listener, SlimefunAddon {
             normalized = "ZOMBIFIED_PIGLIN";
         }
 
+        if (normalized.equals("MUSHROOM_COW")) normalized = "MOOSHROOM";
         try {
             // Modern Paper versions no longer represent EntityType as an enum.
             Object resolved = EntityType.class.getField(normalized).get(null);
@@ -202,8 +209,8 @@ public class SoulJars implements Listener, SlimefunAddon {
     }
 
     private void registerSoul(EntityType type) {
-        String name = humanize(type.getKey().getKey().toUpperCase(Locale.ROOT));
-        String path = "souls-required." + type.getKey().getKey().toUpperCase(Locale.ROOT);
+        String name = humanize(legacyEntityId(type));
+        String path = "souls-required." + legacyEntityId(type);
         FileConfiguration config = getConfig();
         int souls = config.isInt(path) ? Math.max(1, config.getInt(path)) : 128;
         if (!config.isInt(path)) {
@@ -211,13 +218,13 @@ public class SoulJars implements Listener, SlimefunAddon {
         }
         mobs.put(type, souls);
 
-        Material mobEgg = Material.getMaterial(type.getKey().getKey().toUpperCase(Locale.ROOT) + "_SPAWN_EGG");
+        Material mobEgg = Material.getMaterial(legacyEntityId(type) + "_SPAWN_EGG");
         if (mobEgg == null) {
             mobEgg = Material.ZOMBIE_SPAWN_EGG;
         }
 
         SlimefunItemStack jarItem = new SlimefunItemStack(
-            type.getKey().getKey().toUpperCase(Locale.ROOT) + "_SOUL_JAR",
+            legacyEntityId(type) + "_SOUL_JAR",
             JAR_TEXTURE,
             "&cSoul Jar &7(" + name + ")",
             "",
@@ -233,7 +240,7 @@ public class SoulJars implements Listener, SlimefunAddon {
         ).register(this);
 
         SlimefunItemStack filledJarItem = new SlimefunItemStack(
-            "FILLED_" + type.getKey().getKey().toUpperCase(Locale.ROOT) + "_SOUL_JAR",
+            "FILLED_" + legacyEntityId(type) + "_SOUL_JAR",
             JAR_TEXTURE,
             "&cFilled Soul Jar &7(" + name + ")",
             "",
@@ -248,7 +255,7 @@ public class SoulJars implements Listener, SlimefunAddon {
 
         BrokenSpawner brokenSpawner = SlimefunItems.BROKEN_SPAWNER.getItem(BrokenSpawner.class);
         SlimefunItemStack spawnerItem = new SlimefunItemStack(
-            type.getKey().getKey().toUpperCase(Locale.ROOT) + "_BROKEN_SPAWNER",
+            legacyEntityId(type) + "_BROKEN_SPAWNER",
             Material.SPAWNER,
             "&cBroken Spawner &7(" + name + ")"
         );

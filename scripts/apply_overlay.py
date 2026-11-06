@@ -154,7 +154,7 @@ patch(
     "src/main/java/io/github/thebusybiscuit/souljars/JarsListener.java",
     """        SlimefunItem jar = SlimefunItem.getById(event.getEntityType().name() + "_SOUL_JAR");
         SlimefunItem filledJar = SlimefunItem.getById("FILLED_" + event.getEntityType().name() + "_SOUL_JAR");""",
-    """        String mobId = event.getEntityType().getKey().getKey().toUpperCase(java.util.Locale.ROOT);
+    """        String mobId = io.github.thebusybiscuit.souljars.SoulJars.legacyEntityId(event.getEntityType());
         SlimefunItem jar = SlimefunItem.getById(mobId + "_SOUL_JAR");
         SlimefunItem filledJar = SlimefunItem.getById("FILLED_" + mobId + "_SOUL_JAR");""",
 )
