@@ -1,4 +1,4 @@
-name: Unified pinned-core experimental JAR
+name: Unified pinned-source experimental JAR
 on:
   push:
     paths:
@@ -12,6 +12,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   prototype-core:
     runs-on: ubuntu-latest
@@ -28,7 +31,7 @@ jobs:
         run: bash scripts/assemble_unified.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: SlimefunUnified-CORE-PROTOTYPE-NOT-PRODUCTION
-          path: build/output/SlimefunUnified-0.1.0-prototype.jar
+          name: SlimefunUnified-CORE-EXTRAHEADS-PROTOTYPE-NOT-PRODUCTION
+          path: build/output/SlimefunUnified-0.2.0-prototype.jar
           if-no-files-found: error
           retention-days: 7

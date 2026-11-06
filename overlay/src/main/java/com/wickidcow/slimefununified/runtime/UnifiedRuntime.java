@@ -3,6 +3,7 @@ package com.wickidcow.slimefununified.runtime;
 import com.wickidcow.slimefununified.policy.AddonModule;
 import com.wickidcow.slimefununified.policy.ModuleCatalog;
 import com.wickidcow.slimefununified.policy.PolicyRules;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import java.io.File;
@@ -39,6 +40,7 @@ public final class UnifiedRuntime {
     private final Slimefun plugin;
     private final File configFile;
     private final ConcurrentMap<String, String> itemOwners = new ConcurrentHashMap<>();
+    private final ConcurrentMap<SlimefunAddon, String> addonOwners = new ConcurrentHashMap<>();
     private final Set<String> bundled = ConcurrentHashMap.newKeySet();
     private volatile PolicyRules rules;
     private volatile YamlConfiguration config;
@@ -67,6 +69,24 @@ public final class UnifiedRuntime {
     public static boolean isBundled(String moduleId) {
         UnifiedRuntime current = runtime;
         return current != null && current.bundled.contains(moduleId);
+    }
+
+    /**
+     * Binds a distinct embedded SlimefunAddon facade rather than the shared JavaPlugin.
+     * This covers both existing and subsequently registered item IDs.
+     */
+    public static void registerBundledAddon(String moduleId, SlimefunAddon addon) {
+        UnifiedRuntime current = runtime;
+        if (current == null) throw new IllegalStateException("Unified has not initialized");
+        boolean known = ModuleCatalog.candidates().stream().anyMatch(m -> moduleId.equals(m.id()));
+        if (!known || "slimefun".equals(moduleId) || addon == null) {
+            throw new IllegalArgumentException("Invalid bundled addon identity: " + moduleId);
+        }
+        String existing = current.addonOwners.putIfAbsent(addon, moduleId);
+        if (existing != null && !existing.equals(moduleId)) {
+            throw new IllegalArgumentException("Addon identity already owned by " + existing);
+        }
+        current.bundled.add(moduleId);
     }
 
     /** Future integrated modules call this only after their own item registration. */
@@ -268,6 +288,8 @@ public final class UnifiedRuntime {
     private String findOwner(SlimefunItem item) {
         String explicit = itemOwners.get(item.getId().toUpperCase(Locale.ROOT));
         if (explicit != null) return explicit;
+        String addonOwner = addonOwners.get(item.getAddon());
+        if (addonOwner != null) return addonOwner;
         return "Slimefun".equalsIgnoreCase(item.getAddon().getJavaPlugin().getName()) ? "slimefun" : null;
     }
 
