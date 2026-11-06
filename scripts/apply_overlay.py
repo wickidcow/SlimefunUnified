@@ -101,4 +101,42 @@ patch(
     "    description: Allows OP/admins to manage Unified addon player visibility and crafting\n"
     "    default: op",
 )
+# ExtraHeads source is copied from an exact pinned addon revision before this overlay.
+# Its original JavaPlugin entry point is replaced by the Unified wrapper above.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/Slimefun.java",
+    """        registerListeners();
+        itemDoctorService.register();""",
+    """        registerListeners();
+        // In-JAR ExtraHeads is the first standalone addon source integrated by Unified.
+        io.github.thebusybiscuit.extraheads.ExtraHeads.start(this);
+        itemDoctorService.register();""",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/extraheads/listeners/HeadListener.java",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin);",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin.getJavaPlugin());",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/extraheads/setup/ItemGroups.java",
+    'new NamespacedKey(ExtraHeads.getInstance(), "extra_heads")',
+    'java.util.Objects.requireNonNull(NamespacedKey.fromString("extraheads:extra_heads"))',
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/extraheads/setup/RecipeTypes.java",
+    'new NamespacedKey(ExtraHeads.getInstance(), "decapitation")',
+    'java.util.Objects.requireNonNull(NamespacedKey.fromString("extraheads:decapitation"))',
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/guide/SurvivalSlimefunGuide.java",
+    "        for (ItemGroup group : Slimefun.getRegistry().getAllItemGroups()) {",
+    """        for (ItemGroup group : Slimefun.getRegistry().getAllItemGroups()) {
+            // A wholly hidden addon should not leak its category icon.
+            if (!group.getItems().isEmpty()
+                    && group.getItems().stream().noneMatch(candidate ->
+                            com.wickidcow.slimefununified.runtime.UnifiedRuntime.isVisible(p, candidate))) {
+                continue;
+            }""",
+)
+
 print("Applied verified source overlay without changing any source repository.")
