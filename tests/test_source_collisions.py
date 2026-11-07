@@ -37,6 +37,23 @@ class SourceCollisionTests(unittest.TestCase):
                 file.write_text("class Shared {}")
             self.assertEqual(1, len(gate.collisions(a, b)))
 
+    def test_addon_to_addon_collision_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            core, first, second = (Path(tmp) / name for name in ("core", "first", "second"))
+            for root, name in ((core, "Core.java"), (first, "Shared.java"), (second, "Shared.java")):
+                file = root / "src/main/java/example" / name
+                file.parent.mkdir(parents=True)
+                file.write_text("class Example {}")
+            self.assertEqual([], gate.collisions(core, first))
+            self.assertEqual([], gate.collisions(core, second))
+            self.assertEqual(1, len(gate.collisions(core, first, second)))
+
+    def test_assembly_checks_all_three_sources_before_soul_copy(self):
+        assembly = (SCRIPT.parent / "assemble_unified.sh").read_text()
+        combined = 'check_source_collisions.py" "$WORK" "$EXTRA_WORK" "$SOUL_WORK"'
+        self.assertIn(combined, assembly)
+        self.assertLess(assembly.index(combined), assembly.index('cp -R "$SOUL_WORK/src/main/java/."'))
+
     def test_missing_source_tree_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
