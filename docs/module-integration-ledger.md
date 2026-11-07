@@ -22,7 +22,7 @@ Updated: 2026-11-06 UTC. This ledger tracks **addon modules**, excluding the Sli
 
 | Candidate | Maintained source | License evidence | Integration blocker / next step |
 | --- | --- | --- | --- |
-| FluffyMachines | wickidcow/SF_FluffyMachines | GPLv3 verified at source pin `e923ad18724f690ca287a1dd2e6abd1ec4f58f2f` (`LICENSE.txt`); ExtraUtils GPLv3 license verified at `bf89aee6ae`; bStats and any third-party assets still require audit | Maven build; depends on Slimefun; optional mcMMO/NoCheatPlus; bundled bStats and ExtraUtils `bf89aee6ae`. Audit shaded ExtraUtils, item IDs, machine persistence and barrel formatting before import |
+| FluffyMachines | wickidcow/SF_FluffyMachines | GPLv3 verified at source pin `e923ad18724f690ca287a1dd2e6abd1ec4f58f2f` (`LICENSE.txt`); ExtraUtils GPLv3 license verified at `bf89aee6ae`; bStats upstream MIT notice identified on default branch (not yet verified against 3.0.2 artifact); bundled resource rights still require audit | Maven build; depends on Slimefun; optional mcMMO/NoCheatPlus; bundled bStats and ExtraUtils `bf89aee6ae`. Audit shaded ExtraUtils, item IDs, machine persistence and barrel formatting before import |
 | InfinityExpansion2 | wickidcow/SF_InfinityExpansion2 | GPLv3 listed in credits ledger; independently reverify | Audit storage identity and anti-duplication, dependency graph; pin source |
 | Networks Expansion | wickidcow/SF_NetworksExp | GPLv3 listed in credits ledger; independently reverify | Audit item movement and conservation, dependencies; pin source |
 | Supreme | wickidcow/SF_Supreme | GPLv3 listed in credits ledger; independently reverify | Audit equipment persistence and dependencies; pin source |
@@ -44,6 +44,14 @@ The other **36 pending eligible candidate slots** are not individually inventori
 - **Scope:** GPLv3 license evidence is sufficient to continue source-level adaptation planning, **not** a complete asset/source-header audit or confirmation of binary redistribution compliance. Preserve license, copyright/source headers, modification notices, corresponding source and build scripts. Inspect individual ExtraUtils source files/resources and FluffyMachines' shaded bStats 3.0.2 notice before importing or distributing adapted classes.
 - **Compatibility:** The dependency targets older Spigot/Slimefun APIs; FluffyMachines shades and relocates it. Do not assume the old dependency can be copied into Unified unchanged. Audit referenced classes and minimize duplicate classes without altering behavior or persistent IDs.
 - **Checkpoint:** Unified main `2fecc91c3ba9be3d54ae7d39dd2426d313a2c6a6`, `AGENTS.md`, open PRs (none), and the three core/ExtraHeads/SoulJars source pins were refreshed. This is a one-dependency license audit only. No runtime code, module count, release, or production compatibility claim changes. Next focused step: inspect bStats 3.0.2 distribution notices and ExtraUtils file-level headers/resources, then plan an isolated adaptation.
+
+## FluffyMachines bStats licensing checkpoint — 2026-11-07 (no import)
+
+- FluffyMachines Maven pin `e923ad18724f690ca287a1dd2e6abd1ec4f58f2f` declares `org.bstats:bstats-bukkit:3.0.2` and shades/relocates `org.bstats`; its build also pulls `bstats-base` transitively. No binary has been imported into Unified.
+- Read-only upstream `Bastian/bStats` default-branch `LICENSE` identifies **MIT**, copyright (c) 2022 Bastian Oppermann; retain copyright and full MIT notice with any redistributed substantial bStats portion. The attempted tag `v3.0.2` returned 404, so this **does not prove the precise 3.0.2 Maven artifact's license or contents**. Verify version-specific published POM/JAR license metadata and bundled notice before distribution.
+- ExtraUtils at `bf89aee6ae` explicitly includes its GPLv3 `LICENSE` in Maven resources. The pinned ExtraUtils POM marks Spigot 1.17.1, Slimefun RC-27, JSR305 and Lombok as provided; no other shaded dependencies are declared there. This does not resolve source-header or runtime compatibility checks.
+- **Decision:** keep FluffyMachines blocked pending version-specific bStats notice/artifact verification, ExtraUtils file-level source/resource review, and old-world data/machine compatibility tests. Do not expose a FluffyMachines module toggle or increment integrated count.
+- **Checkpoint:** refreshed Unified main AGENTS.md, open PR queue (none), ledger, core/ExtraHeads/SoulJars source pins, and pinned FluffyMachines/ExtraUtils Maven inputs. This is documentation-only. No stable release or gameplay validation. Next single task: verify exact bStats 3.0.2 published license metadata and enumerate ExtraUtils source/resource notices.
 
 ## Invariants and gates
 
