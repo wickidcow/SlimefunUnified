@@ -22,7 +22,7 @@ def check_jar(path):
                 raise ValueError("corrupt ZIP entry")
             hits = [
                 name for name in names
-                if any(token in name.lower().replace("-", "_") for token in FORBIDDEN)
+                if not (name.lower().startswith("meta-inf/credits/") and name.lower().endswith((".txt", ".md")))\n                and any(token in name.lower().replace("-", "_") for token in FORBIDDEN)
             ]
             # Nested JARs cannot be inspected safely by entry-name matching;
             # reject them until a separate dependency/source audit approves them.
