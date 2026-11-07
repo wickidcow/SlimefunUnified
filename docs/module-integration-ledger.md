@@ -120,3 +120,11 @@ Re-read Unified main `AGENTS.md`, `README.md`, the core/ExtraHeads/SoulJars sour
 - This is a **source-overwrite safety gate**, not a new integrated addon, licensing certification, runtime compatibility proof, or full Java binary-name collision audit. Reused checkout contamination and class/package collisions from generated sources remain separate follow-up audits.
 - **Counts unchanged:** 44 historical, MagicExpansion excluded-by-owner (not eligible or outstanding), 43 potentially eligible, 2 experimental integrations, 41 candidate slots remaining. No upstream repository writes or stable release.
 - **Next:** obtain exact-head CI evidence, merge only after required checks pass, then resume audited addon imports and world-round-trip tests.
+
+## Checkpoint — 2026-11-07 (cross-addon source collision, PR #19)
+
+- Refreshed Unified main at `aec2c81aed82660967dc95f7f759cbb7df8d15b0`, AGENTS.md, open PR queue (none before #19), exact core/ExtraHeads/SoulJars pins and assembly source. No upstream writes or source-pin changes.
+- Found a fail-open gap: separate core-vs-ExtraHeads and core-vs-SoulJars checks miss ExtraHeads-vs-SoulJars path collisions. PR #19 checks all three trees before SoulJars is copied and adds cross-addon and wiring regression tests.
+- **CI gate:** do not merge until exact-head required workflows pass. This is a source-path safeguard, not proof of binary class uniqueness, addon runtime behavior or safe persistence.
+- **Counts:** 44 historical, SF_MagicExpansion excluded-by-owner (never outstanding or complete), 43 potentially eligible, ExtraHeads and SoulJars 2 experimentally integrated, 41 candidates remaining. Magic8Ball is distinct. FluffyMachines still blocked on exact bStats 3.0.2 artifact notices, ExtraUtils resource/header audit and data compatibility.
+- **Next:** verify PR #19 CI and merge if green, then prioritize a new license-verified source-pinned module. No stable release before Paper/Purpur 1.21.11 and 26.3+ boot/restart/world round-trips, anti-dupe and scheduler tests.
