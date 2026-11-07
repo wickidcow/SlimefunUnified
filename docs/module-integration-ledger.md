@@ -62,6 +62,15 @@ The other **36 pending eligible candidate slots** are not individually inventori
 - **Verification limitation:** direct Maven Central retrieval was unavailable in this execution environment. Do not label bStats artifact notices verified or package either dependency until independently inspected. This is a source-POM-only finding, not an artifact audit, build test, or gameplay validation.
 - **Checkpoint:** refreshed Unified `main` at `bce99482a111525a0be07b5aec43e4804fff50e8`, `AGENTS.md`, open PR queue (none), exact three Unified source pins, and both dependency POMs. **2/43** modules remain experimentally integrated; **41** potentially eligible candidates remain, with **SF_MagicExpansion excluded-by-owner** outside those counts. Next single task: obtain bStats 3.0.2 binary/POM notices and inspect ExtraUtils file-level notices; if unavailable, switch to an independent Guide/manual-crafting regression improvement. No release or runtime compatibility claim.
 
+
+## Checkpoint — 2026-11-07 (owner exclusion archive gate)
+
+- Refreshed Unified main at `da43f00c723047b1f63c86d7e9427a54d002769f`, `AGENTS.md`, open PRs (none), and the exact core, ExtraHeads and SoulJars pins. No upstream repository writes.
+- Added `scripts/check_owner_exclusion.py` as an executable, **fail-closed archive-path check** for experimental Unified JARs. It rejects MagicExpansion-named archive entries, nested JARs requiring manual audit, corrupt archives and artifacts without compiled classes. It intentionally permits historical documentation/credits mentioning the excluded source.
+- **Limitations:** this does not detect renamed/copy-pasted feature implementations, does not establish legal compliance, and does not validate runtime behavior. It must be invoked against the actual built JAR before artifact publication; adding the script alone is not a CI gate. Do not claim complete owner-exclusion enforcement until wired into packaging CI and source-level review.
+- **Accounting:** 44 historical; 1 owner-excluded (`SF_MagicExpansion`); 43 potentially eligible; 2 experimentally integrated; 41 outstanding candidates. FluffyMachines remains blocked by dependency artifact notices and runtime/persistence validation.
+- **Next:** wire this check into the pinned-source artifact workflow and exercise positive/negative fixture tests; then resume next feasible module. No stable release or gameplay validation.
+
 ## Invariants and gates
 
 - All source repository writes are forbidden for this project; only `wickidcow/SlimefunUnified` is writable.
