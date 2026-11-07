@@ -22,7 +22,7 @@ Updated: 2026-11-06 UTC. This ledger tracks **addon modules**, excluding the Sli
 
 | Candidate | Maintained source | License evidence | Integration blocker / next step |
 | --- | --- | --- | --- |
-| FluffyMachines | wickidcow/SF_FluffyMachines | GPLv3 verified at source pin `e923ad18724f690ca287a1dd2e6abd1ec4f58f2f` (`LICENSE.txt`); transitive ExtraUtils rights/assets still require audit | Maven build; depends on Slimefun; optional mcMMO/NoCheatPlus; bundled bStats and ExtraUtils `bf89aee6ae`. Audit shaded ExtraUtils, item IDs, machine persistence and barrel formatting before import |
+| FluffyMachines | wickidcow/SF_FluffyMachines | GPLv3 verified at source pin `e923ad18724f690ca287a1dd2e6abd1ec4f58f2f` (`LICENSE.txt`); ExtraUtils GPLv3 license verified at `bf89aee6ae`; bStats and any third-party assets still require audit | Maven build; depends on Slimefun; optional mcMMO/NoCheatPlus; bundled bStats and ExtraUtils `bf89aee6ae`. Audit shaded ExtraUtils, item IDs, machine persistence and barrel formatting before import |
 | InfinityExpansion2 | wickidcow/SF_InfinityExpansion2 | GPLv3 listed in credits ledger; independently reverify | Audit storage identity and anti-duplication, dependency graph; pin source |
 | Networks Expansion | wickidcow/SF_NetworksExp | GPLv3 listed in credits ledger; independently reverify | Audit item movement and conservation, dependencies; pin source |
 | Supreme | wickidcow/SF_Supreme | GPLv3 listed in credits ledger; independently reverify | Audit equipment persistence and dependencies; pin source |
@@ -37,6 +37,13 @@ The other **36 pending eligible candidate slots** are not individually inventori
 - **Dependency graph:** `plugin.yml` declares required `Slimefun`, optional `mcMMO` and `NoCheatPlus`; Maven `pom.xml` declares Paper API `1.21.11-R0.1-SNAPSHOT` and Gugu Slimefun4 `2025.1` as provided, JSR305 provided, bStats `3.0.2` and ExtraUtils `bf89aee6ae` as compile dependencies. The original Maven shade configuration relocates bStats and ExtraUtils and minimizes the JAR; direct inclusion without adapting dependencies may silently remove classes or conflict with Unified.
 - **Data/runtime hazards:** inspect Dolly/backpack persistence, Fluffy Barrel metadata identity, Loader/Unloader transfers and rollback, machine registration, commands, permissions and config paths. Upstream `VALIDATION.md` describes staging tests but does not establish Unified runtime compatibility; some sections are historical and disagree with current `pom.xml` Java 21 target, so use the pinned source as authority.
 - **Decision:** import BLOCKED pending transitive license/resource inspection and a source-pinned adaptation plan. Do not claim a third integrated addon or expose FluffyMachines toggles yet. Next feasible step: implement a fail-closed source provenance/license gate or a targeted Guide/crafting regression test inside Unified.
+
+## ExtraUtils transitive license audit — 2026-11-07 (no import)
+
+- **Dependency source:** `Slimefun-Addon-Community/ExtraUtils` at FluffyMachines' declared dependency revision `bf89aee6ae`; `LICENSE` contains GNU GPL version 3. The dependency's Maven `pom.xml` identifies `dev.j3fftw:ExtraUtils:1.0-SNAPSHOT`, with Spigot API 1.17.1, Slimefun4 RC-27, JSR305 and Lombok marked provided. It does not declare additional bundled runtime libraries in that POM.
+- **Scope:** GPLv3 license evidence is sufficient to continue source-level adaptation planning, **not** a complete asset/source-header audit or confirmation of binary redistribution compliance. Preserve license, copyright/source headers, modification notices, corresponding source and build scripts. Inspect individual ExtraUtils source files/resources and FluffyMachines' shaded bStats 3.0.2 notice before importing or distributing adapted classes.
+- **Compatibility:** The dependency targets older Spigot/Slimefun APIs; FluffyMachines shades and relocates it. Do not assume the old dependency can be copied into Unified unchanged. Audit referenced classes and minimize duplicate classes without altering behavior or persistent IDs.
+- **Checkpoint:** Unified main `2fecc91c3ba9be3d54ae7d39dd2426d313a2c6a6`, `AGENTS.md`, open PRs (none), and the three core/ExtraHeads/SoulJars source pins were refreshed. This is a one-dependency license audit only. No runtime code, module count, release, or production compatibility claim changes. Next focused step: inspect bStats 3.0.2 distribution notices and ExtraUtils file-level headers/resources, then plan an isolated adaptation.
 
 ## Invariants and gates
 
