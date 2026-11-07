@@ -28,10 +28,7 @@ class OwnerExclusionTests(unittest.TestCase):
     def test_safe_class_and_historical_credit_allowed(self):
         self.write({"org/example/Unified.class": b"bytecode",
                     "META-INF/credits/MagicExpansion.txt": b"excluded by owner"})
-        # Historical credits must be allowed, but current guard rejects the
-        # filename; keep the fixture neutral until documentation exceptions
-        # are implemented in the guard itself.
-        self.assertEqual(guard.check_jar(self.jar), 1)
+        self.assertEqual(guard.check_jar(self.jar), 0)
 
     def test_clean_jar_passes(self):
         self.write({"org/example/Unified.class": b"bytecode",
