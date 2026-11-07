@@ -90,3 +90,10 @@ Reviewed main `AGENTS.md`, README, roadmap, credits, pinned-source assembly scri
 ## Checkpoint — 2026-11-07 (owner exclusion accounting)
 
 Re-read Unified main `AGENTS.md`, `README.md`, the core/ExtraHeads/SoulJars source pins and the open PR queue. Owner's MagicExpansion exclusion already appears in main AGENTS.md and README; this checkpoint makes the durable integration ledger consistent with the 43-target policy. This is **manifest-only**: no new import, runtime changes, or production claims. PR #9 (ExtraUtils audit) is open separately; its three CI workflows passed at inspected commit `0b3faa0094fcc0e5650bf2a0b9d3a61bc083ff79`, but its mergeability was reported false and it was not merged in this checkpoint. Next: reconcile PR #9 against the updated ledger, then proceed with the remaining dependency audit. Paper/Purpur boot, persistence, anti-dupe and scheduler gates remain unverified.
+
+## Checkpoint — 2026-11-07 (owner exclusion regression fixtures)
+
+- Refreshed Unified `AGENTS.md`, open PR #14, and pinned core/ExtraHeads/SoulJars source SHA files; no upstream writes or source-pin changes.
+- Added `tests/test_owner_exclusion.py` with six archive fixtures: clean class JAR, permitted historical credits, excluded class, nested JAR, classless archive and invalid ZIP. Corrected the guard to allow only historical plain-text credits under `META-INF/credits/` while rejecting excluded runtime paths.
+- These tests are committed but are **not yet confirmed to run in CI**, and the guard is **not yet connected to artifact publication**. PR #14 must not be merged as a complete packaging guarantee until those checks are wired and pass.
+- Accounting unchanged: 44 historical, MagicExpansion excluded by owner, 43 potentially eligible, 2 experimental integrations, 41 remaining. No runtime validation or stable release.
