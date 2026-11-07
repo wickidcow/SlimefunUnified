@@ -18,21 +18,28 @@ def check_jar(path):
     try:
         with zipfile.ZipFile(path) as archive:
             names = archive.namelist()
+            # ZIP permits duplicate entries and ambiguous separators; refuse
+            # archives whose contents cannot be audited unambiguously.
+            normalized = [name.replace("\\", "/").lower() for name in names]
+            if len(set(normalized)) != len(normalized):
+                raise ValueError("duplicate or case-colliding ZIP entries")
+            if any(name.startswith("/") or ".." in name.split("/") for name in normalized):
+                raise ValueError("unsafe archive entry path")
             if archive.testzip() is not None:
                 raise ValueError("corrupt ZIP entry")
             hits = [
-                name for name in names
-                if not (name.lower().startswith("meta-inf/credits/") and name.lower().endswith((".txt", ".md")))
-                and any(token in name.lower().replace("-", "_") for token in FORBIDDEN)
+                name for name, canonical in zip(names, normalized)
+                if not (canonical.startswith("meta-inf/credits/") and canonical.endswith((".txt", ".md")))
+                and any(token in canonical.replace("-", "_") for token in FORBIDDEN)
             ]
             # Nested JARs cannot be inspected safely by entry-name matching;
             # reject them until a separate dependency/source audit approves them.
-            nested = [name for name in names if name.lower().endswith(".jar")]
+            nested = [name for name, canonical in zip(names, normalized) if canonical.endswith(".jar")]
             if nested:
                 raise ValueError("nested JARs require manual review: " + ", ".join(nested[:10]))
             if hits:
                 raise ValueError("excluded MagicExpansion archive paths: " + ", ".join(hits[:20]))
-            if not any(name.endswith(".class") for name in names):
+            if not any(name.endswith(".class") for name in normalized):
                 raise ValueError("no compiled classes found")
     except (OSError, zipfile.BadZipFile, ValueError) as exc:
         print(f"FAIL owner exclusion: {exc}", file=sys.stderr)
