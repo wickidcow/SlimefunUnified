@@ -84,4 +84,5 @@ if [[ -z "$JAR" ]]; then
 fi
 cp "$JAR" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
 python3 "$ROOT/scripts/verify_unified_jar.py" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
+python3 "$ROOT/scripts/check_owner_exclusion.py" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
 echo "PROTOTYPE assembled: $ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
