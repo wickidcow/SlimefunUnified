@@ -48,6 +48,21 @@ class OwnerExclusionTests(unittest.TestCase):
         self.write({"README.txt": b"hello"})
         self.assertEqual(guard.check_jar(self.jar), 1)
 
+    def test_backslash_disguised_excluded_class_rejected(self):
+        self.write({"org/example/Unified.class": b"x",
+                    "org\\\\example\\\\MagicExpansion.class": b"x"})
+        self.assertEqual(guard.check_jar(self.jar), 1)
+
+    def test_case_colliding_entries_rejected(self):
+        self.write({"org/example/Unified.class": b"x",
+                    "org/example/unified.class": b"other"})
+        self.assertEqual(guard.check_jar(self.jar), 1)
+
+    def test_parent_traversal_rejected(self):
+        self.write({"org/example/Unified.class": b"x",
+                    "org/../example/Other.class": b"x"})
+        self.assertEqual(guard.check_jar(self.jar), 1)
+
     def test_corrupt_archive_rejected(self):
         self.jar.write_bytes(b"not a zip")
         self.assertEqual(guard.check_jar(self.jar), 1)
