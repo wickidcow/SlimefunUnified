@@ -61,6 +61,7 @@ if [[ "$(git -C "$SOUL_WORK" rev-parse HEAD)" != "$SOUL_PIN" ]]; then
   echo "SoulJars exact source verification failed" >&2
   exit 1
 fi
+# WORK already contains ExtraHeads after the earlier copy; checking WORK against SoulJars covers core and ExtraHeads without false-positive self-collisions.
 python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$SOUL_WORK"
 cp -R "$SOUL_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/souljars"
