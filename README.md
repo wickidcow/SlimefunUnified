@@ -10,6 +10,8 @@ One `SlimefunUnified.jar` will eventually contain Slimefun and the maintained ad
 
 The OP-only **Server Management** screen appears in the classic Slimefun Guide's Settings & Info menu. Each addon retains its name, credits and separate original/maintained source links. The maintained JustEnoughGuide UI requires later integration.
 
+**Scope exception:** Per the server owner's request, **MagicExpansion (`SF_MagicExpansion`) will not be bundled**. The historical addon matrix has 44 entries, but Unified's eligible target is **43**. All other eligible addon candidates remain in scope.
+
 ## Current experimental content
 
 | Component | Status |

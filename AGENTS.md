@@ -12,3 +12,5 @@
 - A successful compile does NOT prove safe multiplayer usage, data migration, item crafting coverage, Folia safety or production readiness.
 - No stable release until Paper/Purpur 1.21.11 and 26.3+, world data round-trips, anti-dupe and scheduler-safety validation is complete. Do not re-use Legacy test receipts as Unified release evidence.
 - Preserve original author attribution for each module in in-game UI and docs. Addons not yet bundled must not appear toggleable/active.
+
+- **Explicit owner exclusion:** Do NOT import, embed, register, or reimplement `wickidcow/SF_MagicExpansion` (`MagicExpansion`, also referred to as "magic plugin") in SlimefunUnified. Keep its original repository untouched. Mark it `excluded-by-owner` in the 44-row historical source manifest, targeting **43 eligible addons**. Do not count the excluded addon as unfinished, or mistake it for another addon such as Magic8Ball.

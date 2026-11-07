@@ -30,4 +30,4 @@
 - [ ] Same-factory TPS A/B comparison vs independent addons.
 - [ ] Folia/Leaf region safety and verified one-JAR reproducibility.
 
-**2/44 addon modules compiled in the experimental JAR (ExtraHeads and SoulJars); 42 still pending. No runtime validation or production-ready release.**
+**2/43 eligible addon modules compiled in the experimental JAR (ExtraHeads and SoulJars); 41 eligible remain; MagicExpansion excluded by owner from the original 44-addon roster. No runtime validation or production-ready release.**
