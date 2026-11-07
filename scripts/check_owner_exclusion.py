@@ -20,7 +20,7 @@ def check_jar(path):
             names = archive.namelist()
             # ZIP permits duplicate entries and ambiguous separators; refuse
             # archives whose contents cannot be audited unambiguously.
-            normalized = [name.replace("\\\\", "/").lower() for name in names]
+            normalized = [name.replace("\\", "/").lower() for name in names]
             if len(set(normalized)) != len(normalized):
                 raise ValueError("duplicate or case-colliding ZIP entries")
             if any(name.startswith("/") or ".." in name.split("/") for name in normalized):
