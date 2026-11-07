@@ -61,6 +61,29 @@ public final class PolicyRulesSelfTest {
         check(hidden.guideVisible("slimefun", "BATTERY", PolicyRules.Actor.PLAYER).allowed(),
                 "No core breakage");
 
+        // Independent switches: Guide hiding must not disable manual recipes, and vice versa.
+        PolicyRules guideOnly = PolicyRules.fromProperties(new StringReader("""
+                module.extraheads.guide-visible=false
+                module.extraheads.player-crafting=true
+                """), modules);
+        check(!guideOnly.guideVisible("extraheads", "PLAYER_HEAD", PolicyRules.Actor.PLAYER).allowed(),
+                "Guide-only restriction hides items");
+        check(guideOnly.manualCraftingAllowed("extraheads", "PLAYER_HEAD", PolicyRules.Actor.PLAYER).allowed(),
+                "Guide-only restriction must not block manual crafting");
+
+        PolicyRules craftOnly = PolicyRules.fromProperties(new StringReader("""
+                module.souljars.guide-visible=true
+                module.souljars.player-crafting=false
+                """), modules);
+        check(craftOnly.guideVisible("souljars", "SOUL_JAR", PolicyRules.Actor.PLAYER).allowed(),
+                "Craft-only restriction must not hide Guide entries");
+        check(!craftOnly.manualCraftingAllowed("souljars", "SOUL_JAR", PolicyRules.Actor.PLAYER).allowed(),
+                "Craft-only restriction denies player manual crafting");
+        check(craftOnly.manualCraftingAllowed("souljars", "SOUL_JAR", PolicyRules.Actor.AUTOMATION).allowed(),
+                "Craft-only restriction preserves automation");
+        check(craftOnly.manualCraftingAllowed("souljars", "SOUL_JAR", PolicyRules.Actor.OP).allowed(),
+                "Craft-only restriction preserves OP bypass");
+
         expectIllegal("unknown module", () -> hidden.guideVisible("missing", "ITEM", PolicyRules.Actor.PLAYER));
         expectIllegal("unknown module for OP", () -> hidden.guideVisible("missing", "ITEM", PolicyRules.Actor.OP));
         expectIllegal("invalid item for OP", () -> hidden.manualCraftingAllowed("slimefun", "?",
