@@ -9,10 +9,14 @@
   },
   "scope": {
     "standalone_repos_read_only": true,
-    "addons_target_count": 44,
+    "addons_target_count": 43,
     "bundled_loaded_and_functional": true,
     "player_access_controls_only": true,
-    "stable_release_without_runtime_tests": false
+    "stable_release_without_runtime_tests": false,
+    "source_roster_count": 44,
+    "excluded_repositories": [
+      "wickidcow/SF_MagicExpansion"
+    ]
   },
   "addons": [
     {
@@ -279,11 +283,11 @@
       "slug": "magicexpansion",
       "repository": "wickidcow/SF_MagicExpansion",
       "baseline_source_sha": "b28c304f2909f15b43da53910ce7650886cc0e6f",
-      "status": "pending",
+      "status": "excluded-by-owner",
       "integrated_source_sha": null,
-      "license_review": "pending",
-      "runtime_validation": "pending",
-      "notes": null
+      "license_review": "not-applicable: owner excluded this addon",
+      "runtime_validation": "not-applicable",
+      "notes": "Explicit owner request: do not include MagicExpansion ('magic plugin') in SlimefunUnified. Historical source row retained for provenance only."
     },
     {
       "slug": "militaryarsenal",
