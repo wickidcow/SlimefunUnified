@@ -39,6 +39,7 @@ if [[ "$(git -C "$EXTRA_WORK" rev-parse HEAD)" != "$EXTRA_PIN" ]]; then
   echo "ExtraHeads exact source verification failed" >&2
   exit 1
 fi
+python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$EXTRA_WORK"
 cp -R "$EXTRA_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/extraheads"
 cp "$EXTRA_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/extraheads/config.yml"
@@ -60,6 +61,7 @@ if [[ "$(git -C "$SOUL_WORK" rev-parse HEAD)" != "$SOUL_PIN" ]]; then
   echo "SoulJars exact source verification failed" >&2
   exit 1
 fi
+python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$SOUL_WORK"
 cp -R "$SOUL_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/souljars"
 cp "$SOUL_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/souljars/config.yml"
