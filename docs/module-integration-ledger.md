@@ -111,3 +111,12 @@ Re-read Unified main `AGENTS.md`, `README.md`, the core/ExtraHeads/SoulJars sour
 - The experimental assembly script previously copied the built JAR to its final artifact path **before** verification. A failed verifier could leave an unverified JAR at the path later uploaded by CI. The script now removes any previous final output, stages a new JAR in the same output directory, runs both the pinned-source verifier and owner-exclusion checker against the staged file, then atomically renames it into place only after both pass. A shell EXIT trap removes failed staging files.
 - This is a packaging safety improvement only, **not** a new addon integration or a runtime compatibility test. The MagicExpansion source/feature exclusion still requires source review in addition to archive-path checks. No stable release permitted.
 - Counts: 44 historical; 1 excluded-by-owner (MagicExpansion); 43 potentially eligible; 2 experimental integrations (ExtraHeads, SoulJars); 41 remaining. Next: verify exact-head CI and then resume source-pinned eligible addon imports, prioritizing a legally auditable low-dependency candidate.
+
+
+## Checkpoint — 2026-11-07 (source collision preflight)
+
+- Base Unified main `7ea4e7e366640495fb4481ecb1e88f347076a60f`; refreshed AGENTS.md, open PRs (none), and pinned core/ExtraHeads/SoulJars revisions (unchanged).
+- Proposed fail-closed Java relative-path collision preflight before copying ExtraHeads and SoulJars source trees into the single compiled core. Detects exact and case-folded duplicate source paths, including duplicate class sources from separate addons; rejects missing source directories. Four regression fixtures added to policy test runner.
+- This is a **source-overwrite safety gate**, not a new integrated addon, licensing certification, runtime compatibility proof, or full Java binary-name collision audit. Reused checkout contamination and class/package collisions from generated sources remain separate follow-up audits.
+- **Counts unchanged:** 44 historical, MagicExpansion excluded-by-owner (not eligible or outstanding), 43 potentially eligible, 2 experimental integrations, 41 candidate slots remaining. No upstream repository writes or stable release.
+- **Next:** obtain exact-head CI evidence, merge only after required checks pass, then resume audited addon imports and world-round-trip tests.
