@@ -50,8 +50,10 @@ class SourceCollisionTests(unittest.TestCase):
 
     def test_assembly_checks_all_three_sources_before_soul_copy(self):
         assembly = (SCRIPT.parent / "assemble_unified.sh").read_text()
-        combined = 'check_source_collisions.py" "$WORK" "$EXTRA_WORK" "$SOUL_WORK"'
+        combined = 'check_source_collisions.py" "$WORK" "$SOUL_WORK"'
         self.assertIn(combined, assembly)
+        self.assertIn('cp -R "$EXTRA_WORK/src/main/java/." "$WORK/src/main/java/"', assembly)
+        self.assertLess(assembly.index('cp -R "$EXTRA_WORK/src/main/java/." "$WORK/src/main/java/"'), assembly.index(combined))
         self.assertLess(assembly.index(combined), assembly.index('cp -R "$SOUL_WORK/src/main/java/."'))
 
     def test_missing_source_tree_fails_closed(self):
