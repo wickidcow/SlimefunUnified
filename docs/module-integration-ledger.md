@@ -97,3 +97,10 @@ Re-read Unified main `AGENTS.md`, `README.md`, the core/ExtraHeads/SoulJars sour
 - Added `tests/test_owner_exclusion.py` with six archive fixtures: clean class JAR, permitted historical credits, excluded class, nested JAR, classless archive and invalid ZIP. Corrected the guard to allow only historical plain-text credits under `META-INF/credits/` while rejecting excluded runtime paths.
 - These tests are committed but are **not yet confirmed to run in CI**, and the guard is **not yet connected to artifact publication**. PR #14 must not be merged as a complete packaging guarantee until those checks are wired and pass.
 - Accounting unchanged: 44 historical, MagicExpansion excluded by owner, 43 potentially eligible, 2 experimental integrations, 41 remaining. No runtime validation or stable release.
+
+## Checkpoint — 2026-11-07 (owner-exclusion packaging gate)
+
+- Refreshed Unified `main`, `AGENTS.md`, open PR #14, its exact CI status and the three unchanged core/ExtraHeads/SoulJars pins. Changes are confined to Unified PR #14.
+- Wired `check_owner_exclusion.py` into `scripts/assemble_unified.sh` **after** the existing artifact verifier and **before** the script reports success; `set -e` fails the build on an excluded entry, nested JAR, corrupt JAR or missing classes. The existing pinned-source artifact workflow must use this assembly script for this gate to protect its uploaded output.
+- Wired the six Python archive regression fixtures into `scripts/test.sh`, alongside the existing Java policy self-test. Await exact-head CI results before merge. Archive-path matching is not a source-level copied-feature audit.
+- Counts unchanged: 44 historical; MagicExpansion excluded-by-owner; 43 candidate eligible slots; 2 experimentally integrated; 41 remaining. No new addon import or Paper/Purpur runtime validation. Next: inspect exact-head CI and merge only if all required workflows pass; then resume feasible module work.
