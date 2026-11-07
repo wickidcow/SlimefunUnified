@@ -8,3 +8,5 @@ java -ea -cp "$BUILD_DIR" com.wickidcow.slimefununified.policy.PolicyRulesSelfTe
 
 # Fail the policy workflow when archive-exclusion regression fixtures fail.
 python3 -m unittest discover -s tests -p 'test_owner_exclusion.py'
+
+python3 -m unittest discover -s tests -p 'test_source_collisions.py'
