@@ -10,6 +10,11 @@ extra_sha = sys.argv[3]
 soul_sha = sys.argv[4]
 with zipfile.ZipFile(jar) as z:
     names = set(z.namelist())
+    # Owner explicitly excluded MagicExpansion; refuse a JAR containing its classes.
+    # These are the exact Java package paths used by SF_MagicExpansion, not generic magic addons.
+    forbidden = sorted(n for n in names if n.startswith("io/Yomicer/magicExpansion/"))
+    if forbidden:
+        raise SystemExit("Owner-excluded MagicExpansion classes found in Unified JAR: " + repr(forbidden[:8]))
     must = [
         "plugin.yml",
         "unified/legacy-source.sha",
