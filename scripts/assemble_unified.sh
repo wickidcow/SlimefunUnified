@@ -82,7 +82,15 @@ if [[ -z "$JAR" ]]; then
   ls -lh "$WORK/build/libs" >&2 || true
   exit 1
 fi
-cp "$JAR" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
-python3 "$ROOT/scripts/verify_unified_jar.py" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
-python3 "$ROOT/scripts/check_owner_exclusion.py" "$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
-echo "PROTOTYPE assembled: $ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
+# Never leave a previously published artifact looking current after a failed build.
+# Stage the new output privately and publish only after BOTH gates pass.
+OUTPUT="$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
+STAGED="$(mktemp "$ROOT/build/output/.SlimefunUnified-0.3.0-prototype.XXXXXX.jar")"
+rm -f "$OUTPUT"
+trap 'rm -f "$STAGED"' EXIT
+cp "$JAR" "$STAGED"
+python3 "$ROOT/scripts/verify_unified_jar.py" "$STAGED" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
+python3 "$ROOT/scripts/check_owner_exclusion.py" "$STAGED"
+mv -f "$STAGED" "$OUTPUT"
+trap - EXIT
+echo "PROTOTYPE assembled: $OUTPUT"
