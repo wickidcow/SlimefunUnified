@@ -108,6 +108,8 @@ cp "$TAPS_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/
 cp "$TAPS_WORK/LICENSE" "$WORK/src/main/resources/unified/addons/slimytreetaps/COPYING-MIT"
 printf '%s\n' "$TAPS_PIN" > "$WORK/src/main/resources/unified/addons/slimytreetaps/source.sha"
 python3 "$ROOT/scripts/apply_overlay.py" --source "$WORK" --unified "$ROOT"
+# Fail before compilation if an excluded module path entered the assembled tree.
+python3 "$ROOT/scripts/check_excluded_source.py" "$WORK"
 # Preserve source attribution and the pinned SHA in an internal build receipt.
 mkdir -p "$WORK/src/main/resources/unified"
 printf '%s\n' "$PIN" > "$WORK/src/main/resources/unified/legacy-source.sha"
