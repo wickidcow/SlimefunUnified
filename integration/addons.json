@@ -315,9 +315,9 @@
       "baseline_source_sha": "8943594f006a443ce8a77113f76709c871d03697",
       "status": "pending",
       "integrated_source_sha": null,
-      "license_review": "pending",
+      "license_review": "MIT license at baseline 8943594f006a443ce8a77113f76709c871d03697 (Copyright 2020 Daniel Walsh); transitive bStats license and packaging not yet audited",
       "runtime_validation": "pending",
-      "notes": null
+      "notes": "2026-11-08 source audit: original JavaPlugin dev.walshy.sfmobdrops.SfMobDrops uses bStats Metrics(this,11950), plugin.yml declares depend: [Slimefun] and /mobdrops command; config.yml has configurable mob drops. Requires single-plugin lifecycle facade, command/permission registration, namespaced config migration, bStats dependency/license check, event/drop duplication tests and Paper/Purpur runtime validation. NOT imported."
     },
     {
       "slug": "networksexp",
