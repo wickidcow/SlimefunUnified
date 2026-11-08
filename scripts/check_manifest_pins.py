@@ -7,6 +7,7 @@ from pathlib import Path
 
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 EXCLUDED = "wickidcow/SF_MagicExpansion"
+ALLOWED_STATUSES = {"pending", "integrated-compile-verified", "excluded-by-owner"}
 
 
 def validate(root):
@@ -26,6 +27,9 @@ def validate(root):
     repos = [a.get("repository") for a in addons]
     if len(repos) != len(set(repos)):
         errors.append("duplicate addon repositories")
+    slugs = [a.get("slug") for a in addons]
+    if len(slugs) != len(set(slugs)):
+        errors.append("duplicate addon slugs")
     excluded = [a for a in addons if a.get("status") == "excluded-by-owner"]
     if len(excluded) != 1 or excluded[0].get("repository") != EXCLUDED:
         errors.append("exactly MagicExpansion must be excluded-by-owner")
@@ -34,6 +38,8 @@ def validate(root):
         baseline = addon.get("baseline_source_sha")
         integrated = addon.get("integrated_source_sha")
         status = addon.get("status")
+        if status not in ALLOWED_STATUSES:
+            errors.append(f"{repo}: unknown integration status {status!r}")
         if not isinstance(baseline, str) or not SHA.fullmatch(baseline):
             errors.append(f"{repo}: invalid baseline SHA")
         if repo == EXCLUDED:
