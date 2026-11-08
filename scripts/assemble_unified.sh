@@ -14,7 +14,7 @@ fi
 
 # Clear any previous artifact before checkout, dependencies or compilation can fail.
 mkdir -p "$ROOT/build/output"
-OUTPUT="$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
+OUTPUT="$ROOT/build/output/SlimefunUnified-0.4.0-prototype.jar"
 rm -f "$OUTPUT"
 
 WORK="$ROOT/build/upstream/Slimefun-Legacy"
@@ -73,6 +73,28 @@ mkdir -p "$WORK/src/main/resources/unified/addons/souljars"
 cp "$SOUL_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/souljars/config.yml"
 cp "$SOUL_WORK/LICENSE" "$WORK/src/main/resources/unified/addons/souljars/COPYING-GPLv3"
 printf '%s\n' "$SOUL_PIN" > "$WORK/src/main/resources/unified/addons/souljars/source.sha"
+# Import pinned SlimyTreeTaps Java source as a distinct module in this same plugin build.
+TAPS_PIN="$(tr -d '\r\n[:space:]' < "$ROOT/upstream/slimytreetaps.sha")"
+if [[ ! "$TAPS_PIN" =~ ^[[:xdigit:]]{40}$ ]]; then
+  echo "Invalid SlimyTreeTaps source SHA" >&2
+  exit 1
+fi
+TAPS_WORK="$ROOT/build/upstream/SF_SlimyTreeTaps"
+if [[ ! -d "$TAPS_WORK/.git" ]]; then
+  git clone --filter=blob:none --no-checkout https://github.com/wickidcow/SF_SlimyTreeTaps.git "$TAPS_WORK"
+fi
+git -C "$TAPS_WORK" fetch --no-tags --depth=1 origin "$TAPS_PIN"
+git -C "$TAPS_WORK" checkout --force --detach "$TAPS_PIN"
+if [[ "$(git -C "$TAPS_WORK" rev-parse HEAD)" != "$TAPS_PIN" ]]; then
+  echo "SlimyTreeTaps exact source verification failed" >&2
+  exit 1
+fi
+python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$TAPS_WORK"
+cp -R "$TAPS_WORK/src/main/java/." "$WORK/src/main/java/"
+mkdir -p "$WORK/src/main/resources/unified/addons/slimytreetaps"
+cp "$TAPS_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/slimytreetaps/config.yml"
+cp "$TAPS_WORK/LICENSE" "$WORK/src/main/resources/unified/addons/slimytreetaps/COPYING-MIT"
+printf '%s\n' "$TAPS_PIN" > "$WORK/src/main/resources/unified/addons/slimytreetaps/source.sha"
 python3 "$ROOT/scripts/apply_overlay.py" --source "$WORK" --unified "$ROOT"
 # Preserve source attribution and the pinned SHA in an internal build receipt.
 mkdir -p "$WORK/src/main/resources/unified"
@@ -82,9 +104,9 @@ COMMIT_DATE="$(git -C "$WORK" show -s --format=%ct HEAD)"
 (
   cd "$WORK"
   SOURCE_COMMIT="$PIN" SOURCE_DATE_EPOCH="$COMMIT_DATE" \
-    ./gradlew --no-daemon -PprojectVersion=Unified-0.3.0-prototype spotlessApply shadowJar
+    ./gradlew --no-daemon -PprojectVersion=Unified-0.4.0-prototype spotlessApply shadowJar
 )
-JAR="$(find "$WORK/build/libs" -maxdepth 1 -name 'Slimefun-Unified-0.3.0-prototype.jar' -type f -print -quit)"
+JAR="$(find "$WORK/build/libs" -maxdepth 1 -name 'Slimefun-Unified-0.4.0-prototype.jar' -type f -print -quit)"
 if [[ -z "$JAR" ]]; then
   echo "Expected pinned-source build output not found" >&2
   ls -lh "$WORK/build/libs" >&2 || true
@@ -92,10 +114,10 @@ if [[ -z "$JAR" ]]; then
 fi
 # Never leave a previously published artifact looking current after a failed build.
 # Stage the new output privately and publish only after BOTH gates pass.
-STAGED="$(mktemp "$ROOT/build/output/.SlimefunUnified-0.3.0-prototype.XXXXXX.jar")"
+STAGED="$(mktemp "$ROOT/build/output/.SlimefunUnified-0.4.0-prototype.XXXXXX.jar")"
 trap 'rm -f "$STAGED"' EXIT
 cp "$JAR" "$STAGED"
-python3 "$ROOT/scripts/verify_unified_jar.py" "$STAGED" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
+python3 "$ROOT/scripts/verify_unified_jar.py" "$STAGED" "$PIN" "$EXTRA_PIN" "$SOUL_PIN" "$TAPS_PIN"
 python3 "$ROOT/scripts/check_owner_exclusion.py" "$STAGED"
 mv -f "$STAGED" "$OUTPUT"
 trap - EXIT

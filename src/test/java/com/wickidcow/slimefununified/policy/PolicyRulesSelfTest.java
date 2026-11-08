@@ -21,6 +21,9 @@ public final class PolicyRulesSelfTest {
 
     public static void main(String[] args) throws Exception {
         var modules = ModuleCatalog.candidates();
+        check(modules.stream().anyMatch(m -> "slimytreetaps".equals(m.id())
+                && m.originalCreators().contains("TheBusyBiscuit")),
+                "Historical SlimyTreeTaps original author credited");
         check(modules.stream().noneMatch(m -> "magicexpansion".equals(m.id())),
                 "Owner-excluded MagicExpansion must not be a module candidate");
         check(modules.stream().anyMatch(m -> "souljars".equals(m.id())

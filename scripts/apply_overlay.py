@@ -159,4 +159,52 @@ patch(
         SlimefunItem filledJar = SlimefunItem.getById("FILLED_" + mobId + "_SOUL_JAR");""",
 )
 
+# SlimyTreeTaps preserved source is imported at its exact pinned revision above.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/Slimefun.java",
+    "io.github.thebusybiscuit.souljars.SoulJars.start(this);",
+    "io.github.thebusybiscuit.souljars.SoulJars.start(this);\n"
+    "        io.github.thebusybiscuit.slimytreetaps.TreeTaps.start(this);",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirror.java",
+    'new NamespacedKey(plugin, "mirror_location")',
+    'java.util.Objects.requireNonNull(NamespacedKey.fromString("slimytreetaps:mirror_location"))',
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirrorListener.java",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin);",
+    "plugin.getServer().getPluginManager().registerEvents(this, plugin.getJavaPlugin());",
+)
+
+# The maintained SlimyTreeTaps sources used a retired Slimefun-shaded Dough import.
+# Only adapt imports in the disposable Unified build; original addon remains unchanged.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirrorListener.java",
+    "import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;",
+    "import io.github.bakedlibs.dough.protection.Interaction;",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/TreeTool.java",
+    "import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;",
+    "import io.github.bakedlibs.dough.protection.Interaction;",
+)
+
+# Folia/Paper entity scheduler APIs accept Bukkit Plugin, not SlimefunAddon.
+# Preserve the original entity-scheduler behavior while passing the shared core plugin.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirror.java",
+    """ChatUtils.awaitInput(player, name -> player.getScheduler().execute(
+                plugin,""",
+    """ChatUtils.awaitInput(player, name -> player.getScheduler().execute(
+                plugin.getJavaPlugin(),""",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirror.java",
+    """            player.getScheduler().execute(
+                plugin,""",
+    """            player.getScheduler().execute(
+                plugin.getJavaPlugin(),""",
+)
+
 print("Applied verified source overlay without changing any source repository.")

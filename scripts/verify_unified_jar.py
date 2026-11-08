@@ -2,12 +2,13 @@
 import sys
 import zipfile
 from pathlib import Path
-if len(sys.argv) != 5:
-    raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha> <souljars-sha>")
+if len(sys.argv) != 6:
+    raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha> <souljars-sha> <slimytreetaps-sha>")
 jar = Path(sys.argv[1])
 sha = sys.argv[2]
 extra_sha = sys.argv[3]
 soul_sha = sys.argv[4]
+taps_sha = sys.argv[5]
 with zipfile.ZipFile(jar) as z:
     names = set(z.namelist())
     # Owner explicitly excluded MagicExpansion; refuse a JAR containing its classes.
@@ -28,6 +29,14 @@ with zipfile.ZipFile(jar) as z:
         "unified/addons/souljars/config.yml",
         "unified/addons/souljars/source.sha",
         "unified/addons/souljars/COPYING-GPLv3",
+        "io/github/thebusybiscuit/slimytreetaps/TreeTaps.class",
+        "io/github/thebusybiscuit/slimytreetaps/TreeTool.class",
+        "io/github/thebusybiscuit/slimytreetaps/RubberFactory.class",
+        "io/github/thebusybiscuit/slimytreetaps/ResinExtractor.class",
+        "io/github/thebusybiscuit/slimytreetaps/MagicalMirror.class",
+        "unified/addons/slimytreetaps/config.yml",
+        "unified/addons/slimytreetaps/source.sha",
+        "unified/addons/slimytreetaps/COPYING-MIT",
         "io/github/thebusybiscuit/extraheads/items/MobHead.class",
         "com/wickidcow/slimefununified/runtime/UnifiedRuntime.class",
         "com/wickidcow/slimefununified/runtime/UnifiedOwnerMenu.class",
@@ -61,4 +70,15 @@ with zipfile.ZipFile(jar) as z:
         raise SystemExit("SoulJars GPLv3 notice missing")
     if b"souljars:soul_jars" not in z.read("io/github/thebusybiscuit/souljars/SoulJars.class"):
         raise SystemExit("SoulJars historical Guide namespace missing")
+    if z.read("unified/addons/slimytreetaps/source.sha").decode().strip() != taps_sha:
+        raise SystemExit("SlimyTreeTaps exact-source receipt mismatch")
+    if "Copyright (c) 2019 TheBusyBiscuit" not in z.read("unified/addons/slimytreetaps/COPYING-MIT").decode():
+        raise SystemExit("Original SlimyTreeTaps MIT attribution missing")
+    tree_class = z.read("io/github/thebusybiscuit/slimytreetaps/TreeTaps.class")
+    mirror_class = z.read("io/github/thebusybiscuit/slimytreetaps/MagicalMirror.class")
+    for expected_key in (b"slimytreetaps:tree_taps", b"slimytreetaps:rubber_factory", b"slimytreetaps:magical_mirror"):
+        if expected_key not in tree_class:
+            raise SystemExit("Historical SlimyTreeTaps key missing: "+repr(expected_key))
+    if b"slimytreetaps:mirror_location" not in mirror_class:
+        raise SystemExit("Historical MagicalMirror persistent identity missing")
 print(f"Validated experimental core JAR ({jar.stat().st_size:,} bytes), exact upstream {sha}")

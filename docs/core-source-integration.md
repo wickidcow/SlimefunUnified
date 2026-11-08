@@ -7,6 +7,7 @@ SlimefunUnified **never alters** `wickidcow/Slimefun-Legacy` or any maintained a
 - `upstream/legacy-core.sha`: original maintained Slimefun Legacy Java sources, Gradle wrapper and game assets.
 - `upstream/extraheads.sha`: original maintained ExtraHeads addon code and MIT license, imported as the first module.
 - `upstream/souljars.sha`: original maintained SoulJars addon code and GPLv3 license, imported as the second module.
+- `upstream/slimytreetaps.sha`: original maintained SlimyTreeTaps addon code and original MIT notice, imported as the third source module.
 
 `scripts/assemble_unified.sh` verifies both exact SHAs, copies the addon sources into the same Java compilation as the core and uses the original Gradle wrapper under Java 25. The result is **one server plugin JAR**, not a JAR containing separate plugin JARs.
 

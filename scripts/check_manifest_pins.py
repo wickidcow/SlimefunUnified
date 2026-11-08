@@ -47,7 +47,8 @@ def validate(root):
             if not isinstance(integrated, str) or not SHA.fullmatch(integrated):
                 errors.append(f"{repo}: integrated module missing exact source SHA")
     pins = {"wickidcow/SF_ExtraHeads": "extraheads.sha",
-            "wickidcow/SF_SoulJars": "souljars.sha"}
+            "wickidcow/SF_SoulJars": "souljars.sha",
+            "wickidcow/SF_SlimyTreeTaps": "slimytreetaps.sha"}
     for repo, filename in pins.items():
         matches = [a for a in addons if a.get("repository") == repo]
         if len(matches) != 1:
