@@ -12,6 +12,11 @@ if ! java -version 2>&1 | grep -qE 'version "25[.]|openjdk 25'; then
   exit 1
 fi
 
+# Clear any previous artifact before checkout, dependencies or compilation can fail.
+mkdir -p "$ROOT/build/output"
+OUTPUT="$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
+rm -f "$OUTPUT"
+
 WORK="$ROOT/build/upstream/Slimefun-Legacy"
 mkdir -p "$ROOT/build/upstream" "$ROOT/build/output"
 if [[ ! -d "$WORK/.git" ]]; then
@@ -87,9 +92,7 @@ if [[ -z "$JAR" ]]; then
 fi
 # Never leave a previously published artifact looking current after a failed build.
 # Stage the new output privately and publish only after BOTH gates pass.
-OUTPUT="$ROOT/build/output/SlimefunUnified-0.3.0-prototype.jar"
 STAGED="$(mktemp "$ROOT/build/output/.SlimefunUnified-0.3.0-prototype.XXXXXX.jar")"
-rm -f "$OUTPUT"
 trap 'rm -f "$STAGED"' EXIT
 cp "$JAR" "$STAGED"
 python3 "$ROOT/scripts/verify_unified_jar.py" "$STAGED" "$PIN" "$EXTRA_PIN" "$SOUL_PIN"
