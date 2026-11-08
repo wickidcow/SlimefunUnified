@@ -21,7 +21,7 @@
 - [ ] Test old ExtraHeads config, item namespace, head drops and existing world upgrade/rollback.
 - [ ] Verify external standalone plugin collision handling and multi-world/region safety.
 - [x] Compile second addon SoulJars from exact source while retaining historical jar IDs and separate creator/license records (prototype only).
-- [ ] Integrate additional maintainable modules one by one with license and data audits.
+- [ ] Integrate additional maintainable modules one by one with license and data audits. SlimyTreeTaps is the next candidate, with separate source/attribution tracking.
 - [ ] Finish JEG integration and shared runtime/performance services before publishing stable binaries.
 
 ## Phase 3 — release quality

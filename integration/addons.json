@@ -413,11 +413,11 @@
       "slug": "slimytreetaps",
       "repository": "wickidcow/SF_SlimyTreeTaps",
       "baseline_source_sha": "ac1680260503ae7ba8070797069923f983d080c6",
-      "status": "pending",
+      "status": "integration-in-progress",
       "integrated_source_sha": null,
       "license_review": "pending",
       "runtime_validation": "pending",
-      "notes": null
+      "notes": "Experimental source-pinned prototype branch feat/embed-slimytreetaps; build and runtime validation required"
     },
     {
       "slug": "smg",
