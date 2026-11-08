@@ -24,6 +24,9 @@ if [[ ! -d "$WORK/.git" ]]; then
 fi
 git -C "$WORK" fetch --no-tags --depth=1 origin "$PIN"
 git -C "$WORK" checkout --force --detach "$PIN"
+# Remove files left by earlier imports/overlays before copying pinned sources.
+# --force checkout alone does not remove untracked files from previous builds.
+git -C "$WORK" clean -ffd
 if [[ "$(git -C "$WORK" rev-parse HEAD)" != "$PIN" ]]; then
   echo "Pinned source verification failed" >&2
   exit 1
@@ -40,6 +43,9 @@ if [[ ! -d "$EXTRA_WORK/.git" ]]; then
 fi
 git -C "$EXTRA_WORK" fetch --no-tags --depth=1 origin "$EXTRA_PIN"
 git -C "$EXTRA_WORK" checkout --force --detach "$EXTRA_PIN"
+# Remove files left by earlier imports/overlays before copying pinned sources.
+# --force checkout alone does not remove untracked files from previous builds.
+git -C "$EXTRA_WORK" clean -ffd
 if [[ "$(git -C "$EXTRA_WORK" rev-parse HEAD)" != "$EXTRA_PIN" ]]; then
   echo "ExtraHeads exact source verification failed" >&2
   exit 1
@@ -62,6 +68,9 @@ if [[ ! -d "$SOUL_WORK/.git" ]]; then
 fi
 git -C "$SOUL_WORK" fetch --no-tags --depth=1 origin "$SOUL_PIN"
 git -C "$SOUL_WORK" checkout --force --detach "$SOUL_PIN"
+# Remove files left by earlier imports/overlays before copying pinned sources.
+# --force checkout alone does not remove untracked files from previous builds.
+git -C "$SOUL_WORK" clean -ffd
 if [[ "$(git -C "$SOUL_WORK" rev-parse HEAD)" != "$SOUL_PIN" ]]; then
   echo "SoulJars exact source verification failed" >&2
   exit 1
@@ -85,6 +94,9 @@ if [[ ! -d "$TAPS_WORK/.git" ]]; then
 fi
 git -C "$TAPS_WORK" fetch --no-tags --depth=1 origin "$TAPS_PIN"
 git -C "$TAPS_WORK" checkout --force --detach "$TAPS_PIN"
+# Remove files left by earlier imports/overlays before copying pinned sources.
+# --force checkout alone does not remove untracked files from previous builds.
+git -C "$TAPS_WORK" clean -ffd
 if [[ "$(git -C "$TAPS_WORK" rev-parse HEAD)" != "$TAPS_PIN" ]]; then
   echo "SlimyTreeTaps exact source verification failed" >&2
   exit 1
