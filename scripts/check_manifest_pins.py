@@ -55,6 +55,11 @@ def validate(root):
     pins = {"wickidcow/SF_ExtraHeads": "extraheads.sha",
             "wickidcow/SF_SoulJars": "souljars.sha",
             "wickidcow/SF_SlimyTreeTaps": "slimytreetaps.sha"}
+    # A manifest entry is not an integration until the one-JAR assembler has a source pin.
+    # Reject phantom integrated modules that would inflate progress reporting.
+    for addon in addons:
+        if addon.get("status") == "integrated-compile-verified" and addon.get("repository") not in pins:
+            errors.append(f"{addon.get('repository')}: marked integrated but absent from pinned assembly")
     for repo, filename in pins.items():
         matches = [a for a in addons if a.get("repository") == repo]
         if len(matches) != 1:
