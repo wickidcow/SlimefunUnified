@@ -47,6 +47,11 @@ class ManifestPinsTest(unittest.TestCase):
         self.mutate(lambda d: d["addons"][1].update(status="integrated-untested", integrated_source_sha="a" * 40))
         self.assertTrue(any("unknown integration status" in e for e in validate(self.root)))
 
+    def test_unassembled_module_cannot_claim_integration(self):
+        self.mutate(lambda d: next(a for a in d["addons"] if a["slug"] == "mobdrops").update(
+            status="integrated-compile-verified", integrated_source_sha="a" * 40))
+        self.assertTrue(any("absent from pinned assembly" in e for e in validate(self.root)))
+
     def test_source_pin_mismatch_rejected(self):
         (self.root / "upstream/extraheads.sha").write_text("b" * 40)
         self.assertTrue(any("disagree" in e for e in validate(self.root)))
