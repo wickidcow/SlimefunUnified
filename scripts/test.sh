@@ -10,6 +10,7 @@ java -ea -cp "$BUILD_DIR" com.wickidcow.slimefununified.policy.PolicyRulesSelfTe
 python3 -m unittest discover -s tests -p 'test_owner_exclusion.py'
 
 python3 -m unittest discover -s tests -p 'test_source_collisions.py'
+python3 -m unittest discover -s tests -p 'test_excluded_source.py'
 
 python3 scripts/check_manifest_pins.py
 python3 -m unittest discover -s tests -p 'test_manifest_pins.py'
