@@ -177,4 +177,17 @@ patch(
     "plugin.getServer().getPluginManager().registerEvents(this, plugin.getJavaPlugin());",
 )
 
+# The maintained SlimyTreeTaps sources used a retired Slimefun-shaded Dough import.
+# Only adapt imports in the disposable Unified build; original addon remains unchanged.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirrorListener.java",
+    "import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;",
+    "import io.github.bakedlibs.dough.protection.Interaction;",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/TreeTool.java",
+    "import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;",
+    "import io.github.bakedlibs.dough.protection.Interaction;",
+)
+
 print("Applied verified source overlay without changing any source repository.")
