@@ -39,6 +39,14 @@ class ManifestPinsTest(unittest.TestCase):
         self.mutate(lambda d: d["addons"][1].update(repository=d["addons"][0]["repository"]))
         self.assertTrue(any("duplicate" in e for e in validate(self.root)))
 
+    def test_duplicate_slug_rejected(self):
+        self.mutate(lambda d: d["addons"][1].update(slug=d["addons"][0]["slug"]))
+        self.assertTrue(any("duplicate addon slugs" in e for e in validate(self.root)))
+
+    def test_unknown_status_rejected(self):
+        self.mutate(lambda d: d["addons"][1].update(status="integrated-untested", integrated_source_sha="a" * 40))
+        self.assertTrue(any("unknown integration status" in e for e in validate(self.root)))
+
     def test_source_pin_mismatch_rejected(self):
         (self.root / "upstream/extraheads.sha").write_text("b" * 40)
         self.assertTrue(any("disagree" in e for e in validate(self.root)))
