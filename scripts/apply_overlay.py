@@ -190,4 +190,21 @@ patch(
     "import io.github.bakedlibs.dough.protection.Interaction;",
 )
 
+# Folia/Paper entity scheduler APIs accept Bukkit Plugin, not SlimefunAddon.
+# Preserve the original entity-scheduler behavior while passing the shared core plugin.
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirror.java",
+    """ChatUtils.awaitInput(player, name -> player.getScheduler().execute(
+                plugin,""",
+    """ChatUtils.awaitInput(player, name -> player.getScheduler().execute(
+                plugin.getJavaPlugin(),""",
+)
+patch(
+    "src/main/java/io/github/thebusybiscuit/slimytreetaps/MagicalMirror.java",
+    """            player.getScheduler().execute(
+                plugin,""",
+    """            player.getScheduler().execute(
+                plugin.getJavaPlugin(),""",
+)
+
 print("Applied verified source overlay without changing any source repository.")
