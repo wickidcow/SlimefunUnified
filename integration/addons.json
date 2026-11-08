@@ -413,11 +413,11 @@
       "slug": "slimytreetaps",
       "repository": "wickidcow/SF_SlimyTreeTaps",
       "baseline_source_sha": "ac1680260503ae7ba8070797069923f983d080c6",
-      "status": "integration-in-progress",
-      "integrated_source_sha": null,
-      "license_review": "pending",
+      "status": "integrated-compile-verified",
+      "integrated_source_sha": "ac1680260503ae7ba8070797069923f983d080c6",
+      "license_review": "MIT original 2019 TheBusyBiscuit notice packaged; GPLv3 maintained fork modifications retained",
       "runtime_validation": "pending",
-      "notes": "Experimental source-pinned prototype branch feat/embed-slimytreetaps; build and runtime validation required"
+      "notes": "Prototype source import awaiting PR-head CI verification; no live Paper/Purpur gameplay, world, storage, or restart validation"
     },
     {
       "slug": "smg",
