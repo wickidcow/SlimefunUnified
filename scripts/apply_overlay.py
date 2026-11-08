@@ -163,7 +163,7 @@ patch(
 patch(
     "src/main/java/io/github/thebusybiscuit/slimefun4/implementation/Slimefun.java",
     "io.github.thebusybiscuit.souljars.SoulJars.start(this);",
-    "io.github.thebusybiscuit.souljars.SoulJars.start(this);\\n"
+    "io.github.thebusybiscuit.souljars.SoulJars.start(this);\n"
     "        io.github.thebusybiscuit.slimytreetaps.TreeTaps.start(this);",
 )
 patch(
