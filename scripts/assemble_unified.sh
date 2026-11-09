@@ -2,6 +2,11 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Fail closed even when the pin file is absent/invalid or Java 25 is unavailable.
+# Never leave a stale experimental JAR that appears to belong to this invocation.
+mkdir -p "$ROOT/build/output"
+OUTPUT="$ROOT/build/output/SlimefunUnified-0.4.0-prototype.jar"
+rm -f "$OUTPUT"
 PIN="$(tr -d '\r\n[:space:]' < "$ROOT/upstream/legacy-core.sha")"
 if [[ ! "$PIN" =~ ^[[:xdigit:]]{40}$ ]]; then
   echo "Refusing an invalid Slimefun Legacy source SHA: $PIN" >&2
@@ -12,10 +17,6 @@ if ! java -version 2>&1 | grep -qE 'version "25[.]|openjdk 25'; then
   exit 1
 fi
 
-# Clear any previous artifact before checkout, dependencies or compilation can fail.
-mkdir -p "$ROOT/build/output"
-OUTPUT="$ROOT/build/output/SlimefunUnified-0.4.0-prototype.jar"
-rm -f "$OUTPUT"
 
 WORK="$ROOT/build/upstream/Slimefun-Legacy"
 mkdir -p "$ROOT/build/upstream" "$ROOT/build/output"
