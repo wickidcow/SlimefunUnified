@@ -4,6 +4,7 @@
 This path-level check complements the compiled-JAR gate; it does not establish
 feature-equivalence or license compliance for renamed implementations.
 """
+import os
 import sys
 from pathlib import Path
 
@@ -18,12 +19,16 @@ def inspect(root: Path) -> list[str]:
         tree = root / subdir
         if not tree.is_dir():
             raise ValueError(f"source directory missing: {tree}")
-        for path in tree.rglob("*"):
-            if not path.is_file():
-                continue
-            relative = path.relative_to(tree).as_posix().lower().replace("-", "_")
-            if any(token in relative for token in FORBIDDEN):
-                hits.append(f"{subdir}/{relative}")
+        # Do not follow links into unreviewed source trees. Even a link whose
+        # name is innocuous could point to owner-excluded files or assets.
+        for current, dirs, files in os.walk(tree, followlinks=False):
+            for name in dirs + files:
+                path = Path(current) / name
+                relative = path.relative_to(tree).as_posix().lower().replace("-", "_")
+                if path.is_symlink():
+                    hits.append(f"{subdir}/{relative} (symlink forbidden)")
+                elif any(token in relative for token in FORBIDDEN):
+                    hits.append(f"{subdir}/{relative}")
     return hits
 
 
