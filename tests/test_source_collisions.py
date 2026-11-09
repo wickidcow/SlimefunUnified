@@ -37,6 +37,24 @@ class SourceCollisionTests(unittest.TestCase):
                 file.write_text("class Shared {}")
             self.assertEqual(1, len(gate.collisions(a, b)))
 
+    def test_case_insensitive_collision_within_single_addon_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            for name in ("Shared.java", "shared.java"):
+                file = root / "src/main/java/example" / name
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text("class Shared {}")
+            self.assertEqual(1, len(gate.collisions(root)))
+
+    def test_case_insensitive_package_collision_within_single_addon_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            for package in ("Example", "example"):
+                file = root / "src/main/java" / package / "Shared.java"
+                file.parent.mkdir(parents=True, exist_ok=True)
+                file.write_text("class Shared {}")
+            self.assertEqual(1, len(gate.collisions(root)))
+
     def test_addon_to_addon_collision_is_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             core, first, second = (Path(tmp) / name for name in ("core", "first", "second"))
