@@ -74,6 +74,29 @@ class SourceCollisionTests(unittest.TestCase):
         self.assertLess(assembly.index('cp -R "$EXTRA_WORK/src/main/java/." "$WORK/src/main/java/"'), assembly.index(combined))
         self.assertLess(assembly.index(combined), assembly.index('cp -R "$SOUL_WORK/src/main/java/."'))
 
+    def test_symlinked_java_file_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            source = root / "src/main/java/example"
+            source.mkdir(parents=True)
+            outside = Path(tmp) / "external.java"
+            outside.write_text("class External {}")
+            (source / "External.java").symlink_to(outside)
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.collisions(root)
+
+    def test_symlinked_package_directory_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            source = root / "src/main/java"
+            source.mkdir(parents=True)
+            outside = Path(tmp) / "external"
+            outside.mkdir()
+            (outside / "External.java").write_text("class External {}")
+            (source / "example").symlink_to(outside, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.collisions(root)
+
     def test_missing_source_tree_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
