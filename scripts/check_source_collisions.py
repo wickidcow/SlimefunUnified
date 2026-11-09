@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Reject Java source overwrites before assembling source-pinned Unified modules."""
+"""Reject Java source overwrites and case-folding collisions in pinned modules."""
 import argparse
 from pathlib import Path
 
 
 def collisions(*roots: Path) -> list[tuple[str, str, str]]:
-    seen: dict[str, str] = {}
+    seen: dict[str, tuple[str, str]] = {}
     found: list[tuple[str, str, str]] = []
     for root in roots:
         source = root / "src/main/java"
@@ -15,9 +15,9 @@ def collisions(*roots: Path) -> list[tuple[str, str, str]]:
             relative = file.relative_to(source).as_posix()
             key = relative.casefold()
             if key in seen:
-                found.append((relative, seen[key], str(root)))
+                found.append((relative, seen[key][0] + "/" + seen[key][1], str(root)))
             else:
-                seen[key] = str(root)
+                seen[key] = (str(root), relative)
     return found
 
 
