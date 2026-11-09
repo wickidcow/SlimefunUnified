@@ -11,6 +11,11 @@ def collisions(*roots: Path) -> list[tuple[str, str, str]]:
         source = root / "src/main/java"
         if not source.is_dir():
             raise ValueError(f"Missing Java source directory: {source}")
+        # Reject links before copying: cp -R can preserve or dereference them,
+        # and an external target would bypass the pinned-source boundary.
+        for entry in source.rglob("*"):
+            if entry.is_symlink():
+                raise ValueError(f"Symlink in pinned Java source tree: {entry}")
         for file in sorted(source.rglob("*.java")):
             relative = file.relative_to(source).as_posix()
             key = relative.casefold()
