@@ -15,7 +15,10 @@ This repository is licensed under **GNU GPLv3** (see `LICENSE`), aligned with th
 | Networks | Sefiraat; ytdd9527, balugaq, yitoudaidai, tinalness and contributors | https://github.com/wickidcow/SF_NetworksExp | GPLv3 | Not bundled |
 | Supreme | RelativoBR, Especttra, WilianSantosBR, Mynothauro and contributors | https://github.com/wickidcow/SF_Supreme | GPLv3 | Not bundled |
 | JustEnoughGuide | balugaq and JEG contributors | https://github.com/wickidcow/SF_JustEnoughGuide | GPLv3 | Not bundled |
+| MobDrops | **Daniel Walsh** (© 2020), original MobDrops contributors | https://github.com/wickidcow/SF_MobDrops | **MIT**, verified at pinned source `8943594f006a443ce8a77113f76709c871d03697` | **Not bundled**; lifecycle/configuration/command/listener adapter and bStats dependency audit outstanding |
 
 Credits above are not exhaustive. Each subsequent addon requires its own review of source headers, source/asset licenses, fork history, modified-file notices, bundled dependency compatibility and source distribution obligations.
 
 The ExtraHeads prototype includes the **verbatim original ExtraHeads MIT license** as `unified/addons/extraheads/COPYING-MIT` in the prototype JAR and retains the original addon repository unchanged. The new facade is clearly labeled as a Unified modification. For any distributed GPL-covered combined binary, corresponding build scripts and source must remain available under the applicable licenses.
+
+**MobDrops staged-source audit (not an integration claim):** The exact pinned `LICENSE` includes the 2020 Daniel Walsh MIT notice, which must be copied verbatim into `unified/addons/mobdrops/COPYING-MIT` if MobDrops is ever bundled. Preserve original source headers and document Unified modifications. Review bStats transitive/shaded dependency licensing and prevent duplicate metrics registration. Do not mark MobDrops integrated or count it toward the three compiled modules until source import, JAR checks and runtime gates are actually satisfied.
