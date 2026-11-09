@@ -15,7 +15,7 @@ class ManifestPinsTest(unittest.TestCase):
         (self.root / "integration").mkdir()
         (self.root / "upstream").mkdir()
         shutil.copy(ROOT / "integration/addons.json", self.root / "integration/addons.json")
-        for name in ("legacy-core.sha", "extraheads.sha", "souljars.sha", "slimytreetaps.sha"):
+        for name in ("legacy-core.sha", "extraheads.sha", "souljars.sha", "slimytreetaps.sha", "mobdrops.sha"):
             shutil.copy(ROOT / "upstream" / name, self.root / "upstream" / name)
 
     def tearDown(self):
@@ -59,6 +59,14 @@ class ManifestPinsTest(unittest.TestCase):
     def test_slimytreetaps_source_pin_mismatch_rejected(self):
         (self.root / "upstream/slimytreetaps.sha").write_text("a" * 40)
         self.assertTrue(any("SlimyTreeTaps" in e and "disagree" in e for e in validate(self.root)))
+
+    def test_staged_mobdrops_pin_mismatch_rejected(self):
+        (self.root / "upstream/mobdrops.sha").write_text("a" * 40)
+        self.assertTrue(any("MobDrops: staged source pin disagrees" in e for e in validate(self.root)))
+
+    def test_missing_staged_mobdrops_pin_rejected(self):
+        (self.root / "upstream/mobdrops.sha").unlink()
+        self.assertTrue(any("MobDrops: missing historical entry" in e for e in validate(self.root)))
 
     def test_missing_historical_entry_rejected(self):
         self.mutate(lambda d: d["addons"].pop())
