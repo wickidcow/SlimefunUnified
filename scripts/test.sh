@@ -14,3 +14,6 @@ python3 -m unittest discover -s tests -p 'test_excluded_source.py'
 
 python3 scripts/check_manifest_pins.py
 python3 -m unittest discover -s tests -p 'test_manifest_pins.py'
+
+# Ensure failed preflight cannot leave a misleading experimental artifact.
+bash scripts/test_stale_artifact_preflight.sh
