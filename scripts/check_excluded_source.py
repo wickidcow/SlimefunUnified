@@ -17,6 +17,8 @@ def inspect(root: Path) -> list[str]:
     hits = []
     for subdir in ("src/main/java", "src/main/resources"):
         tree = root / subdir
+        if tree.is_symlink():
+            raise ValueError(f"source directory symlink forbidden: {tree}")
         if not tree.is_dir():
             raise ValueError(f"source directory missing: {tree}")
         # Do not follow links into unreviewed source trees. Even a link whose
