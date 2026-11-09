@@ -68,6 +68,18 @@ def validate(root):
         pin = (root / "upstream" / filename).read_text(encoding="utf-8").strip()
         if not SHA.fullmatch(pin) or matches[0].get("integrated_source_sha") != pin:
             errors.append(f"{repo}: manifest and build source pins disagree")
+    # MobDrops is deliberately staged but NOT assembled. Guard the reviewed pin
+    # against accidental drift without treating it as a completed integration.
+    mobdrops = [a for a in addons if a.get("repository") == "wickidcow/SF_MobDrops"]
+    staged_pin_path = root / "upstream/mobdrops.sha"
+    if len(mobdrops) != 1 or not staged_pin_path.is_file():
+        errors.append("MobDrops: missing historical entry or staged source pin")
+    else:
+        staged_pin = staged_pin_path.read_text(encoding="utf-8").strip()
+        if not SHA.fullmatch(staged_pin) or staged_pin != mobdrops[0].get("baseline_source_sha"):
+            errors.append("MobDrops: staged source pin disagrees with historical baseline")
+        if mobdrops[0].get("status") != "pending" or mobdrops[0].get("integrated_source_sha") is not None:
+            errors.append("MobDrops: staged source must remain pending until assembled and verified")
     core_pin = (root / "upstream/legacy-core.sha").read_text(encoding="utf-8").strip()
     if not SHA.fullmatch(core_pin):
         errors.append("invalid core source pin")
