@@ -38,6 +38,19 @@ class SourceExclusionTests(unittest.TestCase):
         self.write(self.resources, "unified/addons/SF_MagicExpansion/config.yml")
         self.assertTrue(module.inspect(self.root))
 
+    def test_symlinked_java_file_rejected_even_with_safe_name(self):
+        outside = self.root / "outside.java"
+        outside.write_text("class Outside {}", encoding="utf-8")
+        (self.java / "Safe.java").symlink_to(outside)
+        self.assertTrue(any("symlink forbidden" in hit for hit in module.inspect(self.root)))
+
+    def test_symlinked_resource_directory_rejected(self):
+        outside = self.root / "external-resources"
+        outside.mkdir()
+        (outside / "config.yml").write_text("fixture", encoding="utf-8")
+        (self.resources / "safe").symlink_to(outside, target_is_directory=True)
+        self.assertTrue(any("symlink forbidden" in hit for hit in module.inspect(self.root)))
+
     def test_missing_source_directory_fails_closed(self):
         self.resources.rmdir()
         with self.assertRaises(ValueError):
