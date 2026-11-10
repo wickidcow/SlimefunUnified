@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "goal": "44 Slimefun Legacy bundle addons in one SlimefunUnified JAR; independent maintainers and module policy",
+  "goal": "43 eligible Slimefun Legacy bundle addons in one SlimefunUnified JAR (44 historical sources; SF_MagicExpansion excluded by owner); independent maintainers and module policy",
   "source": {
     "repository": "wickidcow/Slimefun-Legacy",
     "matrix_path": "compatibility/sfl-addon-release-matrix.json",
