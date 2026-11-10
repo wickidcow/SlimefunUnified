@@ -143,25 +143,10 @@ class SourceCollisionTests(unittest.TestCase):
     def test_assembly_checks_assets_before_each_copy(self):
         assembly = (SCRIPT.parent / "assemble_unified.sh").read_text()
         for variable in ("EXTRA_WORK", "SOUL_WORK", "TAPS_WORK"):
-            check = 'check_source_collisions.py" --check-assets "
-        with tempfile.TemporaryDirectory() as tmp:
-            with self.assertRaises(ValueError):
-                gate.collisions(Path(tmp) / "missing")
-
-
-if __name__ == "__main__":
-    unittest.main()
- + variable + '"'
-            copy = 'cp -R "
-        with tempfile.TemporaryDirectory() as tmp:
-            with self.assertRaises(ValueError):
-                gate.collisions(Path(tmp) / "missing")
-
-
-if __name__ == "__main__":
-    unittest.main()
- + variable + '/src/main/java/."'
+            check = 'check_source_collisions.py" --check-assets "$' + variable + '"'
+            copy = 'cp -R "$' + variable + '/src/main/java/."'
             self.assertIn(check, assembly)
+            self.assertIn(copy, assembly)
             self.assertLess(assembly.index(check), assembly.index(copy))
 
     def test_missing_source_tree_fails_closed(self):
