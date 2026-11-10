@@ -3,6 +3,8 @@ import importlib.util
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
+from subprocess import CompletedProcess, CalledProcessError
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/check_mobdrops_source.py"
 spec = importlib.util.spec_from_file_location("check_mobdrops_source", SCRIPT)
@@ -59,6 +61,34 @@ class MobDropsPreflightTest(unittest.TestCase):
         nested = alias / "nested"
         nested.mkdir()
         self.assertIn("Invalid or symlinked MobDrops checkout", module.check(nested, PIN))
+
+    def test_checkout_head_matches_pin(self):
+        responses = [
+            CompletedProcess([], 0, stdout=PIN + "\\n"),
+            CompletedProcess([], 0, stdout=str(self.root) + "\\n"),
+        ]
+        with patch.object(module.subprocess, "run", side_effect=responses):
+            self.assertEqual([], module.verify_checkout_head(self.root, PIN))
+
+    def test_checkout_head_mismatch(self):
+        responses = [
+            CompletedProcess([], 0, stdout="0" * 40 + "\\n"),
+            CompletedProcess([], 0, stdout=str(self.root) + "\\n"),
+        ]
+        with patch.object(module.subprocess, "run", side_effect=responses):
+            self.assertTrue(module.verify_checkout_head(self.root, PIN))
+
+    def test_nested_git_directory_rejected(self):
+        responses = [
+            CompletedProcess([], 0, stdout=PIN + "\\n"),
+            CompletedProcess([], 0, stdout=str(self.root.parent) + "\\n"),
+        ]
+        with patch.object(module.subprocess, "run", side_effect=responses):
+            self.assertTrue(module.verify_checkout_head(self.root, PIN))
+
+    def test_git_failure_fails_closed(self):
+        with patch.object(module.subprocess, "run", side_effect=CalledProcessError(128, "git")):
+            self.assertTrue(module.verify_checkout_head(self.root, PIN))
 
     def test_unreadable_utf8_source(self):
         self.java.write_bytes(bytes([0xff, 0xfe]))
