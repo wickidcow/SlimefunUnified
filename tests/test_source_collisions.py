@@ -97,6 +97,30 @@ class SourceCollisionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Symlink"):
                 gate.collisions(root)
 
+    def test_symlinked_java_source_root_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            main = root / "src/main"
+            main.mkdir(parents=True)
+            outside = Path(tmp) / "external"
+            outside.mkdir()
+            (outside / "External.java").write_text("class External {}")
+            (main / "java").symlink_to(outside, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.collisions(root)
+
+    def test_symlinked_java_source_parent_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            outside = Path(tmp) / "external"
+            source = outside / "main/java"
+            source.mkdir(parents=True)
+            (source / "External.java").write_text("class External {}")
+            root.mkdir()
+            (root / "src").symlink_to(outside, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.collisions(root)
+
     def test_regular_import_assets_accepted(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "addon"

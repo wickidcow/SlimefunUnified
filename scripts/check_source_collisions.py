@@ -9,6 +9,11 @@ def collisions(*roots: Path) -> list[tuple[str, str, str]]:
     found: list[tuple[str, str, str]] = []
     for root in roots:
         source = root / "src/main/java"
+        # rglob does not inspect a symlink used as the source root or its parents.
+        # Reject redirected checkout/source paths before scanning or copying.
+        for candidate in (root, root / "src", root / "src/main", source):
+            if candidate.is_symlink():
+                raise ValueError(f"Symlink in pinned Java source path: {candidate}")
         if not source.is_dir():
             raise ValueError(f"Missing Java source directory: {source}")
         # Reject links before copying: cp -R can preserve or dereference them,
