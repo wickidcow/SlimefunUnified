@@ -97,6 +97,58 @@ class SourceCollisionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Symlink"):
                 gate.collisions(root)
 
+    def test_regular_import_assets_accepted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            config = root / "src/main/resources/config.yml"
+            config.parent.mkdir(parents=True)
+            config.write_text("enabled: true")
+            (root / "LICENSE").write_text("MIT")
+            gate.validate_import_assets(root)
+
+    def test_symlinked_config_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            config = root / "src/main/resources/config.yml"
+            config.parent.mkdir(parents=True)
+            outside = Path(tmp) / "external.yml"
+            outside.write_text("unsafe: true")
+            config.symlink_to(outside)
+            (root / "LICENSE").write_text("MIT")
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.validate_import_assets(root)
+
+    def test_symlinked_resource_parent_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            resources = root / "src/main/resources"
+            resources.parent.mkdir(parents=True)
+            outside = Path(tmp) / "external"
+            outside.mkdir()
+            (outside / "config.yml").write_text("unsafe: true")
+            resources.symlink_to(outside, target_is_directory=True)
+            (root / "LICENSE").write_text("MIT")
+            with self.assertRaisesRegex(ValueError, "Symlink"):
+                gate.validate_import_assets(root)
+
+    def test_missing_license_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "addon"
+            config = root / "src/main/resources/config.yml"
+            config.parent.mkdir(parents=True)
+            config.write_text("enabled: true")
+            with self.assertRaisesRegex(ValueError, "Missing regular"):
+                gate.validate_import_assets(root)
+
+    def test_assembly_checks_assets_before_each_copy(self):
+        assembly = (SCRIPT.parent / "assemble_unified.sh").read_text()
+        for variable in ("EXTRA_WORK", "SOUL_WORK", "TAPS_WORK"):
+            check = 'check_source_collisions.py" --check-assets "$' + variable + '"'
+            copy = 'cp -R "$' + variable + '/src/main/java/."'
+            self.assertIn(check, assembly)
+            self.assertIn(copy, assembly)
+            self.assertLess(assembly.index(check), assembly.index(copy))
+
     def test_missing_source_tree_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(ValueError):
