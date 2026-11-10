@@ -61,7 +61,7 @@ class MobDropsPreflightTest(unittest.TestCase):
         self.assertIn("Invalid or symlinked MobDrops checkout", module.check(nested, PIN))
 
     def test_unreadable_utf8_source(self):
-        self.java.write_bytes(b"\\xff\\xfe")
+        self.java.write_bytes(bytes([0xff, 0xfe]))
         self.assertTrue(any("Unreadable MobDrops source file" in error for error in module.check(self.root, PIN)))
 
 if __name__ == "__main__":
