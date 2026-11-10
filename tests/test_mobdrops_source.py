@@ -51,5 +51,18 @@ class MobDropsPreflightTest(unittest.TestCase):
         (self.root / "LICENSE").symlink_to(self.java)
         self.assertTrue(module.check(self.root, PIN))
 
+    def test_symlinked_checkout_ancestor(self):
+        alias = self.root / "alias"
+        actual = self.root / "actual"
+        actual.mkdir()
+        alias.symlink_to(actual, target_is_directory=True)
+        nested = alias / "nested"
+        nested.mkdir()
+        self.assertIn("Invalid or symlinked MobDrops checkout", module.check(nested, PIN))
+
+    def test_unreadable_utf8_source(self):
+        self.java.write_bytes(b"\\xff\\xfe")
+        self.assertTrue(any("Unreadable MobDrops source file" in error for error in module.check(self.root, PIN)))
+
 if __name__ == "__main__":
     unittest.main()
