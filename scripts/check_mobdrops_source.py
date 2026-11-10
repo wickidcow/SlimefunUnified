@@ -27,7 +27,7 @@ def check(root: Path, pin: str) -> list[str]:
     errors = []
     if not re.fullmatch(r"[0-9a-f]{40}", pin) or pin != EXPECTED_PIN:
         errors.append("MobDrops source pin mismatch")
-    if root.is_symlink() or not root.is_dir():
+    if any(path.is_symlink() for path in (root, *root.parents)) or not root.is_dir():
         return errors + ["Invalid or symlinked MobDrops checkout"]
     for relative, patterns in REQUIRED.items():
         target = root
@@ -40,7 +40,11 @@ def check(root: Path, pin: str) -> list[str]:
             if not target.is_file():
                 errors.append(f"Missing MobDrops source file: {relative}")
                 continue
-            data = target.read_text(encoding="utf-8")
+            try:
+                data = target.read_text(encoding="utf-8")
+            except (OSError, UnicodeError) as exc:
+                errors.append(f"Unreadable MobDrops source file: {relative}: {type(exc).__name__}")
+                continue
             for pattern in patterns:
                 if re.search(pattern, data) is None:
                     errors.append(f"MobDrops source changed: {relative}: {pattern}")
