@@ -6,6 +6,7 @@ This is a staging gate, not a source rewrite or evidence of a compiled module.
 import argparse
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 EXPECTED_PIN = "8943594f006a443ce8a77113f76709c871d03697"
@@ -50,12 +51,34 @@ def check(root: Path, pin: str) -> list[str]:
                     errors.append(f"MobDrops source changed: {relative}: {pattern}")
     return errors
 
+def verify_checkout_head(root: Path, pin: str) -> list[str]:
+    """Verify the checkout itself, not just the caller-supplied --pin string."""
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--verify", "HEAD"],
+            check=True, capture_output=True, text=True, timeout=10,
+        )
+        top = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--show-toplevel"],
+            check=True, capture_output=True, text=True, timeout=10,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        return ["Cannot verify MobDrops checkout Git HEAD"]
+    if Path(top.stdout.strip()).absolute() != root.absolute():
+        return ["MobDrops checkout must be a Git repository root"]
+    if result.stdout.strip().lower() != pin:
+        return ["MobDrops checkout Git HEAD does not match pinned source"]
+    return []
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("checkout", type=Path)
     parser.add_argument("--pin", required=True)
     args = parser.parse_args()
     errors = check(args.checkout, args.pin)
+    if not errors:
+        errors.extend(verify_checkout_head(args.checkout, args.pin))
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
