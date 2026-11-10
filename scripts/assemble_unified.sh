@@ -52,6 +52,7 @@ if [[ "$(git -C "$EXTRA_WORK" rev-parse HEAD)" != "$EXTRA_PIN" ]]; then
   exit 1
 fi
 python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$EXTRA_WORK"
+python3 "$ROOT/scripts/check_source_collisions.py" --check-assets "$EXTRA_WORK"
 cp -R "$EXTRA_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/extraheads"
 cp "$EXTRA_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/extraheads/config.yml"
@@ -78,6 +79,7 @@ if [[ "$(git -C "$SOUL_WORK" rev-parse HEAD)" != "$SOUL_PIN" ]]; then
 fi
 # WORK already contains ExtraHeads after the earlier copy; checking WORK against SoulJars covers core and ExtraHeads without false-positive self-collisions.
 python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$SOUL_WORK"
+python3 "$ROOT/scripts/check_source_collisions.py" --check-assets "$SOUL_WORK"
 cp -R "$SOUL_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/souljars"
 cp "$SOUL_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/souljars/config.yml"
@@ -103,6 +105,7 @@ if [[ "$(git -C "$TAPS_WORK" rev-parse HEAD)" != "$TAPS_PIN" ]]; then
   exit 1
 fi
 python3 "$ROOT/scripts/check_source_collisions.py" "$WORK" "$TAPS_WORK"
+python3 "$ROOT/scripts/check_source_collisions.py" --check-assets "$TAPS_WORK"
 cp -R "$TAPS_WORK/src/main/java/." "$WORK/src/main/java/"
 mkdir -p "$WORK/src/main/resources/unified/addons/slimytreetaps"
 cp "$TAPS_WORK/src/main/resources/config.yml" "$WORK/src/main/resources/unified/addons/slimytreetaps/config.yml"
