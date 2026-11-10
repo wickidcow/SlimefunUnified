@@ -26,6 +26,25 @@ def collisions(*roots: Path) -> list[tuple[str, str, str]]:
     return found
 
 
+
+def validate_import_assets(root: Path) -> None:
+    """Fail closed before copying pinned addon config and license resources.
+
+    A symlink in any parent component can redirect a seemingly safe file
+    outside the pinned checkout; checking only the final file is insufficient.
+    """
+    root = Path(root)
+    for relative in ("src/main/resources/config.yml", "LICENSE"):
+        target = root
+        for component in Path(relative).parts:
+            target = target / component
+            if target.is_symlink():
+                raise ValueError(f"Symlink in pinned addon import asset: {target}")
+        if not target.is_file():
+            raise ValueError(f"Missing regular pinned addon import asset: {target}")
+
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("roots", nargs="+", type=Path)
