@@ -47,9 +47,13 @@ def validate_import_assets(root: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--check-assets", action="store_true", help="Validate copied config and license files")
     parser.add_argument("roots", nargs="+", type=Path)
     args = parser.parse_args()
     try:
+        if args.check_assets:
+            for root in args.roots:
+                validate_import_assets(root)
         duplicates = collisions(*args.roots)
     except ValueError as error:
         parser.error(str(error))
