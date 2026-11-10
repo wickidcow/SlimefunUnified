@@ -64,24 +64,24 @@ class MobDropsPreflightTest(unittest.TestCase):
 
     def test_checkout_head_matches_pin(self):
         responses = [
-            CompletedProcess([], 0, stdout=PIN + "\\n"),
-            CompletedProcess([], 0, stdout=str(self.root) + "\\n"),
+            CompletedProcess([], 0, stdout=PIN + "\n"),
+            CompletedProcess([], 0, stdout=str(self.root) + "\n"),
         ]
         with patch.object(module.subprocess, "run", side_effect=responses):
             self.assertEqual([], module.verify_checkout_head(self.root, PIN))
 
     def test_checkout_head_mismatch(self):
         responses = [
-            CompletedProcess([], 0, stdout="0" * 40 + "\\n"),
-            CompletedProcess([], 0, stdout=str(self.root) + "\\n"),
+            CompletedProcess([], 0, stdout="0" * 40 + "\n"),
+            CompletedProcess([], 0, stdout=str(self.root) + "\n"),
         ]
         with patch.object(module.subprocess, "run", side_effect=responses):
             self.assertTrue(module.verify_checkout_head(self.root, PIN))
 
     def test_nested_git_directory_rejected(self):
         responses = [
-            CompletedProcess([], 0, stdout=PIN + "\\n"),
-            CompletedProcess([], 0, stdout=str(self.root.parent) + "\\n"),
+            CompletedProcess([], 0, stdout=PIN + "\n"),
+            CompletedProcess([], 0, stdout=str(self.root.parent) + "\n"),
         ]
         with patch.object(module.subprocess, "run", side_effect=responses):
             self.assertTrue(module.verify_checkout_head(self.root, PIN))
