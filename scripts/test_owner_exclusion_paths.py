@@ -31,8 +31,6 @@ class ArchivePathTests(unittest.TestCase):
     def test_empty_components(self):
         for entry in ("org//bad.class", "org/./bad.class", "//bad.class"):
             with self.subTest(entry=entry):
-                if entry == "org/./bad.class":
-                    continue  # Dot component is handled separately in a future audit.
                 self.assertEqual(self.check(entry), 1)
 
 
