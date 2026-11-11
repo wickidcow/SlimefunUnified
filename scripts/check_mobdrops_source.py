@@ -49,6 +49,23 @@ def check(root: Path, pin: str) -> list[str]:
             for pattern in patterns:
                 if re.search(pattern, data) is None:
                     errors.append(f"MobDrops source changed: {relative}: {pattern}")
+    # A present but replaced/truncated license is not acceptable attribution.
+    # Check the pinned source's MIT notice before any future import.
+    license_path = root / "LICENSE"
+    if license_path.is_file() and not license_path.is_symlink():
+        try:
+            notice = license_path.read_text(encoding="utf-8")
+            required_notice = (
+                "MIT License",
+                "Copyright (c) 2020 Daniel Walsh",
+                "Permission is hereby granted, free of charge",
+                "The above copyright notice and this permission notice",
+                'THE SOFTWARE IS PROVIDED "AS IS"',
+            )
+            if not all(fragment in notice for fragment in required_notice):
+                errors.append("MobDrops MIT attribution or license terms changed")
+        except (OSError, UnicodeError):
+            errors.append("Unreadable MobDrops MIT license")
     return errors
 
 def verify_checkout_head(root: Path, pin: str) -> list[str]:
