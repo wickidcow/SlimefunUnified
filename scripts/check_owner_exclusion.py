@@ -26,7 +26,7 @@ def check_jar(path):
                 raise ValueError("duplicate or case-colliding ZIP entries")
             if any(
                 name.startswith("/")
-                or ".." in name.split("/")
+                or any(part in (".", "..") for part in name.split("/"))
                 or (len(name) >= 2 and name[0].isalpha() and name[1] == ":")
                 or any(part == "" for part in name.rstrip("/").split("/"))
                 for name in normalized
