@@ -7,6 +7,7 @@ substitute for source review of copied or renamed feature implementations.
 """
 import argparse
 import sys
+import stat
 import zipfile
 
 FORBIDDEN = ("magicexpansion", "sf_magicexpansion")
@@ -25,6 +26,14 @@ def check_jar(path):
                 raise ValueError("duplicate or case-colliding ZIP entries")
             if any(name.startswith("/") or ".." in name.split("/") for name in normalized):
                 raise ValueError("unsafe archive entry path")
+            # A ZIP symlink may point outside the archive or to excluded content.
+            # Never accept filesystem links in a compiled plugin artifact.
+            links = [
+                info.filename for info in archive.infolist()
+                if stat.S_IFMT(info.external_attr >> 16) == stat.S_IFLNK
+            ]
+            if links:
+                raise ValueError("symlink ZIP entries forbidden: " + ", ".join(links[:10]))
             if archive.testzip() is not None:
                 raise ValueError("corrupt ZIP entry")
             hits = [
