@@ -68,6 +68,18 @@ def verify_checkout_head(root: Path, pin: str) -> list[str]:
         return ["MobDrops checkout must be a Git repository root"]
     if result.stdout.strip().lower() != pin:
         return ["MobDrops checkout Git HEAD does not match pinned source"]
+    # A pinned HEAD does not guarantee that the files being imported match it.
+    # Reject tracked modifications and untracked additions, including ignored
+    # generated files only when they are part of a separately audited import.
+    try:
+        dirty = subprocess.run(
+            ["git", "-C", str(root), "status", "--porcelain=v1", "--untracked-files=all"],
+            check=True, capture_output=True, text=True, timeout=10,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        return ["Cannot verify MobDrops checkout working tree"]
+    if dirty.stdout.strip():
+        return ["MobDrops checkout has modified or untracked source files"]
     return []
 
 
