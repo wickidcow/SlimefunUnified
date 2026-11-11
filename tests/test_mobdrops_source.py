@@ -92,9 +92,10 @@ class MobDropsPreflightTest(unittest.TestCase):
             self.assertEqual([], module.verify_checkout_head(self.root, PIN))
             self.assertIn("status", git_run.call_args.args[0])
             self.assertIn("--untracked-files=all", git_run.call_args.args[0])
+            self.assertIn("--ignored=matching", git_run.call_args.args[0])
 
     def test_dirty_checkout_rejected(self):
-        for status in (" M src/main/java/Test.java\\n", "?? injected.java\\n", "A  staged.java\\n"):
+        for status in (" M src/main/java/Test.java\\n", "?? injected.java\\n", "A  staged.java\\n", "!! src/main/java/Injected.java\\n"):
             with self.subTest(status=status):
                 responses = [
                     CompletedProcess([], 0, stdout=PIN + "\n"),
