@@ -66,9 +66,38 @@ class MobDropsPreflightTest(unittest.TestCase):
         responses = [
             CompletedProcess([], 0, stdout=PIN + "\n"),
             CompletedProcess([], 0, stdout=str(self.root) + "\n"),
+            CompletedProcess([], 0, stdout=""),
+        ]
+        with patch.object(module.subprocess, "run", side_effect=responses) as git_run:
+            self.assertEqual([], module.verify_checkout_head(self.root, PIN))
+            self.assertIn("status", git_run.call_args.args[0])
+            self.assertIn("--untracked-files=all", git_run.call_args.args[0])
+
+    def test_dirty_checkout_rejected(self):
+        for status in (" M src/main/java/Test.java\\n", "?? injected.java\\n", "A  staged.java\\n"):
+            with self.subTest(status=status):
+                responses = [
+                    CompletedProcess([], 0, stdout=PIN + "\n"),
+                    CompletedProcess([], 0, stdout=str(self.root) + "\n"),
+                    CompletedProcess([], 0, stdout=status),
+                ]
+                with patch.object(module.subprocess, "run", side_effect=responses):
+                    self.assertIn(
+                        "MobDrops checkout has modified or untracked source files",
+                        module.verify_checkout_head(self.root, PIN),
+                    )
+
+    def test_git_status_failure_fails_closed(self):
+        responses = [
+            CompletedProcess([], 0, stdout=PIN + "\n"),
+            CompletedProcess([], 0, stdout=str(self.root) + "\n"),
+            CalledProcessError(128, "git status"),
         ]
         with patch.object(module.subprocess, "run", side_effect=responses):
-            self.assertEqual([], module.verify_checkout_head(self.root, PIN))
+            self.assertIn(
+                "Cannot verify MobDrops checkout working tree",
+                module.verify_checkout_head(self.root, PIN),
+            )
 
     def test_checkout_head_mismatch(self):
         responses = [
