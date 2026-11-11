@@ -24,7 +24,7 @@ def check_jar(path):
             normalized = [name.replace("\\", "/").lower() for name in names]
             if len(set(normalized)) != len(normalized):
                 raise ValueError("duplicate or case-colliding ZIP entries")
-            if any(name.startswith("/") or ".." in name.split("/") for name in normalized):
+            if any(\n                name.startswith("/")\n                or ".." in name.split("/")\n                or (len(name) >= 2 and name[0].isalpha() and name[1] == ":")\n                or any(part == "" for part in name.rstrip("/").split("/"))\n                for name in normalized\n            ):
                 raise ValueError("unsafe archive entry path")
             # A ZIP symlink may point outside the archive or to excluded content.
             # Never accept filesystem links in a compiled plugin artifact.
