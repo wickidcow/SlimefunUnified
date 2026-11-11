@@ -17,6 +17,9 @@ if ! java -version 2>&1 | grep -qE 'version "25[.]|openjdk 25'; then
   exit 1
 fi
 
+# Exercise archive-path exclusion regression fixtures on every experimental build.
+python3 -m unittest discover -s "$ROOT/scripts" -p "test_owner_exclusion_paths.py" -v
+
 
 WORK="$ROOT/build/upstream/Slimefun-Legacy"
 mkdir -p "$ROOT/build/upstream" "$ROOT/build/output"
