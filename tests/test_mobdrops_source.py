@@ -32,7 +32,12 @@ class MobDropsPreflightTest(unittest.TestCase):
         self.plugin = self.root / "src/main/resources/plugin.yml"
         self.plugin.parent.mkdir(parents=True)
         self.plugin.write_text(PLUGIN)
-        (self.root / "LICENSE").write_text("MIT")
+        (self.root / "LICENSE").write_text(
+            'MIT License\\nCopyright (c) 2020 Daniel Walsh\\n'
+            'Permission is hereby granted, free of charge\\n'
+            'The above copyright notice and this permission notice\\n'
+            'THE SOFTWARE IS PROVIDED "AS IS"\\n'
+        )
 
     def test_valid_fixture(self):
         self.assertEqual([], module.check(self.root, PIN))
@@ -47,6 +52,21 @@ class MobDropsPreflightTest(unittest.TestCase):
     def test_missing_license(self):
         (self.root / "LICENSE").unlink()
         self.assertTrue(module.check(self.root, PIN))
+
+    def test_replaced_license_notice_rejected(self):
+        (self.root / "LICENSE").write_text("MIT")
+        self.assertIn(
+            "MobDrops MIT attribution or license terms changed",
+            module.check(self.root, PIN),
+        )
+
+    def test_removed_author_credit_rejected(self):
+        license_path = self.root / "LICENSE"
+        license_path.write_text(license_path.read_text().replace("Daniel Walsh", "Unknown"))
+        self.assertIn(
+            "MobDrops MIT attribution or license terms changed",
+            module.check(self.root, PIN),
+        )
 
     def test_symlinked_license(self):
         (self.root / "LICENSE").unlink()
