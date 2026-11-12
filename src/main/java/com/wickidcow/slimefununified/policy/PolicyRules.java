@@ -66,6 +66,9 @@ public final class PolicyRules {
         properties.load(reader);
         Map<String, Flags> moduleRules = new HashMap<>();
         Map<String, Flags> itemRules = new HashMap<>();
+        // Different raw property keys can refer to the same case-insensitive item ID.
+        // Reject aliases instead of allowing Properties iteration order to choose a rule.
+        Set<String> canonicalItemSettings = new HashSet<>();
         for (String key : properties.stringPropertyNames()) {
             String[] tokens = key.split("\\.", -1);
             boolean item = tokens.length == 4 && "item".equals(tokens[0]);
@@ -91,6 +94,9 @@ public final class PolicyRules {
             } else {
                 String itemId = normalizedItemId(tokens[2]);
                 String itemKey = moduleId + "/" + itemId;
+                if (!canonicalItemSettings.add(itemKey + "/" + setting)) {
+                    throw new IllegalArgumentException("Duplicate normalized item policy: " + itemKey + "/" + setting);
+                }
                 itemRules.put(itemKey, itemRules.getOrDefault(itemKey, Flags.DEFAULT).set(setting, value));
             }
         }
