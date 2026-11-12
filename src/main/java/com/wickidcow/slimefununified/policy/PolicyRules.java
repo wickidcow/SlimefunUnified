@@ -2,6 +2,8 @@ package com.wickidcow.slimefununified.policy;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,7 +51,18 @@ public final class PolicyRules {
                 throw new IllegalArgumentException("Duplicate module ID: " + module.id());
             }
         }
-        Properties properties = new Properties();
+        // Properties.load silently overwrites duplicate keys. Reject conflicting or
+        // repeated policy declarations instead of allowing file order to decide access.
+        Set<String> seen = new HashSet<>();
+        Properties properties = new Properties() {
+            @Override
+            public synchronized Object put(Object key, Object value) {
+                if (!seen.add((String) key)) {
+                    throw new IllegalArgumentException("Duplicate policy key: " + key);
+                }
+                return super.put(key, value);
+            }
+        };
         properties.load(reader);
         Map<String, Flags> moduleRules = new HashMap<>();
         Map<String, Flags> itemRules = new HashMap<>();
