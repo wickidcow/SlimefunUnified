@@ -106,6 +106,7 @@ public final class PolicyRulesSelfTest {
         for (String bad : List.of("module.missing.guide-visible=true",
                 "module.fluffymachines.player-crafting=whatever",
                 "module.extraheads.guide-visible=true\nmodule.extraheads.guide-visible=false",
+                "item.extraheads.player_head.guide-visible=true\nitem.extraheads.PLAYER_HEAD.guide-visible=false",
                 "module.fluffymachines.unknown=true",
                 "item.fluffymachines.BAD!.guide-visible=false",
                 "module.fluffymachines.guide-visible=true\nunsupported.value=true")) {
