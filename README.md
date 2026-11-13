@@ -12,6 +12,12 @@ The OP-only **Server Management** screen appears in the classic Slimefun Guide's
 
 **Scope exception:** Per the server owner's request, **MagicExpansion (`SF_MagicExpansion`) will not be bundled**. The historical addon matrix has 44 entries, but Unified's eligible target is **43**. All other eligible addon candidates remain in scope.
 
+## Platform compatibility target — not yet certified
+
+**The final combined JAR must support Paper, Purpur, and Folia.** Combining plugins reduces separate-JAR integration/API clashes, but does not make block, entity, machine, cargo, or shared-data access automatically safe on Folia's parallel ticking regions. Platform validation is required for the core **and every integrated module**.
+
+The pinned Legacy core currently declares `folia-supported: true`; that flag is **not inherited as a compatibility claim** by default. The Unified overlay changes it to `folia-supported: false` in normal experimental artifacts. For isolated, backed-up Folia evaluation builds only, set `UNIFIED_FOLIA_EXPERIMENTAL=1` when invoking `scripts/assemble_unified.sh`. This explicitly enables the test descriptor flag; it does **not** establish gameplay safety, a stable release, or permission to deploy it to a production server. The final JAR verifier checks the selected mode. See [Folia validation gates](docs/folia-compatibility.md).
+
 ## Current experimental content
 
 | Component | Status |
