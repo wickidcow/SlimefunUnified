@@ -2,6 +2,7 @@
 import sys
 import zipfile
 from folia_gate import experimental_mode, validate_unified_descriptor
+from zip_entry_integrity import duplicate_entries
 from pathlib import Path
 if len(sys.argv) != 6:
     raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha> <souljars-sha> <slimytreetaps-sha>")
@@ -11,6 +12,9 @@ extra_sha = sys.argv[3]
 soul_sha = sys.argv[4]
 taps_sha = sys.argv[5]
 with zipfile.ZipFile(jar) as z:
+    duplicates = duplicate_entries(z)
+    if duplicates:
+        raise SystemExit("Duplicate ZIP entries in Unified JAR: " + repr(duplicates[:8]))
     names = set(z.namelist())
     # Owner explicitly excluded MagicExpansion; refuse a JAR containing its classes.
     # These are the exact Java package paths used by SF_MagicExpansion, not generic magic addons.
