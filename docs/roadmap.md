@@ -29,6 +29,8 @@
 - [ ] Real Paper/Purpur 1.21.11 and 26.3+ server startup/restart tests with existing data.
 - [ ] Storage conservation, duplication prevention, old-item compatibility.
 - [ ] Same-factory TPS A/B comparison vs independent addons.
-- [ ] Folia/Leaf region safety and verified one-JAR reproducibility.
+- [ ] **Full Folia parity is required**, not optional: verify each integrated addon and the core with Folia-owned region/entity/global/async scheduling; detect cross-region shared-state, automation, cargo and world-save hazards.
+- [ ] Paper, Purpur and Folia matching-version boot/restart/world-data round-trips with region/thread ownership, anti-dupe and scheduler-safety checks before any stable release.
+- [ ] Leaf compatibility exploration and verified one-JAR reproducibility (separate from mandatory Folia certification).
 
 **3/43 eligible addon sources staged for experimental single-JAR compilation (ExtraHeads, SoulJars, SlimyTreeTaps); 40 eligible remain after verification. MagicExpansion remains excluded by owner. NO runtime validation or production-ready release.**
