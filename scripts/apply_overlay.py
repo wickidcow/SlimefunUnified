@@ -3,6 +3,7 @@
 import argparse
 from pathlib import Path
 import shutil
+from folia_gate import experimental_mode, rewrite_pinned_descriptor
 
 p = argparse.ArgumentParser()
 p.add_argument("--source", type=Path, required=True)
@@ -205,6 +206,17 @@ patch(
                 plugin,""",
     """            player.getScheduler().execute(
                 plugin.getJavaPlugin(),""",
+)
+
+# The pinned Legacy core advertises Folia support, but the combined Unified
+# addon runtime has not passed region-thread safety and world round-trip tests.
+# Explicit evaluation mode is for isolated, backed-up Folia test servers ONLY.
+descriptor = root / "src/main/resources/plugin.yml"
+descriptor.write_text(
+    rewrite_pinned_descriptor(
+        descriptor.read_text(encoding="utf-8"), test_mode=experimental_mode()
+    ),
+    encoding="utf-8",
 )
 
 print("Applied verified source overlay without changing any source repository.")

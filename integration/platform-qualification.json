@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "description": "No runtime compatibility claimed. Folia, Paper and Purpur are mandatory release targets for core and every integrated addon.",
+  "required_targets": [
+    "paper-1.21.11",
+    "paper-26.3+",
+    "purpur-1.21.11",
+    "purpur-26.3+",
+    "folia-1.21.11",
+    "folia-26.3+"
+  ],
+  "stable_ready": false,
+  "world_roundtrip_evidence": [],
+  "anti_dupe_evidence": [],
+  "modules": [
+    {
+      "slug": "legacy-core",
+      "source_sha": "f04d8077f496b5cc5e9f76bda4f8d47b5040a7c8",
+      "targets": {
+        "paper-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "paper-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "slug": "extraheads",
+      "source_sha": "b1e8a1f11692b44d359eec863f3be5be0f061516",
+      "targets": {
+        "paper-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "paper-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "slug": "slimytreetaps",
+      "source_sha": "ac1680260503ae7ba8070797069923f983d080c6",
+      "targets": {
+        "paper-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "paper-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        }
+      }
+    },
+    {
+      "slug": "souljars",
+      "source_sha": "8fbd6befc477bbbf9970afc79e538c6b1f028cd3",
+      "targets": {
+        "paper-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "paper-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "purpur-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-1.21.11": {
+          "state": "UNTESTED",
+          "evidence": []
+        },
+        "folia-26.3+": {
+          "state": "UNTESTED",
+          "evidence": []
+        }
+      }
+    }
+  ]
+}
