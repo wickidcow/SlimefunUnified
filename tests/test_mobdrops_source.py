@@ -68,6 +68,33 @@ class MobDropsPreflightTest(unittest.TestCase):
             module.check(self.root, PIN),
         )
 
+    def test_symlinked_java_source_rejected(self):
+        replacement = self.root / "external.java"
+        replacement.write_text(JAVA)
+        self.java.unlink()
+        self.java.symlink_to(replacement)
+        self.assertIn(
+            "Symlink in MobDrops source path: src/main/java/dev/walshy/sfmobdrops/SfMobDrops.java",
+            module.check(self.root, PIN),
+        )
+
+    def test_symlinked_plugin_descriptor_rejected(self):
+        replacement = self.root / "external-plugin.yml"
+        replacement.write_text(PLUGIN)
+        self.plugin.unlink()
+        self.plugin.symlink_to(replacement)
+        self.assertIn(
+            "Symlink in MobDrops source path: src/main/resources/plugin.yml",
+            module.check(self.root, PIN),
+        )
+
+    def test_missing_plugin_descriptor_rejected(self):
+        self.plugin.unlink()
+        self.assertIn(
+            "Missing MobDrops source file: src/main/resources/plugin.yml",
+            module.check(self.root, PIN),
+        )
+
     def test_symlinked_license(self):
         (self.root / "LICENSE").unlink()
         (self.root / "LICENSE").symlink_to(self.java)
