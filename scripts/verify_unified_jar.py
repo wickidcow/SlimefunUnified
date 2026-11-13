@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import zipfile
+from folia_gate import experimental_mode, validate_unified_descriptor
 from pathlib import Path
 if len(sys.argv) != 6:
     raise SystemExit("Usage: verify_unified_jar.py <jar> <core-sha> <extraheads-sha> <souljars-sha> <slimytreetaps-sha>")
@@ -58,6 +59,8 @@ with zipfile.ZipFile(jar) as z:
     meta = z.read("plugin.yml").decode()
     if "name: Slimefun" not in meta or "slimefununified.admin:" not in meta or "default: op" not in meta:
         raise SystemExit("Plugin metadata incorrect")
+    # The core Folia flag must not silently certify the combined runtime.
+    validate_unified_descriptor(meta, test_mode=experimental_mode())
     if z.read("unified/legacy-source.sha").decode().strip() != sha:
         raise SystemExit("Pinned source receipt mismatch")
     if z.read("unified/addons/extraheads/source.sha").decode().strip() != extra_sha:
