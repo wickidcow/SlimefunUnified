@@ -8,7 +8,13 @@ import os
 import sys
 from pathlib import Path
 
-FORBIDDEN = ("magicexpansion", "sf_magicexpansion", "io/yomicer/magicexpansion/")
+FORBIDDEN = ("magicexpansion",)
+
+
+def is_excluded_path(relative: str) -> bool:
+    """Match case/separator variants without excluding distinct Magic8Ball."""
+    parts = relative.casefold().split("/")
+    return any("magicexpansion" in "".join(ch for ch in part if ch.isalnum()) for part in parts)
 
 
 def inspect(root: Path) -> list[str]:
@@ -29,7 +35,7 @@ def inspect(root: Path) -> list[str]:
                 relative = path.relative_to(tree).as_posix().lower().replace("-", "_")
                 if path.is_symlink():
                     hits.append(f"{subdir}/{relative} (symlink forbidden)")
-                elif any(token in relative for token in FORBIDDEN):
+                elif is_excluded_path(relative):
                     hits.append(f"{subdir}/{relative}")
     return hits
 

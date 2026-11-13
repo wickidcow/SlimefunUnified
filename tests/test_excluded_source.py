@@ -38,6 +38,17 @@ class SourceExclusionTests(unittest.TestCase):
         self.write(self.resources, "unified/addons/SF_MagicExpansion/config.yml")
         self.assertTrue(module.inspect(self.root))
 
+    def test_excluded_separator_variants_rejected(self):
+        for variant in ("magic-expansion", "magic_expansion", "Magic.Expansion", "SF-Magic_Expansion"):
+            with self.subTest(variant=variant):
+                self.write(self.resources, f"unified/addons/{variant}/config.yml")
+                self.assertTrue(module.inspect(self.root))
+
+    def test_unrelated_magic_addons_remain_allowed(self):
+        self.write(self.java, "org/example/magic8ball/Magic8Ball.java")
+        self.write(self.resources, "unified/addons/magic_mirror/config.yml")
+        self.assertEqual([], module.inspect(self.root))
+
     def test_symlinked_java_file_rejected_even_with_safe_name(self):
         outside = self.root / "outside.java"
         outside.write_text("class Outside {}", encoding="utf-8")
