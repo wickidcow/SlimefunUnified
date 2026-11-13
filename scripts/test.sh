@@ -15,6 +15,7 @@ python3 -m unittest discover -s tests -p 'test_excluded_source.py'
 python3 scripts/check_manifest_pins.py
 python3 -m unittest discover -s tests -p 'test_manifest_pins.py'
 python3 -m unittest discover -s tests -p 'test_mobdrops_source.py'
+python3 -m unittest discover -s tests -p 'test_zip_entry_integrity.py'
 python3 -m unittest discover -s tests -p 'test_folia_gate.py'
 python3 scripts/check_platform_matrix.py
 python3 -m unittest discover -s tests -p 'test_platform_matrix.py'
