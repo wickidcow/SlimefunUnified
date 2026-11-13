@@ -12,6 +12,7 @@ def fixture():
         {"slug": "magicexpansion", "status": "excluded-by-owner", "integrated_source_sha": None},
         {"slug": "mobdrops", "status": "pending", "integrated_source_sha": None}
     ]}
+    manifest["scope"] = {"addons_target_count": 43}
     return {"schema_version": 1, "required_targets": list(TARGETS), "stable_ready": False, "modules": modules}, manifest
 
 
@@ -49,6 +50,18 @@ class PlatformMatrixTest(unittest.TestCase):
     def test_stable_ready_requires_every_platform(self):
         matrix, manifest = fixture()
         matrix["stable_ready"] = True
+        with self.assertRaises(ValueError):
+            verify(matrix, manifest, "a" * 40)
+
+    def test_stable_readiness_requires_all_43_integrated_even_if_current_tests_pass(self):
+        matrix, manifest = fixture()
+        for row in matrix["modules"]:
+            for record in row["targets"].values():
+                record["state"] = "PASSED"
+                record["evidence"] = ["https://example.com/test-evidence"]
+        matrix["stable_ready"] = True
+        matrix["world_roundtrip_evidence"] = ["https://example.com/world"]
+        matrix["anti_dupe_evidence"] = ["https://example.com/conservation"]
         with self.assertRaises(ValueError):
             verify(matrix, manifest, "a" * 40)
 
