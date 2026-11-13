@@ -40,6 +40,8 @@ def verify(matrix, manifest, core_sha):
             if state != "PASSED" and links:
                 raise ValueError(f"Unverified evidence attached to incomplete target: {row['slug']} {target}")
     if matrix.get("stable_ready"):
+        if len(expected) - 1 != manifest.get("scope", {}).get("addons_target_count"):
+            raise ValueError("Stable readiness requires every eligible addon to be integrated")
         if any(record["state"] != "PASSED" for row in rows for record in row["targets"].values()):
             raise ValueError("Stable readiness claimed before all required platform gates pass")
         if not matrix.get("world_roundtrip_evidence") or not matrix.get("anti_dupe_evidence"):
