@@ -19,6 +19,17 @@ JAVA = '''public class SfMobDrops extends JavaPlugin {
   }
 }'''
 PLUGIN = "name: SFMobDrops\ncommands:\n  mobdrops:\n"
+DROP = """public final class Drop {
+    private final String slimefunItem;
+    private final double chance;
+    private final int amount;
+}"""
+MOB_DROP = """public final class MobDrop {
+    private final Set<Drop> drops;
+    void initialize(Set<Drop> source) {
+        Collections.unmodifiableSet(new LinkedHashSet<>(source));
+    }
+}"""
 PIN = module.EXPECTED_PIN
 
 class MobDropsPreflightTest(unittest.TestCase):
@@ -32,6 +43,11 @@ class MobDropsPreflightTest(unittest.TestCase):
         self.plugin = self.root / "src/main/resources/plugin.yml"
         self.plugin.parent.mkdir(parents=True)
         self.plugin.write_text(PLUGIN)
+        self.drop = self.root / "src/main/java/dev/walshy/sfmobdrops/drops/Drop.java"
+        self.drop.parent.mkdir(parents=True)
+        self.drop.write_text(DROP)
+        self.mob_drop = self.drop.parent / "MobDrop.java"
+        self.mob_drop.write_text(MOB_DROP)
         (self.root / "LICENSE").write_text(
             'MIT License\\nCopyright (c) 2020 Daniel Walsh\\n'
             'Permission is hereby granted, free of charge\\n'
@@ -48,6 +64,14 @@ class MobDropsPreflightTest(unittest.TestCase):
     def test_missing_command(self):
         self.java.write_text(JAVA.replace('getCommand("mobdrops");', ""))
         self.assertTrue(module.check(self.root, PIN))
+
+    def test_mutable_drop_field_rejected(self):
+        self.drop.write_text(DROP.replace("private final double chance", "private double chance"))
+        self.assertTrue(any("Drop.java" in error for error in module.check(self.root, PIN)))
+
+    def test_missing_defensive_drop_set_rejected(self):
+        self.mob_drop.write_text(MOB_DROP.replace("Collections.unmodifiableSet(new LinkedHashSet<>(source))", "source"))
+        self.assertTrue(any("MobDrop.java" in error for error in module.check(self.root, PIN)))
 
     def test_missing_license(self):
         (self.root / "LICENSE").unlink()
