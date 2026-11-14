@@ -20,6 +20,21 @@ public final class DropSnapshotStoreSelfTest {
         try { store.publish(Arrays.asList("new", null)); throw new AssertionError("accepted null rule"); }
         catch (NullPointerException expected) { }
         assert store.snapshot() == old;
+        var mutable = new StringBuilder("original");
+        store.publishMapped(List.of(mutable), value -> value.toString());
+        var mapped = store.snapshot();
+        mutable.append("-changed");
+        assert mapped.equals(List.of("original"));
+        try { store.publishMapped(List.of("valid", "bad"), value -> {
+            if (value.equals("bad")) throw new IllegalArgumentException("bad rule");
+            return value;
+        }); throw new AssertionError("accepted failed mapping"); }
+        catch (IllegalArgumentException expected) { }
+        assert store.snapshot() == mapped;
+        try { store.publishMapped(List.of("bad"), value -> null); throw new AssertionError("accepted null mapping"); }
+        catch (NullPointerException expected) { }
+        assert store.snapshot() == mapped;
+        store.publish(List.of("first", "second"));
         var start = new CountDownLatch(1);
         var failure = new AtomicReference<Throwable>();
         Thread reader = new Thread(() -> {
