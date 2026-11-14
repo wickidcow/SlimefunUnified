@@ -24,6 +24,11 @@ def validate(root):
         errors.append("owner exclusion list must contain only SF_MagicExpansion")
     if scope.get("standalone_repos_read_only") is not True:
         errors.append("upstream repositories must remain read-only")
+    for key in ("bundled_loaded_and_functional", "player_access_controls_only"):
+        if scope.get(key) is not True:
+            errors.append(f"scope policy {key} must remain true")
+    if scope.get("stable_release_without_runtime_tests") is not False:
+        errors.append("stable releases require actual runtime validation")
     repos = [a.get("repository") for a in addons]
     if len(repos) != len(set(repos)):
         errors.append("duplicate addon repositories")
