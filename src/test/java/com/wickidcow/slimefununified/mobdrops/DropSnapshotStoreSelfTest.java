@@ -45,7 +45,7 @@ public final class DropSnapshotStoreSelfTest {
         } catch (IllegalStateException expected) { }
         assert store.snapshot() == beforeFailure;
         try {
-            store.publishMapped(null, value -> value);
+            store.<String>publishMapped(null, value -> value);
             throw new AssertionError("accepted null input");
         } catch (NullPointerException expected) { }
         assert store.snapshot() == beforeFailure;
