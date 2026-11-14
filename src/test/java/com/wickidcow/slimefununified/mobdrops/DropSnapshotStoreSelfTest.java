@@ -34,6 +34,29 @@ public final class DropSnapshotStoreSelfTest {
         try { store.publishMapped(List.of("bad"), value -> null); throw new AssertionError("accepted null mapping"); }
         catch (NullPointerException expected) { }
         assert store.snapshot() == mapped;
+        // A failed reload must never publish even its successfully mapped prefix.
+        var beforeFailure = store.snapshot();
+        try {
+            store.publishMapped(List.of("good", "reject", "later"), value -> {
+                if (value.equals("reject")) throw new IllegalStateException("invalid config");
+                return value.toUpperCase(java.util.Locale.ROOT);
+            });
+            throw new AssertionError("accepted partially mapped reload");
+        } catch (IllegalStateException expected) { }
+        assert store.snapshot() == beforeFailure;
+        try {
+            store.publishMapped(null, value -> value);
+            throw new AssertionError("accepted null input");
+        } catch (NullPointerException expected) { }
+        assert store.snapshot() == beforeFailure;
+        try {
+            store.publishMapped(List.of("valid"), null);
+            throw new AssertionError("accepted null mapper");
+        } catch (NullPointerException expected) { }
+        assert store.snapshot() == beforeFailure;
+        store.publishMapped(List.<String>of(), value -> value);
+        assert store.snapshot().isEmpty();
+        assert beforeFailure.equals(List.of("original"));
         store.publish(List.of("first", "second"));
         var start = new CountDownLatch(1);
         var failure = new AtomicReference<Throwable>();
