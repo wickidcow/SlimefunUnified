@@ -30,6 +30,18 @@ class ManifestPinsTest(unittest.TestCase):
     def test_baseline_passes(self):
         self.assertEqual(validate(self.root), [])
 
+    def test_loaded_modules_cannot_be_disabled_by_policy(self):
+        self.mutate(lambda d: d["scope"].update(bundled_loaded_and_functional=False))
+        self.assertTrue(any("bundled_loaded_and_functional" in e for e in validate(self.root)))
+
+    def test_player_access_policy_cannot_become_module_unloading(self):
+        self.mutate(lambda d: d["scope"].update(player_access_controls_only=False))
+        self.assertTrue(any("player_access_controls_only" in e for e in validate(self.root)))
+
+    def test_stable_release_cannot_skip_runtime_validation(self):
+        self.mutate(lambda d: d["scope"].update(stable_release_without_runtime_tests=True))
+        self.assertTrue(any("stable releases require" in e for e in validate(self.root)))
+
     def test_owner_exclusion_cannot_be_integrated(self):
         self.mutate(lambda d: next(a for a in d["addons"] if a["slug"] == "magicexpansion").update(
             status="integrated-compile-verified", integrated_source_sha="a" * 40))
