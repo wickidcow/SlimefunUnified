@@ -77,6 +77,36 @@ public final class DropSnapshotStoreSelfTest {
         for (int i = 0; i < 1000; i++) store.publish(List.of("replacement"));
         reader.join();
         if (failure.get() != null) throw new AssertionError(failure.get());
+        // Readers must see one complete generation even while a mapped reload is converting.
+        var mappedStore = new DropSnapshotStore<String>();
+        mappedStore.publish(List.of("old-A", "old-B"));
+        var mappingStarted = new CountDownLatch(1);
+        var finishMapping = new CountDownLatch(1);
+        var mappedFailure = new AtomicReference<Throwable>();
+        Thread writer = new Thread(() -> {
+            try {
+                mappedStore.publishMapped(List.of("new-A", "new-B"), value -> {
+                    if (value.equals("new-B")) {
+                        mappingStarted.countDown();
+                        try { finishMapping.await(); }
+                        catch (InterruptedException interrupted) {
+                            Thread.currentThread().interrupt();
+                            throw new IllegalStateException(interrupted);
+                        }
+                    }
+                    return value;
+                });
+            } catch (Throwable error) { mappedFailure.set(error); }
+        });
+        writer.start();
+        mappingStarted.await();
+        for (int i = 0; i < 1000; i++) {
+            assert mappedStore.snapshot().equals(List.of("old-A", "old-B"));
+        }
+        finishMapping.countDown();
+        writer.join();
+        if (mappedFailure.get() != null) throw new AssertionError(mappedFailure.get());
+        assert mappedStore.snapshot().equals(List.of("new-A", "new-B"));
         assert old.equals(List.of("first", "second"));
         System.out.println("MobDrops immutable snapshot publication self-test passed");
     }
