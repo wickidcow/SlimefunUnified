@@ -21,6 +21,18 @@ REQUIRED = {
         r"(?m)^name:\s*SFMobDrops\s*$",
         r"(?m)^\s+mobdrops:\s*$",
     ),
+    # Guard the pinned immutable value objects before any identity-mapped snapshot use.
+    "src/main/java/dev/walshy/sfmobdrops/drops/Drop.java": (
+        r"final\s+class\s+Drop\b",
+        r"private\s+final\s+String\s+slimefunItem\b",
+        r"private\s+final\s+double\s+chance\b",
+        r"private\s+final\s+int\s+amount\b",
+    ),
+    "src/main/java/dev/walshy/sfmobdrops/drops/MobDrop.java": (
+        r"final\s+class\s+MobDrop\b",
+        r"private\s+final\s+Set<Drop>\s+drops\b",
+        r"Collections\.unmodifiableSet\s*\(\s*new\s+LinkedHashSet",
+    ),
     "LICENSE": (),
 }
 
