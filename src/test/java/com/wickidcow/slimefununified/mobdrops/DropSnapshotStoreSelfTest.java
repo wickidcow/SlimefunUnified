@@ -108,6 +108,15 @@ public final class DropSnapshotStoreSelfTest {
         if (mappedFailure.get() != null) throw new AssertionError(mappedFailure.get());
         assert mappedStore.snapshot().equals(List.of("new-A", "new-B"));
         assert old.equals(List.of("first", "second"));
+        // Shutdown drops future rules but does not mutate an event's captured generation.
+        var inFlight = mappedStore.snapshot();
+        mappedStore.clear();
+        assert mappedStore.snapshot().isEmpty();
+        assert inFlight.equals(List.of("new-A", "new-B"));
+        mappedStore.clear(); // Idempotent on repeated disable.
+        assert mappedStore.snapshot().isEmpty();
+        mappedStore.publish(List.of("re-enabled"));
+        assert mappedStore.snapshot().equals(List.of("re-enabled"));
         System.out.println("MobDrops immutable snapshot publication self-test passed");
     }
 }
