@@ -1,6 +1,6 @@
 # Unified integration ledger and checkpoint
 
-Updated: 2026-11-06 UTC. This ledger tracks **addon modules**, excluding the Slimefun core. Historical distribution: **44 addon sources**, of which **SF_MagicExpansion is excluded by explicit owner instruction**. The target is **43 potentially eligible addons**, subject to licensing and technical review; this is not a claim that all 43 are legally eligible.
+Updated: 2026-11-16 UTC (current accounting reconciled; historical dated checkpoints retained). This ledger tracks **addon modules**, excluding the Slimefun core. Historical distribution: **44 addon sources**, of which **SF_MagicExpansion is excluded by explicit owner instruction**. The target is **43 potentially eligible addons**, subject to licensing and technical review; this is not a claim that all 43 are legally eligible.
 
 ## Exact pinned inputs
 
@@ -9,8 +9,9 @@ Updated: 2026-11-06 UTC. This ledger tracks **addon modules**, excluding the Sli
 | Slimefun core | wickidcow/Slimefun-Legacy | `f04d8077f496b5cc5e9f76bda4f8d47b5040a7c8` | Experimental bundled core | Paper/Purpur 1.21.11 and 26.3+ boot/restart/data and scheduler safety |
 | ExtraHeads | wickidcow/SF_ExtraHeads | `b1e8a1f11692b44d359eec863f3be5be0f061516` | Prototype integrated (1/43 eligible); MIT notice packaged | Old config and item identities, drop behavior, collision and world round-trip |
 | SoulJars | wickidcow/SF_SoulJars | `8fbd6befc477bbbf9970afc79e538c6b1f028cd3` | Prototype integrated (2/43 eligible); GPLv3 notice packaged | Old IDs, collection/spawner behavior, world round-trip |
+| SlimyTreeTaps | wickidcow/SF_SlimyTreeTaps | `ac1680260503ae7ba8070797069923f983d080c6` (`upstream/slimytreetaps.sha`; commit verified 2026-11-16; runtime validation pending) | Third experimental source-pinned prototype; original MIT notice and GPLv3 maintained modifications per README | Old config, PDC identity, recipes, machine behavior and restart round-trip |
 
-**Current accounting: 2 experimentally integrated / 43 potentially eligible; 41 eligible candidate slots not integrated; 1 historical source excluded by owner (SF_MagicExpansion).** Candidate status below is **not** an eligibility determination. Do not count an addon as integrated until source, licensing, runtime and data preservation are audited, source pinned and compiled into the one-JAR artifact.
+**Current accounting (2026-11-16): 3 experimental prototypes / 43 potentially eligible; 40 eligible candidate slots not integrated; 1 historical source excluded by owner (SF_MagicExpansion).** Candidate status below is **not** an eligibility determination. These are **experimental source-pinned prototypes**, not validated integrations. Do not count an addon as fully validated until source, licensing, runtime and data preservation are audited, source pinned, compiled into the one-JAR artifact and required live tests pass.
 
 ## Owner-excluded historical source (never bundled)
 
@@ -28,7 +29,7 @@ Updated: 2026-11-06 UTC. This ledger tracks **addon modules**, excluding the Sli
 | Supreme | wickidcow/SF_Supreme | GPLv3 listed in credits ledger; independently reverify | Audit equipment persistence and dependencies; pin source |
 | JustEnoughGuide | wickidcow/SF_JustEnoughGuide | GPLv3 listed in credits ledger; independently reverify | Audit all Guide visibility paths before claiming filtering complete; pin source |
 
-The other **36 pending eligible candidate slots** are not individually inventoried in this ledger. Obtain the authoritative 44-addon distribution list and verify each repository, current maintenance status, exact commit, transitive dependencies, resource rights and compatibility before assigning a module row. Do not infer legal eligibility from a repository name or from noncommercial intent.
+The other **35 pending eligible candidate slots** are not individually inventoried in this ledger. Obtain the authoritative 44-addon distribution list and verify each repository, current maintenance status, exact commit, transitive dependencies, resource rights and compatibility before assigning a module row. Do not infer legal eligibility from a repository name or from noncommercial intent.
 
 ## FluffyMachines provenance audit — 2026-11-06 (no import)
 
