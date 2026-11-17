@@ -18,7 +18,10 @@ JAVA = '''public class SfMobDrops extends JavaPlugin {
     getCommand("mobdrops");
   }
 }'''
-PLUGIN = "name: SFMobDrops\ncommands:\n  mobdrops:\n"
+PLUGIN = ("name: SFMobDrops\ncommands:\n  mobdrops:\n"
+          "    aliases: [sfmobdrops, mobdrop, sfmd]\n"
+          "    permission: sfmobdrops.admin\npermissions:\n"
+          "  sfmobdrops.admin:\n    default: op\n")
 DROP = """public final class Drop {
     private final String slimefunItem;
     private final double chance;
@@ -64,6 +67,14 @@ class MobDropsPreflightTest(unittest.TestCase):
     def test_missing_command(self):
         self.java.write_text(JAVA.replace('getCommand("mobdrops");', ""))
         self.assertTrue(module.check(self.root, PIN))
+
+    def test_missing_historical_command_alias_rejected(self):
+        self.plugin.write_text(PLUGIN.replace("sfmd", "other"))
+        self.assertTrue(any("plugin.yml" in error for error in module.check(self.root, PIN)))
+
+    def test_admin_permission_must_remain_op(self):
+        self.plugin.write_text(PLUGIN.replace("default: op", "default: true"))
+        self.assertTrue(any("plugin.yml" in error for error in module.check(self.root, PIN)))
 
     def test_mutable_drop_field_rejected(self):
         self.drop.write_text(DROP.replace("private final double chance", "private double chance"))
