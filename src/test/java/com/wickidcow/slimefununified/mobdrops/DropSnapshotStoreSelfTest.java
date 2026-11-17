@@ -117,6 +117,34 @@ public final class DropSnapshotStoreSelfTest {
         assert mappedStore.snapshot().isEmpty();
         mappedStore.publish(List.of("re-enabled"));
         assert mappedStore.snapshot().equals(List.of("re-enabled"));
+        // A config reload already mapping rules must not resurrect drops after disable.
+        var shutdownStore = new DropSnapshotStore<String>();
+        shutdownStore.publish(List.of("before-shutdown"));
+        var reloadStarted = new CountDownLatch(1);
+        var allowReloadToFinish = new CountDownLatch(1);
+        var reloadFailure = new AtomicReference<Throwable>();
+        Thread staleReload = new Thread(() -> {
+            try {
+                shutdownStore.publishMapped(List.of("stale-rule"), rule -> {
+                    reloadStarted.countDown();
+                    try { allowReloadToFinish.await(); }
+                    catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw new IllegalStateException(interrupted);
+                    }
+                    return rule;
+                });
+            } catch (Throwable error) { reloadFailure.set(error); }
+        });
+        staleReload.start();
+        reloadStarted.await();
+        shutdownStore.clear();
+        allowReloadToFinish.countDown();
+        staleReload.join();
+        if (reloadFailure.get() != null) throw new AssertionError(reloadFailure.get());
+        assert shutdownStore.snapshot().isEmpty() : "stale reload resurrected shutdown rules";
+        shutdownStore.publish(List.of("new-session"));
+        assert shutdownStore.snapshot().equals(List.of("new-session"));
         System.out.println("MobDrops immutable snapshot publication self-test passed");
     }
 }
