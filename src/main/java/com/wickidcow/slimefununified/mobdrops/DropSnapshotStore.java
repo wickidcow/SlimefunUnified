@@ -19,6 +19,15 @@ public final class DropSnapshotStore<T> {
         return current.get();
     }
 
+    /**
+     * Clears the published rules on module shutdown without mutating snapshots
+     * already captured by an in-flight event. The host must unregister listeners
+     * before invoking this; clearing alone cannot stop callbacks.
+     */
+    public void clear() {
+        current.set(List.of());
+    }
+
     /** Publishes an immutable list. Elements must themselves be immutable. */
     public void publish(List<? extends T> validatedRules) {
         publishMapped(validatedRules, Function.identity());
