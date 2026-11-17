@@ -20,6 +20,10 @@ REQUIRED = {
     "src/main/resources/plugin.yml": (
         r"(?m)^name:\s*SFMobDrops\s*$",
         r"(?m)^\s+mobdrops:\s*$",
+        r"(?m)^\s+aliases:\s*\[sfmobdrops,\s*mobdrop,\s*sfmd\]\s*$",
+        r"(?m)^\s+permission:\s*sfmobdrops\.admin\s*$",
+        r"(?m)^\s+sfmobdrops\.admin:\s*$",
+        r"(?m)^\s+default:\s*op\s*$",
     ),
     # Guard the pinned immutable value objects before any identity-mapped snapshot use.
     "src/main/java/dev/walshy/sfmobdrops/drops/Drop.java": (
