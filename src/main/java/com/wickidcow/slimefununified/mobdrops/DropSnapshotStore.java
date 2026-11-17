@@ -16,6 +16,8 @@ public final class DropSnapshotStore<T> {
     private final AtomicReference<List<T>> current = new AtomicReference<>(List.of());
     // Invalidates reloads that began before a host-owned shutdown.
     private long shutdownGeneration;
+    // Monotonic request order: a slower older reload cannot overwrite a newer one.
+    private long reloadGeneration;
 
     public List<T> snapshot() {
         return current.get();
@@ -28,6 +30,7 @@ public final class DropSnapshotStore<T> {
      */
     public synchronized void clear() {
         shutdownGeneration++;
+        reloadGeneration++;
         current.set(List.of());
     }
 
@@ -44,9 +47,11 @@ public final class DropSnapshotStore<T> {
     public <S> void publishMapped(List<? extends S> parsedRules, Function<? super S, ? extends T> immutableMapper) {
         Objects.requireNonNull(parsedRules, "parsedRules");
         Objects.requireNonNull(immutableMapper, "immutableMapper");
-        final long startedGeneration;
+        final long startedShutdownGeneration;
+        final long requestGeneration;
         synchronized (this) {
-            startedGeneration = shutdownGeneration;
+            startedShutdownGeneration = shutdownGeneration;
+            requestGeneration = ++reloadGeneration;
         }
         List<T> copy = new ArrayList<>(parsedRules.size());
         for (S rule : parsedRules) {
@@ -54,7 +59,7 @@ public final class DropSnapshotStore<T> {
         }
         synchronized (this) {
             // A reload started before shutdown must never resurrect old rules.
-            if (startedGeneration != shutdownGeneration) return;
+            if (startedShutdownGeneration != shutdownGeneration || requestGeneration != reloadGeneration) return;
             current.set(List.copyOf(copy));
         }
     }

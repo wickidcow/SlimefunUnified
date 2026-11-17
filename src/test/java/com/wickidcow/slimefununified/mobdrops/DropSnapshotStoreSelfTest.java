@@ -145,6 +145,40 @@ public final class DropSnapshotStoreSelfTest {
         assert shutdownStore.snapshot().isEmpty() : "stale reload resurrected shutdown rules";
         shutdownStore.publish(List.of("new-session"));
         assert shutdownStore.snapshot().equals(List.of("new-session"));
+        // A delayed older reload must not replace a newer complete snapshot.
+        var orderedStore = new DropSnapshotStore<String>();
+        orderedStore.publish(List.of("initial"));
+        var oldStarted = new CountDownLatch(1);
+        var releaseOld = new CountDownLatch(1);
+        var oldFailure = new AtomicReference<Throwable>();
+        Thread oldWriter = new Thread(() -> {
+            try {
+                orderedStore.publishMapped(List.of("old-request"), value -> {
+                    oldStarted.countDown();
+                    try { releaseOld.await(); }
+                    catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw new IllegalStateException(interrupted);
+                    }
+                    return value;
+                });
+            } catch (Throwable error) { oldFailure.set(error); }
+        });
+        oldWriter.start();
+        oldStarted.await();
+        orderedStore.publish(List.of("new-request"));
+        releaseOld.countDown();
+        oldWriter.join();
+        if (oldFailure.get() != null) throw new AssertionError(oldFailure.get());
+        assert orderedStore.snapshot().equals(List.of("new-request")) : "older reload overwrote newer rules";
+        // An invalid newer reload leaves the previous complete snapshot intact.
+        try {
+            orderedStore.publishMapped(List.of("invalid"), value -> {
+                throw new IllegalArgumentException("bad config");
+            });
+            throw new AssertionError("accepted invalid reload");
+        } catch (IllegalArgumentException expected) { }
+        assert orderedStore.snapshot().equals(List.of("new-request"));
         System.out.println("MobDrops immutable snapshot publication self-test passed");
     }
 }
