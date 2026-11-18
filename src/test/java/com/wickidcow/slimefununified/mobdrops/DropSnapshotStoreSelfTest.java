@@ -179,6 +179,34 @@ public final class DropSnapshotStoreSelfTest {
             throw new AssertionError("accepted invalid reload");
         } catch (IllegalArgumentException expected) { }
         assert orderedStore.snapshot().equals(List.of("new-request"));
+        // A pre-disable reload cannot replace rules from a newly enabled module session.
+        var restartStore = new DropSnapshotStore<String>();
+        restartStore.publish(List.of("old-session"));
+        var restartStarted = new CountDownLatch(1);
+        var releaseRestart = new CountDownLatch(1);
+        var restartFailure = new AtomicReference<Throwable>();
+        Thread restartWriter = new Thread(() -> {
+            try {
+                restartStore.publishMapped(List.of("stale-before-disable"), value -> {
+                    restartStarted.countDown();
+                    try { releaseRestart.await(); }
+                    catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw new IllegalStateException(interrupted);
+                    }
+                    return value;
+                });
+            } catch (Throwable error) { restartFailure.set(error); }
+        });
+        restartWriter.start();
+        restartStarted.await();
+        restartStore.clear();
+        restartStore.publish(List.of("new-session"));
+        releaseRestart.countDown();
+        restartWriter.join();
+        if (restartFailure.get() != null) throw new AssertionError(restartFailure.get());
+        assert restartStore.snapshot().equals(List.of("new-session"))
+                : "pre-disable reload replaced rules after re-enable";
         System.out.println("MobDrops immutable snapshot publication self-test passed");
     }
 }
