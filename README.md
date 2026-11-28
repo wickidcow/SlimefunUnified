@@ -14,6 +14,8 @@ The OP-only **Server Management** screen appears in the classic Slimefun Guide's
 
 ## Platform compatibility target — not yet certified
 
+Minimum supported Minecraft server version: **26.3**. Historical item and world data migration remains in scope; older server runtime support does not.
+
 **The final combined JAR must support Paper, Purpur, and Folia.** Combining plugins reduces separate-JAR integration/API clashes, but does not make block, entity, machine, cargo, or shared-data access automatically safe on Folia's parallel ticking regions. Platform validation is required for the core **and every integrated module**.
 
 The pinned Legacy core currently declares `folia-supported: true`; that flag is **not inherited as a compatibility claim** by default. The Unified overlay changes it to `folia-supported: false` in normal experimental artifacts. For isolated, backed-up Folia evaluation builds only, set `UNIFIED_FOLIA_EXPERIMENTAL=1` when invoking `scripts/assemble_unified.sh`. This explicitly enables the test descriptor flag; it does **not** establish gameplay safety, a stable release, or permission to deploy it to a production server. The final JAR verifier checks the selected mode. See [Folia validation gates](docs/folia-compatibility.md).

@@ -27,7 +27,7 @@ The source-pinned qualification ledger at `integration/platform-qualification.js
 ## Required live validation before stable release
 
 1. Build from exact source pins, verify one plugin descriptor, source receipts, original copyright/license notices and the owner-excluded MagicExpansion absence. Keep the distinct Magic8Ball addon eligible.
-2. Boot, disable, restart and restore on actual matching Paper, Purpur, and Folia 1.21.11 / 26.3+ server builds where available. Record the exact build, Java version and plugin dependencies; mark an unavailable target `BLOCKED`, not `PASSED`.
+2. Boot, disable, restart and restore on actual matching Paper, Purpur, and Folia 26.3+ server builds where available. Record the exact build, Java version and plugin dependencies; mark an unavailable target `BLOCKED`, not `PASSED`.
 3. For the core **and each integrated addon**, test command and listener registration; ordinary-player and OP Guide/crafting behavior; entity drops; machine and cargo outputs; original IDs/PDC keys; historical configuration paths; saved-world and item round-trips; and backed-up rollback.
 4. Exercise multiple distant active Folia regions concurrently, including storage/cargo, machine ticking, entity movement, GUI interactions, chunk unload, cancellations and restart. Inspect region-thread exceptions, deadlocks, item-count conservation and duplication.
 5. Retest on Purpur including nondefault gameplay settings, and compare scheduler/performance behavior against Paper. Record reproducible evidence separately for each ledger cell.
